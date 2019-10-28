@@ -14,11 +14,15 @@ class Graphics {
 public:
 	Graphics();
 
+	~Graphics();
+
 	void putImage(const string &name, const string& path);
 
 	SDL_Surface* loadImage(const string &name);
 
 	SDL_Texture* surfaceToTexture(SDL_Surface* &surface);
+
+	void drawLine(const int &x1, const int &y1, const int &x2, const int &y2) const;
 
 	void drawSurface(SDL_Texture* source, SDL_Rect* sourceRectangle, SDL_Rect* destinationRectangle);
 

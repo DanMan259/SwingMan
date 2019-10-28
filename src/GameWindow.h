@@ -1,28 +1,112 @@
 #pragma once
 
+
+#include <vector>
+#include "Entity.h"
+#include "Graphics.h"
+#include "Player.h"
+#include "Rope.h"
+#include <set>
+
 using namespace std;
 
-#include "Graphics.h"
+//forward declaration
+class Player;
+class Rope;
 
+/*
+ * This holds all of the main variables for the game. It also holds
+ * the game loop. It is used for the initial startup of the sdl engine
+ * and for the initial rendering of the game.
+ */
 class GameWindow {
 
 public:
 
+	/*
+	 * The screen height
+	 */
 	static const int GAME_HEIGHT = 500;
+
+	/*
+	 * The screen width
+	 */
 	static const int GAME_WIDTH = 800;
 
+	/*
+	 * The game speed : how fast the map scrolls
+	 */
+	static const int GAME_MOVE_SPEED = 4;
+
+	/*
+	 * Default constructor
+	 */
 	GameWindow();
 
+	/*
+	 * Main game loop
+	 * This is responsible for updating and rendering the game.
+	 */
 	void gameLoop();
 
-	void gameUpdate(const float& elapsedTime) const;
+	/*
+	 * Used to handle the continuous updates of the game
+	 * This is used to update the side-scrolling of all of the
+	 * lava and top blocks as well as updating all other entities
+	 */
+	void gameUpdate(const float& elapsedTime);
 
+	/*
+	 * Used to draw all necessary items to the screen
+	 */
 	void gameDraw(Graphics& graphics);
 
+	/*
+	 * Called when the player falls into the lava
+	 */
+	void endGame();
+
+	/*
+	 * @return top blocks
+	 */
+	vector<Entity*> getTopBlocks() const;
+
+	/*
+	 * @return lava blocks
+	 */
+	vector<Entity*> getLavaBlocks() const;
+
 private:
+
+	/*
+	 * The graphics object
+	 */
 	Graphics graphics;
 
-	SDL_Surface* background;
+	/*
+	 * Holds a pointer to player object
+	 */
+	Player* player;
+
+	/*
+	 * Holds a pointer to rope object
+	 */
+	Rope* rope;
+
+	/*
+	 * If game is finished
+	 */
+	bool finished;
+
+	/*
+	 * The lava blocks
+	 */
+	vector<Entity*> lavaBlocks;
+
+	/*
+	 * The top blocks
+	 */
+	vector<Entity*> topBlocks;
 };
 
 

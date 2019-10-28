@@ -1,1 +1,4 @@
 background	res/320_background.png
+block	res/red_block.png
+brown_block	res/brown_block.png
+player	res/player.png

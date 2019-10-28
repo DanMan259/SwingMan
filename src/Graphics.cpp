@@ -12,6 +12,16 @@ Graphics::Graphics() {
 	SDL_SetWindowTitle(this->window, "Swing man");
 }
 
+Graphics::~Graphics() {
+	SDL_DestroyWindow(this->window);
+	SDL_DestroyRenderer(this->renderer);
+
+}
+
+void Graphics::drawLine(const int &x1, const int &y1, const int &x2, const int &y2) const {
+	SDL_RenderDrawLine(this->renderer, x1, y1, x2, y2);
+}
+
 void Graphics::putImage(const string &name, const string &path) {
 	if (sprites.count(path) == 0) {
 		sprites[name] = IMG_Load(path.c_str());
