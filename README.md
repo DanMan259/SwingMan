@@ -1,22 +1,21 @@
-# Project Title
+# SwingingMan
 
-Simple overview of use/purpose.
+Team Seven Samurai is planning to build a endless side scroller pc game named SwingingMan. 
 
 ## Description
 
-An in-depth paragraph about your project and overview of use.
+The game can be described as an endless side scroller with the objective of avoiding the floor which is lava. The user can avoid the floor by swinging from the ceilings using a throwing grapple. The user will tackle obstacles and be assigned points given their performance
 
 ## Getting Started
 
 ### Dependencies
 
-* Describe any prerequisites, libraries, OS version, etc., needed before installing program.
-* ex. Windows 10
+* C++14 ISO/IEC 14882
+* SDL 2.0
 
 ### Installing
 
-* How/where to download your program
-* Any modifications needed to be made to files/folders
+* PUT THE INSTALL INS
 
 ### Executing program
 
@@ -37,26 +36,19 @@ command to run if program contains helper info
 
 Contributors names and contact info
 
-ex. Dominique Pizzie  
-ex. [@DomPizzie](https://twitter.com/dompizzie)
+Daniyal Maniar  
+[@DanMan259](https://github.com/DanMan259)
 
 ## Version History
 
-* 0.2
-    * Various bug fixes and optimizations
-    * See [commit change]() or See [release history]()
 * 0.1
     * Initial Release
 
 ## License
 
-This project is licensed under the [NAME HERE] License - see the LICENSE.md file for details
+This project is licensed under the [MIT](https://en.wikipedia.org/wiki/MIT_License) License - see the LICENSE.md file for details
 
 ## Acknowledgments
 
 Inspiration, code snippets, etc.
-* [awesome-readme](https://github.com/matiassingers/awesome-readme)
-* [PurpleBooth](https://gist.github.com/PurpleBooth/109311bb0361f32d87a2)
-* [dbader](https://github.com/dbader/readme-template)
-* [zenorocha](https://gist.github.com/zenorocha/4526327)
-* [fvcproductions](https://gist.github.com/fvcproductions/1bfc2d4aecb01a834b46)
+* [PLACEHOLDER](https://placeHolder.ca)
