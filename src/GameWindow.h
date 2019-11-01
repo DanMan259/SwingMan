@@ -83,34 +83,15 @@ private:
 	 */
 	Graphics graphics;
 
-	/*
-	 * Holds a pointer to player object
-	 */
 	Player* player;
 
-	/*
-	 * Holds a pointer to rope object
-	 */
 	Rope* rope;
 
-	/*
-	 * If game is finished
-	 */
 	bool finished;
 
-	/*
-	 * The lava blocks
-	 */
+	bool start;
+
 	vector<Entity*> lavaBlocks;
 
-	/*
-	 * The top blocks
-	 */
 	vector<Entity*> topBlocks;
 };
-
-
-
-
-
-

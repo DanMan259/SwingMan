@@ -8,10 +8,10 @@ using namespace std;
 
 Entity::Entity() {
 	this->x = 0;
-	this->y = 0;
-	this->width = 0;
-	this->height = 0;
-	this->sprite = NULL;
+		this->y = 0;
+		this->width = 0;
+		this->height = 0;
+		this->sprite = NULL;
 	this->texture = NULL;
 };
 
@@ -101,14 +101,9 @@ int Entity::getX() const {
 
 
 bool operator==(const Entity first, const Entity other) {
-	return first.getX() == other.getX() && first.getY() == other.getY();
+ 	return first.getX() == other.getX() && first.getY() == other.getY();
 }
 
 bool operator<(const Entity first, const Entity other) {
 	return first.getX() < other.getX();
 }
-
-
-
-
-

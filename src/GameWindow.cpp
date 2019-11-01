@@ -15,6 +15,10 @@ using namespace std;
 const int FPS = 50;
 const int MAX_FRAME_TIME = 1000 / FPS;
 
+int topPattern[81];
+int topPatternIndex;
+
+
 int main(int argv, char **args) {
 	GameWindow game;
 	return 0;
@@ -31,6 +35,20 @@ void GameWindow::gameLoop() {
 	SDL_Event event;
 	SpriteLoader spriteLoader(graphics);
 
+	start = false;
+
+	topPatternIndex = 0;
+	for(int i = 0; i < 81; i++) {
+		int offset = 3;
+		if(i < 30) {
+			topPattern[i] = i * offset;
+		} else if(i >= 30 && i < 50) {
+			topPattern[i] = topPattern[29] + (rand() % 2);
+		} else {
+			topPattern[i] = topPattern[29] - ((i-50) * offset);
+		}
+	}
+
 	SDL_Surface *blockSurface = graphics.loadImage("block");
 	for (int i = 0; i < 21; i++) {
 		Entity *block = new Entity(i * 40, 380, blockSurface);
@@ -38,20 +56,29 @@ void GameWindow::gameLoop() {
 		lavaBlocks.push_back(block);
 	}
 
-	SDL_Surface *topBlockSurface = graphics.loadImage("brown_block");
+	SDL_Surface *topBlockSurface = graphics.loadImage("big_grey_block");
 	for (int i = 0; i < 21; i++) {
-		Entity *block = new Entity(i * 40, 0, topBlockSurface);
-		block->setY(block->getY() - 10 * (rand() % 10));
-		topBlocks.push_back(block);
-	}
+			Entity *block = new Entity(i * 40, 0, topBlockSurface);
+			block->setY(block->getY() - 10 * (rand() % 10));
+			topBlocks.push_back(block);
+		}
+//testing different top widths
+//	for (int i = 0; i < 81; i++) {
+//		Entity *block = new Entity(i * 10, -topBlockSurface->h, topBlockSurface);
+//		block->setY(block->getY() + topPattern[i]);
+//		cout << block->getY() + topPattern[i] << endl;
+//
+//		topBlocks.push_back(block);
+//	}
+
 
 	Player plyr = Player(this, 100, 100, graphics.loadImage("player"));
 	player = &plyr;
 
-	Rope rpe = Rope(player);
-	rope = &rpe;
+	//Rope rpe = Rope(player);
+	//rope = &rpe;
 
-	rope->initiliaze(100, 100);
+	//rope->initiliaze(100, 100);
 	int LAST_UPDATE_TIME = SDL_GetTicks();
 
 	while (true) {
@@ -60,10 +87,19 @@ void GameWindow::gameLoop() {
 
 			if (event.type == SDL_KEYDOWN) {
 				if (event.key.keysym.sym == SDLK_SPACE) {
-					cout << "a" << endl;
-					player->setSwinging(true);
+					if(!player->isSwinging()) {
+						player->startSwinging();
+					}
+				}
+				if(event.key.keysym.sym == SDLK_a) {
+					start = true;
 				}
 			} else if (event.type == SDL_KEYUP) {
+
+				if (event.key.keysym.sym == SDLK_SPACE) {
+					player->resetSwinging();
+				}
+
 			} else if (event.type == SDL_QUIT) {
 				return;
 			}
@@ -101,13 +137,15 @@ vector<Entity*> GameWindow::getTopBlocks() const {
 
 void GameWindow::gameUpdate(const float &elapsedTime) {
 
+
 	if (finished) {
 		//TTF_init();
 		return;
 	}
 
+	if(start) {
 	player->gameUpdate(elapsedTime);
-
+	}
 	for (size_t i = 0; i < lavaBlocks.size(); i++) {
 		Entity *entity = lavaBlocks.at(i);
 
@@ -131,8 +169,10 @@ void GameWindow::gameUpdate(const float &elapsedTime) {
 		Entity *entity = topBlocks.at(i);
 
 		if (entity->getX() <= -40) {
-			if (entity == player->getSwingingBlock()) {
+			if (player->isSwinging()) {
+				if(entity == player->getRope()->getSwingingBlock()) {
 				player->resetSwinging();
+				}
 			}
 			cout << entity->getX() << endl;
 			topBlocks.erase(topBlocks.begin() + i);
@@ -140,15 +180,21 @@ void GameWindow::gameUpdate(const float &elapsedTime) {
 					topBlocks.at(topBlocks.size() - 1)->getX()
 							+ entity->getWidth(), 0, entity->getSprite());
 			block->setY(block->getY() - 10 * (rand() % 10));
+			if(topPatternIndex >= 81) {
+				topPatternIndex = 0;
+			} else {
+				topPatternIndex++;
+			}
+			//topPatternIndex = (topPatternIndex >= 81 ? 0 : topPatternIndex++);
 			delete (entity);
 			topBlocks.push_back(block);
 			continue;
 		} else {
 
-			entity->setX(entity->getX() - GAME_MOVE_SPEED);
+			entity->setX(entity->getX() - 4);
 		}
-
 	}
+
 }
 
 void GameWindow::gameDraw(Graphics &graphics) {
@@ -156,6 +202,7 @@ void GameWindow::gameDraw(Graphics &graphics) {
 	if (finished) {
 		return;
 	}
+
 
 	graphics.clear();
 
@@ -167,10 +214,12 @@ void GameWindow::gameDraw(Graphics &graphics) {
 		topBlock->gameDraw(graphics);
 	}
 
-	player->gameDraw(graphics);
+	if(start) {
+		player->gameDraw(graphics);
 
-	rope->draw(graphics);
+	}
+
+	//rope->draw(graphics);
 
 	graphics.flip();
 }
-

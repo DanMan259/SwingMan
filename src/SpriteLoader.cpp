@@ -52,6 +52,3 @@ void SpriteLoader::initiliaze(Graphics& graphics) {
 
 	fileIn.close();
 }
-
-
-

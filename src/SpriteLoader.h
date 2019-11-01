@@ -9,4 +9,3 @@ public:
 	SpriteLoader(Graphics& graphics);
 	void initiliaze(Graphics& graphics);
 };
-

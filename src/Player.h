@@ -9,6 +9,7 @@
 using namespace std;
 
 class GameWindow;
+class Rope;
 class Player : public Entity {
 public:
 
@@ -20,14 +21,19 @@ public:
 
 	void gameDraw(Graphics& graphics);
 
-	void setSwinging(const bool& swinging);
+	void startSwinging();
 
 	void resetSwinging();
 
-	Entity* getSwingingBlock() const;
+	bool isSwinging() const;
+
+	Rope* getRope() const;
+
 
 private:
 	GameWindow* game;
+
+	Rope* rope;
 
 	bool dead;
 

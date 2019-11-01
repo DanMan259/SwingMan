@@ -53,7 +53,3 @@ void Graphics::clear() {
 SDL_Renderer* Graphics::getRenderer() const {
 	return renderer;
 }
-
-
-
-

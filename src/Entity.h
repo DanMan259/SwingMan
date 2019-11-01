@@ -24,13 +24,13 @@ public:
 	 * @param y the entity y position
 	 * @param sprite the sprite of the entity
 	 */
-	Entity(int x, int y, SDL_Surface *sprite);
+	Entity(int x, int y, SDL_Surface* sprite);
 
 	/*
 	 * Copy constructor
 	 * @param copy which is what this object will copy from
 	 */
-	Entity(const Entity &copy);
+	Entity(const Entity& copy);
 
 	//Destructor used for taking stuff off the heap
 	~Entity();
@@ -40,13 +40,13 @@ public:
 	 * continuous updates on the entity. These can be changes
 	 * in position, different sprite states etc.
 	 */
-	void gameUpdate(const float &elapsedTime) const;
+	void gameUpdate(const float& elapsedTime) const;
 
 	/*
 	 * Draws the entity onto the screen
 	 * @graphics which holds the renderer object
 	 */
-	void gameDraw(Graphics &graphics);
+	void gameDraw(Graphics& graphics);
 
 	/*
 	 * Allows for a dynamic change of the sprite width and heigh
@@ -133,13 +133,13 @@ private:
 	int y;
 };
 
-/*
- * Overloading == option
- */
-bool operator==(const Entity first, const Entity other);
+	/*
+	 * Overloading == option
+	 */
+	bool operator==(const Entity first, const Entity other);
 
-/*
- * Overloading < option
- */
-bool operator<(const Entity first, const Entity other);
 
+	/*
+	 * Overloading < option
+	 */
+	bool operator<(const Entity first, const Entity other);
