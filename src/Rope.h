@@ -27,6 +27,18 @@ public:
 private:
 	Player* attached;
 
+	double vectorX;
+
+	double vectorY;
+
+	double length;
+
+	double angle;
+
+	double time;
+
+	int ropeStart;
+
 	Entity* swingingBlock;
 
 	vector<RopeNode> segments;
