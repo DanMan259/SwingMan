@@ -3,18 +3,40 @@
 #include "Entity.h"
 #include "Graphics.h"
 #include "Rope.h"
+#include <cmath>
 #include <iostream>
 
 namespace rope_constants {
 	int NODES = 10;
 }
 
+const double PI = 3.14159265;
+
+
 Rope::Rope(Player *attached, Entity* swingingBlock) {
 	this->attached = attached;
 	this->swingingBlock = swingingBlock;
-};
+	this->angle = 0;
+	this->vectorX = 0;
+	this->vectorY = 0;
+	this->time = 0;
+	this->length = 0;
+	this->ropeStart = SDL_GetTicks();
+}
 
 void Rope::update() {
+	vectorX = swingingBlock->getX()-attached->getX();
+	vectorY = swingingBlock->getY()-attached->getY();
+	length = sqrt((vectorX*vectorX)+(vectorY*vectorY));
+	angle = acos(vectorY/length);
+	if(isnan(angle)){
+		cout<<"VectorY  = "<<vectorY<<"ropelen = "<< length << endl;
+	}else{
+		cout<<"Correct VectorY  = "<<vectorY<<" ropelen = "<< length << endl;
+	}
+	time = (SDL_GetTicks() - ropeStart)*(PI/180) / 40;
+	attached->setX(int(length*sin(time+angle))+(swingingBlock->getX() - attached->getWidth()));
+	attached->setY(int(length*cos(time+angle))+swingingBlock->getY());
 
 }
 
