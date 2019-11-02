@@ -12,11 +12,13 @@
 
 using namespace std;
 
+const double PI = 3.14159265;
 const int FPS = 50;
 const int MAX_FRAME_TIME = 1000 / FPS;
 
 int topPattern[81];
 int topPatternIndex;
+
 
 
 int main(int argv, char **args) {
@@ -58,10 +60,10 @@ void GameWindow::gameLoop() {
 
 	SDL_Surface *topBlockSurface = graphics.loadImage("big_grey_block");
 	for (int i = 0; i < 21; i++) {
-			Entity *block = new Entity(i * 40, 0, topBlockSurface);
-			block->setY(block->getY() - 10 * (rand() % 10));
-			topBlocks.push_back(block);
-		}
+		Entity *block = new Entity(i * 40, 0, topBlockSurface);
+		block->setY(block->getY() - 10 * (rand() % 10));
+		topBlocks.push_back(block);
+	}
 //testing different top widths
 //	for (int i = 0; i < 81; i++) {
 //		Entity *block = new Entity(i * 10, -topBlockSurface->h, topBlockSurface);
@@ -80,6 +82,9 @@ void GameWindow::gameLoop() {
 
 	//rope->initiliaze(100, 100);
 	int LAST_UPDATE_TIME = SDL_GetTicks();
+	double ropeLen, vectorX, vectorY, angle, time;
+	int ropeStart;
+	Entity* swingingBlock;
 
 	while (true) {
 
@@ -89,6 +94,16 @@ void GameWindow::gameLoop() {
 				if (event.key.keysym.sym == SDLK_SPACE) {
 					if(!player->isSwinging()) {
 						player->startSwinging();
+						ropeStart = SDL_GetTicks();
+					}else{
+						swingingBlock = player->getRope()->getSwingingBlock();
+						vectorX = swingingBlock->getX()-player->getX();
+						vectorY = swingingBlock->getY()-player->getY();
+						ropeLen = sqrt((vectorX*vectorX)+(vectorY*vectorY));
+						angle = acos(vectorX/ropeLen);
+						time = (SDL_GetTicks() - ropeStart)*PI/180*GAME_MOVE_SPEED*100;
+						player->setX(int(-sin(time-angle)+player->getX()));
+						player->setY(int(cos(time-angle)+player->getY()));
 					}
 				}
 				if(event.key.keysym.sym == SDLK_a) {
@@ -144,11 +159,10 @@ void GameWindow::gameUpdate(const float &elapsedTime) {
 	}
 
 	if(start) {
-	player->gameUpdate(elapsedTime);
+		player->gameUpdate(elapsedTime);
 	}
 	for (size_t i = 0; i < lavaBlocks.size(); i++) {
 		Entity *entity = lavaBlocks.at(i);
-
 		if (entity->getX() <= -40) {
 			lavaBlocks.erase(lavaBlocks.begin() + i);
 			Entity *block = new Entity(
@@ -191,7 +205,7 @@ void GameWindow::gameUpdate(const float &elapsedTime) {
 			continue;
 		} else {
 
-			entity->setX(entity->getX() - 4);
+			entity->setX(entity->getX() - GAME_MOVE_SPEED);
 		}
 	}
 

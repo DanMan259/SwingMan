@@ -58,7 +58,7 @@ void Player::gameUpdate(const float& elapstedTime) {
 	SDL_Rect playerRect;
 	playerRect.x = getX();
 	playerRect.y = getY();
-	playerRect.w= getWidth();
+	playerRect.w = getWidth();
 	playerRect.h = getHeight();
 	SDL_Rect result;
 	for(Entity* lavaBlock : game->getLavaBlocks()) {
