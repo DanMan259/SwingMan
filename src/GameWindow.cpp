@@ -73,7 +73,7 @@ void GameWindow::gameLoop() {
 //	}
 
 
-	Player plyr = Player(this, 100, 100, graphics.loadImage("player"));
+	Player plyr = Player(this, 150, 100, graphics.loadImage("player"));
 	player = &plyr;
 
 	//Rope rpe = Rope(player);
