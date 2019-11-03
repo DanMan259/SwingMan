@@ -33,7 +33,9 @@ private:
 
 	double length;
 
-	double angle;
+	double initAngle;
+
+	double angularFreq;
 
 	double time;
 
