@@ -2,6 +2,7 @@
 
 #include <SDL.h>
 
+#include <cmath>
 #include "graphics.h"
 #include "Entity.h"
 #include "GameWindow.h"

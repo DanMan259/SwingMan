@@ -9,7 +9,7 @@ using namespace std;
 
 Graphics::Graphics() {
 	SDL_CreateWindowAndRenderer(GameWindow::GAME_WIDTH, GameWindow::GAME_HEIGHT, 0, &this->window, &this->renderer);
-	SDL_SetWindowTitle(this->window, "Swing man");
+	SDL_SetWindowTitle(this->window, "SwingingMan");
 }
 
 Graphics::~Graphics() {

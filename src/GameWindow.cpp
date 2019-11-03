@@ -19,6 +19,7 @@ int topPattern[81];
 int topPatternIndex;
 
 
+
 int main(int argv, char **args) {
 	GameWindow game;
 	return 0;
@@ -58,10 +59,10 @@ void GameWindow::gameLoop() {
 
 	SDL_Surface *topBlockSurface = graphics.loadImage("big_grey_block");
 	for (int i = 0; i < 21; i++) {
-			Entity *block = new Entity(i * 40, 0, topBlockSurface);
-			block->setY(block->getY() - 10 * (rand() % 10));
-			topBlocks.push_back(block);
-		}
+		Entity *block = new Entity(i * 40, 0, topBlockSurface);
+		block->setY(block->getY() - 10 * (rand() % 10));
+		topBlocks.push_back(block);
+	}
 //testing different top widths
 //	for (int i = 0; i < 81; i++) {
 //		Entity *block = new Entity(i * 10, -topBlockSurface->h, topBlockSurface);
@@ -144,11 +145,11 @@ void GameWindow::gameUpdate(const float &elapsedTime) {
 	}
 
 	if(start) {
-	player->gameUpdate(elapsedTime);
+		player->gameUpdate(elapsedTime);
 	}
-	for (size_t i = 0; i < lavaBlocks.size(); i++) {
-		Entity *entity = lavaBlocks.at(i);
 
+	/*for (size_t i = 0; i < lavaBlocks.size(); i++) {
+		Entity *entity = lavaBlocks.at(i);
 		if (entity->getX() <= -40) {
 			lavaBlocks.erase(lavaBlocks.begin() + i);
 			Entity *block = new Entity(
@@ -160,7 +161,7 @@ void GameWindow::gameUpdate(const float &elapsedTime) {
 			continue;
 		} else {
 
-			entity->setX(entity->getX() - player->getXVelocity());
+			entity->setX(entity->getX() - GAME_MOVE_SPEED);
 		}
 
 	}
@@ -191,9 +192,9 @@ void GameWindow::gameUpdate(const float &elapsedTime) {
 			continue;
 		} else {
 
-			entity->setX(entity->getX()- player->getXVelocity());
+			entity->setX(entity->getX() - GAME_MOVE_SPEED);
 		}
-	}
+	}*/
 
 }
 
