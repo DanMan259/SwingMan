@@ -73,7 +73,9 @@ void GameWindow::gameLoop() {
 //	}
 
 
+
 	Player plyr = Player(this, 200, 100, graphics.loadImage("samurai"));
+
 	player = &plyr;
 
 	//Rope rpe = Rope(player);
