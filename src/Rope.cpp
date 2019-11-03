@@ -16,28 +16,19 @@ const double PI = 3.14159265;
 Rope::Rope(Player *attached, Entity* swingingBlock) {
 	this->attached = attached;
 	this->swingingBlock = swingingBlock;
-	this->angle = 0;
-	this->vectorX = 0;
-	this->vectorY = 0;
+	this->vectorX = swingingBlock->getX()-attached->getX();
+	this->vectorY = swingingBlock->getY()-attached->getY();
 	this->time = 0;
-	this->length = 0;
+	this->length = sqrt((vectorX*vectorX)+(vectorY*vectorY));
+	this->initAngle = acos(abs(vectorY)/length);
 	this->ropeStart = SDL_GetTicks();
+	this->angularFreq = -0.10;
 }
 
 void Rope::update() {
-	vectorX = swingingBlock->getX()-attached->getX();
-	vectorY = swingingBlock->getY()-attached->getY();
-	length = sqrt((vectorX*vectorX)+(vectorY*vectorY));
-	angle = acos(vectorY/length);
-	if(isnan(angle)){
-		cout<<"VectorY  = "<<vectorY<<"ropelen = "<< length << endl;
-	}else{
-		cout<<"Correct VectorY  = "<<vectorY<<" ropelen = "<< length << endl;
-	}
-	time = (SDL_GetTicks() - ropeStart)*(PI/180) / 40;
-	attached->setX(int(length*sin(time+angle))+(swingingBlock->getX() - attached->getWidth()));
-	attached->setY(int(length*cos(time+angle))+swingingBlock->getY());
-
+	time = (SDL_GetTicks() - ropeStart)*(PI/180);
+	attached->setX(int(length*-sin(angularFreq*time+initAngle))+swingingBlock->getX());
+	attached->setY(int(length*cos(angularFreq*time+initAngle))+swingingBlock->getY());
 }
 
 Entity* Rope::getSwingingBlock() const {
@@ -46,7 +37,7 @@ Entity* Rope::getSwingingBlock() const {
 
 void Rope::draw(Graphics& graphics) {
 	SDL_SetRenderDrawColor(graphics.getRenderer(), 255, 255, 255, 255);
-	graphics.drawLine(attached->getX() + attached->getWidth(), attached->getY(), swingingBlock->getX(), swingingBlock->getY() + swingingBlock->getHeight());
+	graphics.drawLine(attached->getX() + attached->getWidth()/2, attached->getY() + attached->getHeight()/2, swingingBlock->getX()+swingingBlock->getWidth()/2, swingingBlock->getY() + swingingBlock->getHeight());
 	SDL_SetRenderDrawColor(graphics.getRenderer(), 0, 0, 0, 0);
 }
 
