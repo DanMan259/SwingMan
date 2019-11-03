@@ -73,7 +73,9 @@ void GameWindow::gameLoop() {
 //	}
 
 
-	Player plyr = Player(this, 150, 100, graphics.loadImage("player"));
+
+	Player plyr = Player(this, 200, 100, graphics.loadImage("samurai"));
+
 	player = &plyr;
 
 	//Rope rpe = Rope(player);
@@ -155,7 +157,16 @@ void GameWindow::gameUpdate(const float &elapsedTime) {
 			Entity *block = new Entity(
 					lavaBlocks.at(lavaBlocks.size() - 1)->getX() + 40, 380,
 					entity->getSprite());
-			block->setY(block->getY() + 10 * (rand() % 10));
+			if(heightIndex >= 20 || heightIndex == -1){
+				double divider = (double(rand()%2)+2);
+				for(int j = 0; j<20; j++){
+					height[j] = int(5.0*sin(j / divider)+5.0);
+				}
+				heightIndex = 0;
+			}
+
+
+			block->setY(block->getY() + 10 * height[heightIndex++]);
 			delete (entity);
 			lavaBlocks.push_back(block);
 			continue;
@@ -180,7 +191,7 @@ void GameWindow::gameUpdate(const float &elapsedTime) {
 			Entity *block = new Entity(
 					topBlocks.at(topBlocks.size() - 1)->getX()
 							+ entity->getWidth(), 0, entity->getSprite());
-			block->setY(block->getY() - 10 * (rand() % 10));
+			block->setY(block->getY() - 10 * (10-height[heightIndex++]));
 			if(topPatternIndex >= 81) {
 				topPatternIndex = 0;
 			} else {
