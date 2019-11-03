@@ -28,11 +28,14 @@ public:
 	bool isSwinging() const;
 
 	Rope* getRope() const;
+	int getXVelocity() const;
+	int getYVelocity() const;
 
 
 private:
 	GameWindow* game;
-
+	int velocityX;
+	int velocityY;
 	Rope* rope;
 
 	bool dead;

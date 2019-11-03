@@ -10,7 +10,7 @@
 
 using namespace std;
 
-//forward declaration
+//forward declarations
 class Player;
 class Rope;
 

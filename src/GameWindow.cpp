@@ -160,7 +160,7 @@ void GameWindow::gameUpdate(const float &elapsedTime) {
 			continue;
 		} else {
 
-			entity->setX(entity->getX() - GAME_MOVE_SPEED);
+			entity->setX(entity->getX() - player->getXVelocity());
 		}
 
 	}
@@ -191,7 +191,7 @@ void GameWindow::gameUpdate(const float &elapsedTime) {
 			continue;
 		} else {
 
-			entity->setX(entity->getX() - 4);
+			entity->setX(entity->getX()- player->getXVelocity());
 		}
 	}
 

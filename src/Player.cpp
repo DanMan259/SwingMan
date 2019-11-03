@@ -29,6 +29,7 @@ Player::Player(GameWindow* game, int x, int y, SDL_Surface* sprite) : Entity(x, 
 };
 
 
+
 void Player::resetSwinging() {
 	delete(rope);
 	swinging = false;
@@ -42,6 +43,14 @@ bool Player::isSwinging() const {
 
 Rope* Player::getRope() const {
 	return rope;
+}
+
+int Player::getXVelocity() const {
+	return velocityX;
+}
+
+int Player::getYVelocity() const {
+	return velocityY;
 }
 
 void Player::gameUpdate(const float& elapstedTime) {
