@@ -31,7 +31,8 @@ public:
 	Rope* getRope() const;
 	int getXVelocity() const;
 	int getYVelocity() const;
-
+	void setXVelocity(int value);
+	void setYVelocity(int value);
 
 private:
 	GameWindow* game;

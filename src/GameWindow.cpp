@@ -148,7 +148,7 @@ void GameWindow::gameUpdate(const float &elapsedTime) {
 		player->gameUpdate(elapsedTime);
 	}
 
-	/*for (size_t i = 0; i < lavaBlocks.size(); i++) {
+	for (size_t i = 0; i < lavaBlocks.size(); i++) {
 		Entity *entity = lavaBlocks.at(i);
 		if (entity->getX() <= -40) {
 			lavaBlocks.erase(lavaBlocks.begin() + i);
@@ -161,7 +161,7 @@ void GameWindow::gameUpdate(const float &elapsedTime) {
 			continue;
 		} else {
 
-			entity->setX(entity->getX() - GAME_MOVE_SPEED);
+			entity->setX(entity->getX() - player->getXVelocity());
 		}
 
 	}
@@ -191,10 +191,10 @@ void GameWindow::gameUpdate(const float &elapsedTime) {
 			topBlocks.push_back(block);
 			continue;
 		} else {
-
-			entity->setX(entity->getX() - GAME_MOVE_SPEED);
+			cout<<player->getXVelocity()<<endl;
+			entity->setX(entity->getX() - player->getXVelocity());
 		}
-	}*/
+	}
 
 }
 
@@ -220,7 +220,7 @@ void GameWindow::gameDraw(Graphics &graphics) {
 
 	}
 
-	//rope->draw(graphics);
+	rope->draw(graphics);
 
 	graphics.flip();
 }

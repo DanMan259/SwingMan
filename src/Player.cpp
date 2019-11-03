@@ -52,6 +52,13 @@ int Player::getXVelocity() const {
 int Player::getYVelocity() const {
 	return velocityY;
 }
+void Player::setXVelocity(int value) {
+	this->velocityX = value;
+
+}
+void Player::setYVelocity(int value) {
+	this->velocityY = value;
+}
 
 void Player::gameUpdate(const float& elapstedTime) {
 
