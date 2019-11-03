@@ -4,3 +4,4 @@ brown_block	res/brown_block.png
 player	res/player.png
 grey_block	res/grey_block.png
 big_grey_block	res/big_grey_block.png
+samurai	res/samurai8bit.png
