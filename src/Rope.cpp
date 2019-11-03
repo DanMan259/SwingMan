@@ -29,7 +29,7 @@ void Rope::update() {
 	time = (SDL_GetTicks() - ropeStart)*(PI/180);
 	attached->setX(int(length*-sin(angularFreq*time+initAngle))+swingingBlock->getX());
 	attached->setY(int(length*cos(angularFreq*time+initAngle))+swingingBlock->getY());
-	attached->setXVelocity(int(length*angularFreq*(-cos(angularFreq*time+initAngle))/2.6));//2.6 is just a constant that makes it work
+	attached->setXVelocity(int(length*angularFreq*-cos(angularFreq*time+initAngle)/2.8));//2.6 is just a constant that makes it work
 
 }
 

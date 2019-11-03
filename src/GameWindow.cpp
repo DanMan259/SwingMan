@@ -175,7 +175,7 @@ void GameWindow::gameUpdate(const float &elapsedTime) {
 				player->resetSwinging();
 				}
 			}
-			cout << entity->getX() << endl;
+
 			topBlocks.erase(topBlocks.begin() + i);
 			Entity *block = new Entity(
 					topBlocks.at(topBlocks.size() - 1)->getX()
@@ -191,8 +191,9 @@ void GameWindow::gameUpdate(const float &elapsedTime) {
 			topBlocks.push_back(block);
 			continue;
 		} else {
-			cout<<player->getXVelocity()<<endl;
+
 			entity->setX(entity->getX() - player->getXVelocity());
+
 		}
 	}
 
