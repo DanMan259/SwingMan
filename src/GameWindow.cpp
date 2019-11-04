@@ -232,7 +232,5 @@ void GameWindow::gameDraw(Graphics &graphics) {
 
 	}
 
-	rope->draw(graphics);
-
 	graphics.flip();
 }
