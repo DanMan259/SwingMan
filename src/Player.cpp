@@ -31,9 +31,9 @@ Player::Player(GameWindow* game, int x, int y, SDL_Surface* sprite) : Entity(x, 
 
 
 void Player::resetSwinging() {
-	delete(rope);
 	swinging = false;
 	swingingBlock = nullptr;
+	delete(rope);
 }
 
 
@@ -87,8 +87,21 @@ void Player::gameUpdate(const float& elapstedTime) {
 		if(intersects == SDL_TRUE) {
 			dead = true;
 			game->endGame();
+			break;
 		}
 	}
+	for(Entity* topBlock : game->getTopBlocks()) {
+			SDL_Rect entityRect;
+			entityRect.x = topBlock->getX();
+			entityRect.y = topBlock->getY();
+			entityRect.w = topBlock->getWidth();
+			entityRect.h = topBlock->getHeight();
+			SDL_bool intersects = SDL_IntersectRect(&playerRect, &entityRect, &result);
+			if(intersects == SDL_TRUE) {
+				dead = true;
+				game->endGame();
+			}
+		}
 }
 
 void Player::startSwinging() {

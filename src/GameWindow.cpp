@@ -74,7 +74,7 @@ void GameWindow::gameLoop() {
 
 
 
-	Player plyr = Player(this, 200, 100, graphics.loadImage("samurai"));
+	Player plyr = Player(this, 200, 150, graphics.loadImage("samurai"));
 
 	player = &plyr;
 
@@ -231,8 +231,6 @@ void GameWindow::gameDraw(Graphics &graphics) {
 		player->gameDraw(graphics);
 
 	}
-
-	rope->draw(graphics);
 
 	graphics.flip();
 }
