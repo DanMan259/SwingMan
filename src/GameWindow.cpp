@@ -8,6 +8,8 @@
 #include "Entity.h"
 #include "Time.h"
 #include "Player.h"
+#include "Rope.h"
+#include <cmath>
 #include <vector>
 
 using namespace std;
@@ -51,18 +53,20 @@ void GameWindow::gameLoop() {
 	}
 
 	SDL_Surface *blockSurface = graphics.loadImage("block");
-	for (int i = 0; i < 21; i++) {
+	for (int i = 0; i < 25; i++) {
 		Entity *block = new Entity(i * 40, 380, blockSurface);
-		block->setY(block->getY() + 10 * (rand() % 10));
+		block->setY(block->getY() + 10 * 5);
 		lavaBlocks.push_back(block);
 	}
 
 	SDL_Surface *topBlockSurface = graphics.loadImage("big_grey_block");
-	for (int i = 0; i < 21; i++) {
+	for (int i = 0; i < 25; i++) {
 		Entity *block = new Entity(i * 40, 0, topBlockSurface);
+
 		block->setY(block->getY() - 10 * (rand() % 10));
 		topBlocks.push_back(block);
 	}
+
 //testing different top widths
 //	for (int i = 0; i < 81; i++) {
 //		Entity *block = new Entity(i * 10, -topBlockSurface->h, topBlockSurface);
@@ -78,6 +82,8 @@ void GameWindow::gameLoop() {
 
 	player = &plyr;
 
+
+
 	//Rope rpe = Rope(player);
 	//rope = &rpe;
 
@@ -90,7 +96,7 @@ void GameWindow::gameLoop() {
 
 			if (event.type == SDL_KEYDOWN) {
 				if (event.key.keysym.sym == SDLK_SPACE) {
-					if(!player->isSwinging()) {
+					if(!player->isSwinging() && !player->isFalling()) {
 						player->startSwinging();
 					}
 				}
@@ -100,7 +106,9 @@ void GameWindow::gameLoop() {
 			} else if (event.type == SDL_KEYUP) {
 
 				if (event.key.keysym.sym == SDLK_SPACE) {
+					if(!player->isFalling()) {
 					player->resetSwinging();
+					}
 				}
 
 			} else if (event.type == SDL_QUIT) {
@@ -141,13 +149,13 @@ vector<Entity*> GameWindow::getTopBlocks() const {
 void GameWindow::gameUpdate(const float &elapsedTime) {
 
 
+	if(start) {
+		player->gameUpdate(elapsedTime);
+	}
+
 	if (finished) {
 		//TTF_init();
 		return;
-	}
-
-	if(start) {
-		player->gameUpdate(elapsedTime);
 	}
 
 	for (size_t i = 0; i < lavaBlocks.size(); i++) {
@@ -160,13 +168,13 @@ void GameWindow::gameUpdate(const float &elapsedTime) {
 			if(heightIndex >= 20 || heightIndex == -1){
 				double divider = (double(rand()%2)+2);
 				for(int j = 0; j<20; j++){
-					height[j] = int(5.0*sin(j / divider)+5.0);
+					height[j] = int(5.0*sin(double(j) / divider)+5.0);
 				}
 				heightIndex = 0;
 			}
 
 
-			block->setY(block->getY() + 10 * height[heightIndex++]);
+			block->setY(block->getY() + 10 * 5);//height[heightIndex++]);
 			delete (entity);
 			lavaBlocks.push_back(block);
 			continue;
@@ -180,26 +188,21 @@ void GameWindow::gameUpdate(const float &elapsedTime) {
 	for (size_t i = 0; i < topBlocks.size(); i++) {
 		Entity *entity = topBlocks.at(i);
 
-		if (entity->getX() <= -40) {
+		if (entity->getX() <= -120) {
 			if (player->isSwinging()) {
 				if(entity == player->getRope()->getSwingingBlock()) {
 				player->resetSwinging();
 				}
 			}
-
 			topBlocks.erase(topBlocks.begin() + i);
+
 			Entity *block = new Entity(
 					topBlocks.at(topBlocks.size() - 1)->getX()
 							+ entity->getWidth(), 0, entity->getSprite());
 			block->setY(block->getY() - 10 * (10-height[heightIndex++]));
-			if(topPatternIndex >= 81) {
-				topPatternIndex = 0;
-			} else {
-				topPatternIndex++;
-			}
-			//topPatternIndex = (topPatternIndex >= 81 ? 0 : topPatternIndex++);
-			delete (entity);
 			topBlocks.push_back(block);
+			delete (entity);
+
 			continue;
 		} else {
 
@@ -211,10 +214,6 @@ void GameWindow::gameUpdate(const float &elapsedTime) {
 }
 
 void GameWindow::gameDraw(Graphics &graphics) {
-
-	if (finished) {
-		return;
-	}
 
 
 	graphics.clear();

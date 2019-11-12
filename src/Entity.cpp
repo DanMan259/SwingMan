@@ -13,6 +13,8 @@ Entity::Entity() {
 	this->height = 0;
 	this->sprite = NULL;
 	this->texture = NULL;
+	this->visible = true;
+
 };
 
 Entity::Entity(int x, int y, SDL_Surface* sprite) {
@@ -22,6 +24,7 @@ Entity::Entity(int x, int y, SDL_Surface* sprite) {
 	this->height = sprite->h;
 	this->sprite = sprite;
 	this->texture = NULL;
+	this->visible = true;
 };
 
 Entity::Entity(const Entity& other) {
@@ -31,10 +34,18 @@ Entity::Entity(const Entity& other) {
 	this->height = other.height;
 	this->sprite = other.sprite;
 	this->texture = other.texture;
+	this->visible = other.visible;
 };
 
 Entity::~Entity() {
 
+}
+
+void Entity::setSprite(SDL_Surface* sprite) {
+	this->sprite = sprite;
+	this->width = sprite->w;
+	this->height = sprite->h;
+	this->texture = NULL;
 }
 
 void Entity::setSpriteDimensions(const int &width, const int &height) {
@@ -42,14 +53,23 @@ void Entity::setSpriteDimensions(const int &width, const int &height) {
 	sprite->h = height;
 }
 
-void Entity::gameUpdate(const float& elapsedTime) const {
+void Entity::gameUpdate(const float& elapsedTime) {
 
+}
+
+void Entity::setVisible(const bool& visible) {
+	this->visible = visible;
 }
 
 void Entity::gameDraw(Graphics& graphics) {
 
+	if(!visible) {
+		return;
+	}
+
 	if(texture == NULL) {
 		texture = graphics.surfaceToTexture(sprite);
+
 	}
 
 	SDL_Rect srcRect;

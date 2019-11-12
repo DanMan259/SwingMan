@@ -19,6 +19,12 @@ Player::Player() {
 	this->rope = NULL;
 	this->swinging = false;
 	this->swingingBlock = nullptr;
+	this->velocityX = 0;
+	this->velocityY = 0;
+	this->deathStage = 0;
+	this->deathTicks = 0;
+
+
 }
 
 Player::Player(GameWindow* game, int x, int y, SDL_Surface* sprite) : Entity(x, y, sprite) {
@@ -26,6 +32,8 @@ Player::Player(GameWindow* game, int x, int y, SDL_Surface* sprite) : Entity(x, 
 	this->dead = false;
 	this->swinging = false;
 	this->swingingBlock = nullptr;
+	this->deathStage = 0;
+	this->deathTicks = 0;
 };
 
 
@@ -64,11 +72,15 @@ void Player::gameUpdate(const float& elapstedTime) {
 
 	//gravity
 	if(!dead && !swinging) {
-		move(0, player_constants::GRAVITY);
+
+		move(0, getYVelocity()/2.7 + (acc/2));
+		acc++;
+
 	}
 
 	if(swinging) {
 		rope->update();
+		acc = 0;
 	}
 	//collisions
 	SDL_Rect playerRect;
@@ -98,8 +110,10 @@ void Player::gameUpdate(const float& elapstedTime) {
 			entityRect.h = topBlock->getHeight();
 			SDL_bool intersects = SDL_IntersectRect(&playerRect, &entityRect, &result);
 			if(intersects == SDL_TRUE) {
-				dead = true;
 				game->endGame();
+				resetSwinging();
+				velocityY = 0;
+				falling = true;
 			}
 		}
 }
@@ -132,11 +146,56 @@ void Player::startSwinging() {
 	swinging = true;
 }
 
+bool Player::isFalling() const{
+	return falling;
+}
+
 
 
 void Player::gameDraw(Graphics& graphics) {
 	if(swinging) {
 		rope->draw(graphics);
+	}
+
+	if(dead) {
+
+		if(deathTicks >= 5) {
+		switch(deathStage) {
+		case 0:
+			move(-20, -20);
+			setSprite(graphics.loadImage("explosion_1"));
+			break;
+		case 1:
+			setSprite(graphics.loadImage("explosion_2"));
+			break;
+		case 2:
+			setSprite(graphics.loadImage("explosion_3"));
+			break;
+		case 3:
+			setSprite(graphics.loadImage("explosion_4"));
+			break;
+		case 4:
+			setSprite(graphics.loadImage("explosion_5"));
+			break;
+		case 5:
+			setSprite(graphics.loadImage("explosion_6"));
+			break;
+		case 6:
+			setSprite(graphics.loadImage("explosion_7"));
+			break;
+		case 7:
+			setSprite(graphics.loadImage("explosion_8"));
+			break;
+		default:
+			setVisible(false);
+			break;
+		}
+
+		deathTicks = 0;
+		deathStage++;
+		}
+
+		deathTicks++;
 	}
 
 

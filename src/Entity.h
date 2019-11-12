@@ -40,13 +40,15 @@ public:
 	 * continuous updates on the entity. These can be changes
 	 * in position, different sprite states etc.
 	 */
-	void gameUpdate(const float& elapsedTime) const;
+	void gameUpdate(const float& elapsedTime);
 
 	/*
 	 * Draws the entity onto the screen
 	 * @graphics which holds the renderer object
 	 */
 	void gameDraw(Graphics& graphics);
+
+	void setSprite(SDL_Surface* sprite);
 
 	/*
 	 * Allows for a dynamic change of the sprite width and heigh
@@ -79,6 +81,8 @@ public:
 	 * @param x is the new x coordinate
 	 */
 	void setX(int x);
+
+	void setVisible(const bool& visible);
 
 	/*
 	 * @return the entity x coordinate
@@ -131,6 +135,8 @@ private:
 	 * The entity y-coordinate
 	 */
 	int y;
+
+	bool visible;
 };
 
 	/*

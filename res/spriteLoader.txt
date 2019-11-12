@@ -5,3 +5,11 @@ player	res/player.png
 grey_block	res/grey_block.png
 big_grey_block	res/big_grey_block.png
 samurai	res/samurai8bit.png
+explosion_1	res/explosion_1.png
+explosion_2	res/explosion_2.png
+explosion_3	res/explosion_3.png
+explosion_4	res/explosion_4.png
+explosion_5	res/explosion_5.png
+explosion_6	res/explosion_6.png
+explosion_7	res/explosion_7.png
+explosion_8	res/explosion_8.png
