@@ -3,20 +3,30 @@
 #include "SDL.h"
 
 
-Obstacle::Obstacle(int x, int y, SDL_Surface* sprite, int time) : Entity(x, y, sprite) {
-	this->time = time;
+Obstacle::Obstacle() {
+	Entity();
+	this->obstacleTime = 0;
+	this->lastObstacleTime = 0;
+	this->gameTicks = 0;
+}
+Obstacle::Obstacle(int x, int y, SDL_Surface* sprite, int obstacleTime) : Entity(x, y, sprite) {
+	this->obstacleTime = obstacleTime;
 	this->lastObstacleTime = 0;
 	this->gameTicks = 0;
 };
 
-void Obstacle::gameDraw(Graphics& graphics) {
+Obstacle::~Obstacle() {
 
+}
+
+void Obstacle::gameDraw(Graphics& graphics) {
+	draw(graphics);
 }
 
 void Obstacle::gameUpdate(const float& elapsedTime) {
 	if(lastObstacleTime <= 0) {
-		//generate an obstacle
-		lastObstacleTime = time;
+		generateObstacle();
+		lastObstacleTime = obstacleTime;
 	}
 
 	gameTicks++;

@@ -13,3 +13,12 @@ explosion_5	res/explosion_5.png
 explosion_6	res/explosion_6.png
 explosion_7	res/explosion_7.png
 explosion_8	res/explosion_8.png
+geyser_1	res/1.png
+geyser_2	res/2.png
+geyser_3	res/3.png
+geyser_4	res/4.png
+geyser_5	res/5.png
+geyser_6	res/6.png
+geyser_7	res/7.png
+geyser_8	res/8.png
+geyser_9	res/9.png

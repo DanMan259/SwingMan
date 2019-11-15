@@ -6,15 +6,25 @@
 class Obstacle : public Entity {
 
 public:
-	Obstacle(int x, int y, SDL_Surface* sprite, int time);
+
+	Obstacle();
+
+	Obstacle(int x, int y, SDL_Surface* sprite, int obstacleTime);
+
+	virtual ~Obstacle();
 
 	void gameUpdate(const float& elapsedTime);
 
 	void gameDraw(Graphics& graphics);
 
+	virtual void generateObstacle() = 0;
+
+	virtual void draw(Graphics& graphics) = 0;
+
+
 private:
 
-	int time;
+	int obstacleTime;
 
 	int gameTicks;
 

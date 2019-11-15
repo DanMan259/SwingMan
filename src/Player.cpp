@@ -19,6 +19,7 @@ Player::Player() {
 	this->rope = NULL;
 	this->swinging = false;
 	this->swingingBlock = nullptr;
+	this->falling = false;
 	this->velocityX = 0;
 	this->velocityY = 0;
 	this->deathStage = 0;
@@ -31,9 +32,14 @@ Player::Player(GameWindow* game, int x, int y, SDL_Surface* sprite) : Entity(x, 
 	this->game = game;
 	this->dead = false;
 	this->swinging = false;
+	this->falling = false;
 	this->swingingBlock = nullptr;
 	this->deathStage = 0;
 	this->deathTicks = 0;
+	this->velocityX = 0;
+	this->velocityY = 0;
+	this->rope = NULL;
+
 };
 
 

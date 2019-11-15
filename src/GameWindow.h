@@ -6,6 +6,7 @@
 #include "Graphics.h"
 #include "Player.h"
 #include "Rope.h"
+#include "Obstacle.h"
 #include <set>
 
 using namespace std;
@@ -97,4 +98,6 @@ private:
 	vector<Entity*> lavaBlocks;
 
 	vector<Entity*> topBlocks;
+
+	vector<Obstacle*> obstacles;
 };

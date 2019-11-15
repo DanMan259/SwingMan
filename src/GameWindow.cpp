@@ -9,6 +9,8 @@
 #include "Time.h"
 #include "Player.h"
 #include "Rope.h"
+#include "GeyserObstacle.h"
+#include "Obstacle.h"
 #include <cmath>
 #include <vector>
 
@@ -78,9 +80,17 @@ void GameWindow::gameLoop() {
 
 
 
+	GeyserObstacle* obs = new GeyserObstacle(graphics.loadImage("player"));
+
+	obstacles.push_back(obs);
+
 	Player plyr = Player(this, 200, 150, graphics.loadImage("samurai"));
 
 	player = &plyr;
+
+	//obstacles.push_back(obs);
+
+
 
 
 
@@ -211,6 +221,12 @@ void GameWindow::gameUpdate(const float &elapsedTime) {
 		}
 	}
 
+
+	for (size_t i = 0; i < obstacles.size(); i++) {
+		Obstacle *entity = obstacles.at(i);
+		entity->gameUpdate(elapsedTime);
+	}
+
 }
 
 void GameWindow::gameDraw(Graphics &graphics) {
@@ -224,6 +240,10 @@ void GameWindow::gameDraw(Graphics &graphics) {
 
 	for (Entity *topBlock : topBlocks) {
 		topBlock->gameDraw(graphics);
+	}
+
+	for (Obstacle *obs : obstacles) {
+		obs->gameDraw(graphics);
 	}
 
 	if(start) {
