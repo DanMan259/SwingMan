@@ -6,13 +6,11 @@
 
 Obstacle::Obstacle() {
 	Entity();
-	this->did = false;
 	this->destroyed = false;
 	this->destructive = false;
 	this->hitboxOffset = 0;
 }
 Obstacle::Obstacle(int x, int y, SDL_Surface* sprite, bool destructive, int hitboxOffset) : Entity(x, y, sprite) {
-	this->did = false;
 	this->destroyed = false;
 	this->destructive = destructive;
 	this->hitboxOffset = hitboxOffset;
