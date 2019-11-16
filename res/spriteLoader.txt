@@ -4,7 +4,8 @@ brown_block	res/brown_block.png
 player	res/player.png
 grey_block	res/grey_block.png
 big_grey_block	res/big_grey_block.png
-samurai	res/samurai8bit.png
+samurai_falling	res/samurai_falling.png
+samurai_swinging	res/samurai_swinging.png
 explosion_1	res/explosion_1.png
 explosion_2	res/explosion_2.png
 explosion_3	res/explosion_3.png
@@ -21,4 +22,3 @@ geyser_5	res/5.png
 geyser_6	res/6.png
 geyser_7	res/7.png
 geyser_8	res/8.png
-geyser_9	res/9.png

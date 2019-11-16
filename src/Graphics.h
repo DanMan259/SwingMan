@@ -26,6 +26,8 @@ public:
 
 	void drawSurface(SDL_Texture* source, SDL_Rect* sourceRectangle, SDL_Rect* destinationRectangle);
 
+	void drawRect(SDL_Rect* rect) const;
+
 	void flip();
 
 	void clear();

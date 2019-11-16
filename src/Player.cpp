@@ -114,8 +114,7 @@ void Player::gameUpdate(const float& elapstedTime) {
 			continue;;
 		}
 		SDL_Rect entityRect;
-		cout << obstacle->getHitboxOffset() << endl;
-		entityRect.x = obstacle->getX() + obstacle->getHitboxOffset();
+		entityRect.x = obstacle->getX();
 		entityRect.y = obstacle->getY();
 		entityRect.w = obstacle->getWidth();
 		entityRect.h = obstacle->getHeight();
@@ -226,6 +225,14 @@ void Player::gameDraw(Graphics& graphics) {
 
 	}
 
+
+	if(!dead) {
+		if(swinging) {
+			setSprite(graphics.loadImage("samurai_swinging"));
+		} else {
+			setSprite(graphics.loadImage("samurai_falling"));
+		}
+	}
 
 	Entity::gameDraw(graphics);
 }

@@ -66,7 +66,7 @@ void GeyserObstacle::draw(Graphics& graphics) {
 			break;
 		case 7:
 			setSprite(graphics.loadImage("explosion_8"));
-			Entity::move(0, -140);
+			Entity::move(0, -115);
 			destructive = true;
 			break;
 		case 8:
@@ -96,9 +96,6 @@ void GeyserObstacle::draw(Graphics& graphics) {
 			break;
 		case 14:
 			setSprite(graphics.loadImage("geyser_8"));
-			break;
-		case 15:
-			setSprite(graphics.loadImage("geyser_9"));
 			destroy();
 			break;
 		}

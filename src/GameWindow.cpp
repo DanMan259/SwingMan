@@ -14,6 +14,7 @@
 #include <cmath>
 #include <vector>
 
+//h
 using namespace std;
 
 const int FPS = 50;
@@ -21,8 +22,6 @@ const int MAX_FRAME_TIME = 1000 / FPS;
 
 int topPattern[81];
 int topPatternIndex;
-
-
 
 int main(int argv, char **args) {
 	GameWindow game;
@@ -81,7 +80,7 @@ void GameWindow::gameLoop() {
 
 
 
-	Player plyr = Player(this, 200, 150, graphics.loadImage("samurai"));
+	Player plyr = Player(this, 200, 150, graphics.loadImage("samurai_falling"));
 
 	player = &plyr;
 
