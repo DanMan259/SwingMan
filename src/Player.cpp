@@ -77,13 +77,14 @@ void Player::setYVelocity(int value) {
 void Player::gameUpdate(const float& elapstedTime) {
 
 	//gravity
-	if(!dead && !swinging) {
 
+	if(dead) {
+		return;
+	}
+	if(!dead && !swinging) {
 		move(0, getYVelocity()/2.7 + (acc/2));
 		acc++;
-
 	}
-
 	if(swinging) {
 		rope->update();
 		acc = 0;
@@ -108,6 +109,23 @@ void Player::gameUpdate(const float& elapstedTime) {
 			break;
 		}
 	}
+	for(Obstacle* obstacle : game->getObstacles()) {
+		if(!obstacle->isDestructive()) {
+			continue;;
+		}
+		SDL_Rect entityRect;
+		cout << obstacle->getHitboxOffset() << endl;
+		entityRect.x = obstacle->getX() + obstacle->getHitboxOffset();
+		entityRect.y = obstacle->getY();
+		entityRect.w = obstacle->getWidth();
+		entityRect.h = obstacle->getHeight();
+		SDL_bool intersects = SDL_IntersectRect(&playerRect, &entityRect, &result);
+		if(intersects == SDL_TRUE) {
+			dead = true;
+			game->endGame();
+			break;
+		}
+	}
 	for(Entity* topBlock : game->getTopBlocks()) {
 			SDL_Rect entityRect;
 			entityRect.x = topBlock->getX();
@@ -116,6 +134,7 @@ void Player::gameUpdate(const float& elapstedTime) {
 			entityRect.h = topBlock->getHeight();
 			SDL_bool intersects = SDL_IntersectRect(&playerRect, &entityRect, &result);
 			if(intersects == SDL_TRUE) {
+				cout << "here" << endl;
 				game->endGame();
 				resetSwinging();
 				velocityY = 0;
@@ -159,9 +178,6 @@ bool Player::isFalling() const{
 
 
 void Player::gameDraw(Graphics& graphics) {
-	if(swinging) {
-		rope->draw(graphics);
-	}
 
 	if(dead) {
 
@@ -202,6 +218,12 @@ void Player::gameDraw(Graphics& graphics) {
 		}
 
 		deathTicks++;
+	} else {
+
+		if(swinging) {
+			rope->draw(graphics);
+		}
+
 	}
 
 

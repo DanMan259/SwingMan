@@ -1,18 +1,21 @@
 #include "Obstacle.h"
 #include "Entity.h"
 #include "SDL.h"
+#include <iostream>
 
 
 Obstacle::Obstacle() {
 	Entity();
-	this->obstacleTime = 0;
-	this->lastObstacleTime = 0;
-	this->gameTicks = 0;
+	this->did = false;
+	this->destroyed = false;
+	this->destructive = false;
+	this->hitboxOffset = 0;
 }
-Obstacle::Obstacle(int x, int y, SDL_Surface* sprite, int obstacleTime) : Entity(x, y, sprite) {
-	this->obstacleTime = obstacleTime;
-	this->lastObstacleTime = 0;
-	this->gameTicks = 0;
+Obstacle::Obstacle(int x, int y, SDL_Surface* sprite, bool destructive, int hitboxOffset) : Entity(x, y, sprite) {
+	this->did = false;
+	this->destroyed = false;
+	this->destructive = destructive;
+	this->hitboxOffset = hitboxOffset;
 };
 
 Obstacle::~Obstacle() {
@@ -23,18 +26,23 @@ void Obstacle::gameDraw(Graphics& graphics) {
 	draw(graphics);
 }
 
+void Obstacle::destroy() {
+	destroyed = true;
+}
+
+bool Obstacle::isDestroyed() const {
+	return destroyed;
+}
+
+bool Obstacle::isDestructive() const {
+	return destructive;
+}
+
+int Obstacle::getHitboxOffset() const {
+	return hitboxOffset;
+}
+
 void Obstacle::gameUpdate(const float& elapsedTime) {
-	if(lastObstacleTime <= 0) {
-		generateObstacle();
-		lastObstacleTime = obstacleTime;
-	}
-
-	gameTicks++;
-
-	if(gameTicks >= 10) {
-		lastObstacleTime--;
-		gameTicks = 0;
-	}
 
 }
 

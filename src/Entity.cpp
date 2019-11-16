@@ -20,9 +20,13 @@ Entity::Entity() {
 Entity::Entity(int x, int y, SDL_Surface* sprite) {
 	this->x = x;
 	this->y = y;
-	this->width = sprite->w;
-	this->height = sprite->h;
 	this->sprite = sprite;
+	this->width = 0;
+	this->height = 0;
+	if(sprite != NULL) {
+		this->width = sprite->w;
+		this->height = sprite->h;
+	}
 	this->texture = NULL;
 	this->visible = true;
 };
@@ -69,7 +73,6 @@ void Entity::gameDraw(Graphics& graphics) {
 
 	if(texture == NULL) {
 		texture = graphics.surfaceToTexture(sprite);
-
 	}
 
 	SDL_Rect srcRect;

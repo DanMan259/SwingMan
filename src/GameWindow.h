@@ -7,6 +7,7 @@
 #include "Player.h"
 #include "Rope.h"
 #include "Obstacle.h"
+#include "ObstacleManager.h"
 #include <set>
 
 using namespace std;
@@ -14,6 +15,7 @@ using namespace std;
 //forward declarations
 class Player;
 class Rope;
+class ObstacleManager;
 
 /*
  * This holds all of the main variables for the game. It also holds
@@ -67,6 +69,9 @@ public:
 	 */
 	void endGame();
 
+
+	void addObstacle(Obstacle* obstacle);
+
 	/*
 	 * @return top blocks
 	 */
@@ -76,6 +81,8 @@ public:
 	 * @return lava blocks
 	 */
 	vector<Entity*> getLavaBlocks() const;
+
+	vector<Obstacle*> getObstacles() const;
 
 private:
 
@@ -98,6 +105,8 @@ private:
 	vector<Entity*> lavaBlocks;
 
 	vector<Entity*> topBlocks;
+
+	ObstacleManager* obstacleManager;
 
 	vector<Obstacle*> obstacles;
 };

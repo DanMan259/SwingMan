@@ -39,6 +39,7 @@ void GameWindow::gameLoop() {
 	Graphics graphics;
 	SDL_Event event;
 	SpriteLoader spriteLoader(graphics);
+	obstacleManager = new ObstacleManager(this);
 
 	start = false;
 
@@ -79,10 +80,6 @@ void GameWindow::gameLoop() {
 //	}
 
 
-
-	GeyserObstacle* obs = new GeyserObstacle(graphics.loadImage("player"));
-
-	obstacles.push_back(obs);
 
 	Player plyr = Player(this, 200, 150, graphics.loadImage("samurai"));
 
@@ -146,6 +143,7 @@ void GameWindow::gameLoop() {
 
 void GameWindow::endGame() {
 	this->finished = true;
+	delete(obstacleManager);
 }
 
 vector<Entity*> GameWindow::getLavaBlocks() const {
@@ -154,6 +152,14 @@ vector<Entity*> GameWindow::getLavaBlocks() const {
 
 vector<Entity*> GameWindow::getTopBlocks() const {
 	return topBlocks;
+}
+
+vector<Obstacle*> GameWindow::getObstacles() const {
+	return obstacles;
+}
+
+void GameWindow::addObstacle(Obstacle* obstacle) {
+	obstacles.push_back(obstacle);
 }
 
 void GameWindow::gameUpdate(const float &elapsedTime) {
@@ -221,11 +227,22 @@ void GameWindow::gameUpdate(const float &elapsedTime) {
 		}
 	}
 
+	for (size_t i = 0; i < obstacles.size(); i++) {
+		Obstacle *entity = obstacles.at(i);
+		if(entity->isDestroyed()) {
+			obstacles.erase(obstacles.begin() + i);
+			delete(entity);
+			cout << "destroy obstacle" << endl;
+		}
+	}
 
 	for (size_t i = 0; i < obstacles.size(); i++) {
 		Obstacle *entity = obstacles.at(i);
+		entity->setX(entity->getX() - player->getXVelocity());
 		entity->gameUpdate(elapsedTime);
 	}
+
+	obstacleManager->gameUpdate();
 
 }
 
@@ -243,7 +260,9 @@ void GameWindow::gameDraw(Graphics &graphics) {
 	}
 
 	for (Obstacle *obs : obstacles) {
+		if(!obs->isDestroyed()) {
 		obs->gameDraw(graphics);
+		}
 	}
 
 	if(start) {
