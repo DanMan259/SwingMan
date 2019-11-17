@@ -6,6 +6,7 @@
 #include "Graphics.h"
 #include "Player.h"
 #include "Rope.h"
+#include "SoundMixer.h"
 #include "Obstacle.h"
 #include "ObstacleManager.h"
 #include <set>
@@ -16,6 +17,7 @@ using namespace std;
 class Player;
 class Rope;
 class ObstacleManager;
+class Obstacle;
 
 /*
  * This holds all of the main variables for the game. It also holds
@@ -77,6 +79,9 @@ public:
 	 */
 	vector<Entity*> getTopBlocks() const;
 
+
+	SoundMixer& getSoundMixer();
+
 	/*
 	 * @return lava blocks
 	 */
@@ -94,6 +99,8 @@ private:
 
 	Graphics graphics;
 
+	SoundMixer soundMixer;
+
 	Player* player;
 
 	Rope* rope;
@@ -101,6 +108,7 @@ private:
 	bool finished;
 
 	bool start;
+
 
 	vector<Entity*> lavaBlocks;
 

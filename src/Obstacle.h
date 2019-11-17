@@ -1,7 +1,12 @@
 #pragma once
 
 #include "Entity.h"
+#include "Player.h"
+#include "GameWindow.h"
 
+//forward declarations
+class GameWindow;
+class Player;
 
 /*
  * This abstract class will be extended by obstacles in the game
@@ -23,7 +28,7 @@ public:
 	 * @param destructive
 	 * @param hitBoxOffset, makes the hitbox of the obstacle feel correct
 	 */
-	Obstacle(int x, int y, SDL_Surface* sprite, bool destructive, int hitboxOffset);
+	Obstacle(GameWindow* window, int x, int y, SDL_Surface* sprite, bool destructive, int hitboxOffset);
 
 	/*
 	 * Destructor
@@ -61,6 +66,11 @@ public:
 	bool isDestructive() const;
 
 	/*
+	 * @return window
+	 */
+	GameWindow* getWindow() const;
+
+	/*
 	 * virtual method all obstacles must implement this
 	 */
 	virtual void generateObstacle() = 0;
@@ -70,6 +80,12 @@ public:
 	 */
 	virtual void draw(Graphics& graphics) = 0;
 
+
+	/*
+	 * Handles collisions
+	 */
+	virtual void handleCollision(Player* player) = 0;
+
 protected:
 
 	/*
@@ -77,6 +93,11 @@ protected:
 	 * they be destroyed
 	 */
 	bool destructive;
+
+	/*
+	 * Holds game window
+	 */
+	GameWindow* window;
 
 private:
 
@@ -89,6 +110,7 @@ private:
 	 * If the obstacle is being destroyed
 	 */
 	bool destroyed;
+
 
 
 };

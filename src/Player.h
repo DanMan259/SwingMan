@@ -34,6 +34,8 @@ public:
 
 	void setFalling(const bool& falling);
 
+	void setDead(const bool& dead);
+
 	int getXVelocity() const;
 	int getYVelocity() const;
 	void setXVelocity(int value);

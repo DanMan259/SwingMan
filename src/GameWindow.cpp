@@ -1,4 +1,5 @@
 #include <SDL.h>
+#include <SDL_Mixer.h>
 
 #include <iostream>
 
@@ -36,6 +37,7 @@ GameWindow::GameWindow() {
 void GameWindow::gameLoop() {
 	srand(time(NULL));
 	Graphics graphics;
+	this->soundMixer = SoundMixer();
 	SDL_Event event;
 	SpriteLoader spriteLoader(graphics);
 	obstacleManager = new ObstacleManager(this);
@@ -159,6 +161,10 @@ vector<Obstacle*> GameWindow::getObstacles() const {
 
 void GameWindow::addObstacle(Obstacle* obstacle) {
 	obstacles.push_back(obstacle);
+}
+
+SoundMixer& GameWindow::getSoundMixer() {
+	return soundMixer;
 }
 
 void GameWindow::gameUpdate(const float &elapsedTime) {

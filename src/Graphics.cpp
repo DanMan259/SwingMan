@@ -1,4 +1,5 @@
 #include <SDL.h>
+#include <SDL_Mixer.h>
 #include <SDL_Image.h>
 #include <iostream>
 

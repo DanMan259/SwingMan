@@ -1,6 +1,12 @@
 #include "ObstacleManager.h"
+#include "CoinObstacle.h"
 #include "GeyserObstacle.h"
+#include <iostream>
 #include "time.h"
+
+namespace obstacle_constants {
+	const int TOTAL_OBSTACLES = 2;
+}
 
 ObstacleManager::ObstacleManager(GameWindow* window) {
 	this->gameTicks = 0;
@@ -8,11 +14,16 @@ ObstacleManager::ObstacleManager(GameWindow* window) {
 	this->obstacleTime = 30;
 	this->lastObstacleTime = obstacleTime;
 	srand(time(NULL));
+
 }
 
 void ObstacleManager::gameUpdate() {
 	if(lastObstacleTime <= 0) {
 		Obstacle* obstacle = getRandomObstacle();
+		if(obstacle == nullptr) {
+			lastObstacleTime = obstacleTime;
+			return;
+		}
 		window->addObstacle(obstacle);
 		obstacle->generateObstacle();
 		lastObstacleTime = obstacleTime;
@@ -28,5 +39,16 @@ void ObstacleManager::gameUpdate() {
 
 
 Obstacle* ObstacleManager::getRandomObstacle() {
-	return new GeyserObstacle();
+	int obs = rand() % obstacle_constants::TOTAL_OBSTACLES;
+	cout << obs << endl;
+	switch(obs) {
+	case 0:
+		return new GeyserObstacle(window);
+		break;
+	case 1:
+		return new CoinObstacle(window);
+		break;
+	}
+
+	return nullptr;
 }

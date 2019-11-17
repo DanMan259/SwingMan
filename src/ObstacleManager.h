@@ -6,6 +6,7 @@
 
 //forward declarations
 class GameWindow;
+class Obstacle;
 
 /*
  * This class is responsible for generating obstacles as the

@@ -104,6 +104,7 @@ void Player::gameUpdate(const float& elapstedTime) {
 		entityRect.h = lavaBlock->getHeight();
 		SDL_bool intersects = SDL_IntersectRect(&playerRect, &entityRect, &result);
 		if(intersects == SDL_TRUE) {
+			game->getSoundMixer().playSound("explosion");
 			dead = true;
 			game->endGame();
 			break;
@@ -120,8 +121,7 @@ void Player::gameUpdate(const float& elapstedTime) {
 		entityRect.h = obstacle->getHeight();
 		SDL_bool intersects = SDL_IntersectRect(&playerRect, &entityRect, &result);
 		if(intersects == SDL_TRUE) {
-			dead = true;
-			game->endGame();
+			obstacle->handleCollision(this);
 			break;
 		}
 	}
@@ -133,7 +133,7 @@ void Player::gameUpdate(const float& elapstedTime) {
 			entityRect.h = topBlock->getHeight();
 			SDL_bool intersects = SDL_IntersectRect(&playerRect, &entityRect, &result);
 			if(intersects == SDL_TRUE) {
-				cout << "here" << endl;
+				game->getSoundMixer().playSound("top");
 				game->endGame();
 				resetSwinging();
 				velocityY = 0;
@@ -174,6 +174,9 @@ bool Player::isFalling() const{
 	return falling;
 }
 
+void Player::setDead(const bool& dead) {
+	this->dead = dead;
+}
 
 
 void Player::gameDraw(Graphics& graphics) {

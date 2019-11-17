@@ -15,7 +15,7 @@ public:
 	/*
 	 * Constructor
 	 */
-	GeyserObstacle();
+	GeyserObstacle(GameWindow* window);
 
 	/*
 	 * This method is responsible for creating lava geyser
@@ -26,6 +26,11 @@ public:
 	 * Draws the lava geyser. Also handles all of the different stages.
 	 */
 	virtual void draw(Graphics& graphics);
+
+	/*
+	 * Handles collisions
+	 */
+	virtual void handleCollision(Player* player);
 
 	/*
 	 * Destructor

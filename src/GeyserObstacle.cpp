@@ -9,7 +9,7 @@
 
 
 
-GeyserObstacle::GeyserObstacle() : Obstacle(0, 0, NULL, false, 50) {
+GeyserObstacle::GeyserObstacle(GameWindow* window) : Obstacle(window, 0, 0, NULL, false, 50) {
 	this->stage = 0;
 	this->launching = false;
 	this->ticks = 0;
@@ -24,6 +24,8 @@ GeyserObstacle::~GeyserObstacle() {
 void GeyserObstacle::generateObstacle() {
 	int x = (GameWindow::GAME_WIDTH);
 
+	window->getSoundMixer().playSound("geyser");
+
 	int y = 380;
 
 	this->launching = true;
@@ -31,7 +33,12 @@ void GeyserObstacle::generateObstacle() {
 	Entity::setX(x);
 	Entity::setY(y);
 
+}
 
+void GeyserObstacle::handleCollision(Player* player) {
+	player->setDead(true);
+	window->getSoundMixer().playSound("explosion");
+	window->endGame();
 }
 
 
