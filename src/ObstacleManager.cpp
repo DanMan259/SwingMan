@@ -11,7 +11,7 @@ namespace obstacle_constants {
 ObstacleManager::ObstacleManager(GameWindow* window) {
 	this->gameTicks = 0;
 	this->window = window;
-	this->obstacleTime = 30;
+	this->obstacleTime = 20;
 	this->lastObstacleTime = obstacleTime;
 	srand(time(NULL));
 

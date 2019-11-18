@@ -1,6 +1,7 @@
 #include <SDL.h>
 #include <SDL_Mixer.h>
 #include <SDL_Image.h>
+#include <SDL_TTF.h>
 #include <iostream>
 
 #include "Graphics.h"
@@ -36,7 +37,6 @@ SDL_Surface* Graphics::loadImage(const string &name) {
 SDL_Texture* Graphics::surfaceToTexture(SDL_Surface* &surface) {
 	return SDL_CreateTextureFromSurface(renderer, surface);
 }
-
 
 
 void Graphics::drawSurface(SDL_Texture* source, SDL_Rect* sourceRectangle, SDL_Rect* destinationRectangle) {

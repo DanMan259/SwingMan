@@ -1,5 +1,6 @@
 #include <SDL.h>
 #include <SDL_Mixer.h>
+#include <SDL_TTF.h>
 
 #include <iostream>
 
@@ -31,6 +32,10 @@ int main(int argv, char **args) {
 
 GameWindow::GameWindow() {
 	SDL_Init(SDL_INIT_EVERYTHING);
+
+	if(TTF_Init() == -1) {
+		cout << "Font's not initiliazed properly." << endl;
+	}
 	gameLoop();
 }
 
@@ -43,18 +48,6 @@ void GameWindow::gameLoop() {
 	obstacleManager = new ObstacleManager(this);
 
 	start = false;
-
-	topPatternIndex = 0;
-	for(int i = 0; i < 81; i++) {
-		int offset = 3;
-		if(i < 30) {
-			topPattern[i] = i * offset;
-		} else if(i >= 30 && i < 50) {
-			topPattern[i] = topPattern[29] + (rand() % 2);
-		} else {
-			topPattern[i] = topPattern[29] - ((i-50) * offset);
-		}
-	}
 
 	SDL_Surface *blockSurface = graphics.loadImage("block");
 	for (int i = 0; i < 25; i++) {
@@ -71,20 +64,10 @@ void GameWindow::gameLoop() {
 		topBlocks.push_back(block);
 	}
 
-//testing different top widths
-//	for (int i = 0; i < 81; i++) {
-//		Entity *block = new Entity(i * 10, -topBlockSurface->h, topBlockSurface);
-//		block->setY(block->getY() + topPattern[i]);
-//		cout << block->getY() + topPattern[i] << endl;
-//
-//		topBlocks.push_back(block);
-//	}
 
 
+	player = new Player(this, 200, 150, graphics.loadImage("samurai_falling"));
 
-	Player plyr = Player(this, 200, 150, graphics.loadImage("samurai_falling"));
-
-	player = &plyr;
 
 	//obstacles.push_back(obs);
 
@@ -110,6 +93,11 @@ void GameWindow::gameLoop() {
 				}
 				if(event.key.keysym.sym == SDLK_a) {
 					start = true;
+				}
+				if(event.key.keysym.sym == SDLK_r) {
+					if(finished) {
+						restart();
+					}
 				}
 			} else if (event.type == SDL_KEYUP) {
 
@@ -140,11 +128,48 @@ void GameWindow::gameLoop() {
 		SDL_Delay(MAX_FRAME_TIME - (end - start));
 
 	}
+
+	TTF_Quit();
+	delete(obstacleManager);
+	delete(player);
 }
 
+
+void GameWindow::restart() {
+	for(Entity* topBlock : topBlocks) {
+		delete(topBlock);
+	}
+	for(Entity* lavaBlock : lavaBlocks) {
+		delete(lavaBlock);
+	}
+	for(Entity* obstacle : obstacles) {
+		delete(obstacle);
+	}
+	this->topBlocks.clear();
+	this->lavaBlocks.clear();
+	this->obstacles.clear();
+
+	SDL_Surface *blockSurface = graphics.loadImage("block");
+	for (int i = 0; i < 25; i++) {
+		Entity *block = new Entity(i * 40, 380, blockSurface);
+		block->setY(block->getY() + 10 * 5);
+		lavaBlocks.push_back(block);
+	}
+
+	SDL_Surface *topBlockSurface = graphics.loadImage("big_grey_block");
+	for (int i = 0; i < 25; i++) {
+		Entity *block = new Entity(i * 40, 0, topBlockSurface);
+
+		block->setY(block->getY() - 10 * (rand() % 10));
+		topBlocks.push_back(block);
+	}
+
+	player = new Player(this, 200, 150, graphics.loadImage("samurai_falling"));
+	obstacleManager = new ObstacleManager(this);
+	finished = false;
+}
 void GameWindow::endGame() {
 	this->finished = true;
-	delete(obstacleManager);
 }
 
 vector<Entity*> GameWindow::getLavaBlocks() const {
@@ -170,13 +195,12 @@ SoundMixer& GameWindow::getSoundMixer() {
 void GameWindow::gameUpdate(const float &elapsedTime) {
 
 
-	if(start) {
-		player->gameUpdate(elapsedTime);
+	if (finished) {
+		return;
 	}
 
-	if (finished) {
-		//TTF_init();
-		return;
+	if(start) {
+		player->gameUpdate(elapsedTime);
 	}
 
 	for (size_t i = 0; i < lavaBlocks.size(); i++) {
@@ -253,8 +277,11 @@ void GameWindow::gameUpdate(const float &elapsedTime) {
 
 void GameWindow::gameDraw(Graphics &graphics) {
 
-
 	graphics.clear();
+
+	GraphicsText score(graphics.getRenderer(), 30, "Hello", {255, 255, 255, 255});
+
+	score.draw(100, 100);
 
 	for (Entity *lavaBlock : lavaBlocks) {
 		lavaBlock->gameDraw(graphics);

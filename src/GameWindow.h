@@ -9,6 +9,7 @@
 #include "SoundMixer.h"
 #include "Obstacle.h"
 #include "ObstacleManager.h"
+#include "GraphicsText.h"
 #include <set>
 
 using namespace std;
@@ -72,6 +73,8 @@ public:
 	void endGame();
 
 
+	void restart();
+
 	void addObstacle(Obstacle* obstacle);
 
 	/*
@@ -103,12 +106,11 @@ private:
 
 	Player* player;
 
-	Rope* rope;
-
 	bool finished;
 
 	bool start;
 
+	bool restarting;
 
 	vector<Entity*> lavaBlocks;
 

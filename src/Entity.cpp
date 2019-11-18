@@ -87,9 +87,6 @@ void Entity::gameDraw(Graphics& graphics) {
 	destRect.w = width;
 	destRect.h = height;
 	graphics.drawSurface(texture, &srcRect, &destRect);
-	SDL_SetRenderDrawColor(graphics.getRenderer(), 255, 255, 255, 255);
-	graphics.drawRect(&destRect);
-	SDL_SetRenderDrawColor(graphics.getRenderer(), 0, 0, 0, 0);
 }
 
 SDL_Surface* Entity::getSprite() const {
