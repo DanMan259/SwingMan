@@ -17,12 +17,12 @@ Rope::Rope(Player *attached, Entity* swingingBlock) {
 	this->attached = attached;
 	this->swingingBlock = swingingBlock;
 	this->vectorX = swingingBlock->getX()-attached->getX();
-	this->vectorY = swingingBlock->getY()-attached->getY();
+	this->vectorY = -swingingBlock->getY()+attached->getY();
 	this->time = 0;
 	this->length = sqrt((vectorX*vectorX)+(vectorY*vectorY));
 	this->initAngle = acos(abs(vectorY)/length);
 	this->ropeStart = SDL_GetTicks();
-	this->angularFreq = -0.1;
+	this->angularFreq = -0.1/(vectorY/400);
 }
 
 void Rope::update() {
