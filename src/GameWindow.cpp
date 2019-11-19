@@ -55,8 +55,8 @@ void GameWindow::gameLoop() {
 	this->soundMixer = SoundMixer();
 	SDL_Event event;
 	SpriteLoader spriteLoader(graphics);
-	obstacleManager = new ObstacleManager(this);
 
+	obstacleManager = nullptr;
 	start_flag = false;
 	finished = false;
 	menu_flag = false;
@@ -104,6 +104,7 @@ void GameWindow::gameLoop() {
 					}
 				}
 				if(event.key.keysym.sym == SDLK_a) {
+									obstacleManager = new ObstacleManager(this);
 									start_flag = true;
 									finished = false;
 								} else if (event.key.keysym.sym == SDLK_m) {
@@ -304,7 +305,9 @@ void GameWindow::gameUpdate(const float &elapsedTime) {
 		entity->gameUpdate(elapsedTime);
 	}
 
-	obstacleManager->gameUpdate();
+	if(obstacleManager != nullptr) {
+		obstacleManager->gameUpdate();
+	}
 
 }
 

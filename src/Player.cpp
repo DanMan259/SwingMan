@@ -81,6 +81,7 @@ void Player::gameUpdate(const float& elapstedTime) {
 	if(dead) {
 		return;
 	}
+
 	if(!dead && !swinging) {
 		move(0, getYVelocity()/2.7 + (acc/2));
 		acc++;
@@ -97,6 +98,9 @@ void Player::gameUpdate(const float& elapstedTime) {
 	playerRect.h = getHeight();
 	SDL_Rect result;
 	for(Entity* lavaBlock : game->getLavaBlocks()) {
+		if(lavaBlock == nullptr) {
+			continue;
+		}
 		SDL_Rect entityRect;
 		entityRect.x = lavaBlock->getX();
 		entityRect.y = lavaBlock->getY();
@@ -111,6 +115,9 @@ void Player::gameUpdate(const float& elapstedTime) {
 		}
 	}
 	for(Obstacle* obstacle : game->getObstacles()) {
+		if(obstacle == nullptr) {
+				continue;
+		}
 		if(!obstacle->isDestructive()) {
 			continue;;
 		}
@@ -126,16 +133,20 @@ void Player::gameUpdate(const float& elapstedTime) {
 		}
 	}
 	for(Entity* topBlock : game->getTopBlocks()) {
+			if(topBlock == nullptr) {
+				continue;
+			}
 			SDL_Rect entityRect;
 			entityRect.x = topBlock->getX();
 			entityRect.y = topBlock->getY();
 			entityRect.w = topBlock->getWidth();
 			entityRect.h = topBlock->getHeight();
 			SDL_bool intersects = SDL_IntersectRect(&playerRect, &entityRect, &result);
-			if(intersects == SDL_TRUE) {
+			if(intersects == SDL_TRUE && !falling) {
 				game->getSoundMixer().playSound("top");
-				game->endGame();
 				resetSwinging();
+				cout << "here" << endl;
+				game->endGame();
 				velocityY = 0;
 				falling = true;
 			}
