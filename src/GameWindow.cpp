@@ -1,6 +1,7 @@
 #include <SDL.h>
 #include <SDL_Mixer.h>
 #include <SDL_TTF.h>
+#include <SDL_TTF.h>
 
 #include <iostream>
 
@@ -33,9 +34,18 @@ int main(int argv, char **args) {
 GameWindow::GameWindow() {
 	SDL_Init(SDL_INIT_EVERYTHING);
 
-	if(TTF_Init() == -1) {
-		cout << "Font's not initiliazed properly." << endl;
-	}
+	if(TTF_Init()==-1) {
+			printf("TTF_Init: %s\n", TTF_GetError());
+			exit(-1);
+		}
+
+		font = TTF_OpenFont("./res/AGENCYB.TTF",64);
+		if(font == NULL)
+		{
+		   fprintf(stderr,"font open failure %s\n",SDL_GetError());
+		   exit(-1);
+		}
+
 	gameLoop();
 }
 
@@ -47,7 +57,9 @@ void GameWindow::gameLoop() {
 	SpriteLoader spriteLoader(graphics);
 	obstacleManager = new ObstacleManager(this);
 
-	start = false;
+	start_flag = false;
+	finished = false;
+	menu_flag = false;
 
 	SDL_Surface *blockSurface = graphics.loadImage("block");
 	for (int i = 0; i < 25; i++) {
@@ -92,8 +104,15 @@ void GameWindow::gameLoop() {
 					}
 				}
 				if(event.key.keysym.sym == SDLK_a) {
-					start = true;
-				}
+									start_flag = true;
+									finished = false;
+								} else if (event.key.keysym.sym == SDLK_m) {
+									if(menu_flag == false)
+										this->menu_flag = true;
+									else
+										this->menu_flag = false;
+								}
+
 				if(event.key.keysym.sym == SDLK_r) {
 					if(finished) {
 						restart();
@@ -134,6 +153,14 @@ void GameWindow::gameLoop() {
 	delete(player);
 }
 
+
+void GameWindow::setScore(const int& score) {
+	this->gamescore = score;
+}
+
+int GameWindow::getScore() const {
+	return gamescore;
+}
 
 void GameWindow::restart() {
 	for(Entity* topBlock : topBlocks) {
@@ -195,13 +222,18 @@ SoundMixer& GameWindow::getSoundMixer() {
 void GameWindow::gameUpdate(const float &elapsedTime) {
 
 
+	if(start_flag) {
+		player->gameUpdate(elapsedTime);
+	}
+
+	if (menu_flag) {
+		return;
+	}
+
 	if (finished) {
 		return;
 	}
 
-	if(start) {
-		player->gameUpdate(elapsedTime);
-	}
 
 	for (size_t i = 0; i < lavaBlocks.size(); i++) {
 		Entity *entity = lavaBlocks.at(i);
@@ -241,6 +273,7 @@ void GameWindow::gameUpdate(const float &elapsedTime) {
 			}
 			topBlocks.erase(topBlocks.begin() + i);
 
+			gamescore++;
 			Entity *block = new Entity(
 					topBlocks.at(topBlocks.size() - 1)->getX()
 							+ entity->getWidth(), 0, entity->getSprite());
@@ -277,11 +310,30 @@ void GameWindow::gameUpdate(const float &elapsedTime) {
 
 void GameWindow::gameDraw(Graphics &graphics) {
 
+	SDL_Color color;
+	SDL_Rect srcRect;
+	SDL_Rect destRect;
+
+	if(menu_flag) {
+			color = {255,255,255};
+			SDL_Surface *textSurf = TTF_RenderText_Solid(font,"(N)ew Game",color);
+			srcRect.x = 0; srcRect.y = 0; srcRect.w = 300; srcRect.h = 100;
+			destRect.x = 255; destRect.y = 120; destRect.w = 250; destRect.h = 80;
+			graphics.drawSurface(graphics.surfaceToTexture(textSurf), &srcRect, &destRect);
+
+			textSurf = TTF_RenderText_Solid(font,"(C)ontinue",color);
+			srcRect.x = 0; srcRect.y = 0; srcRect.w = 300; srcRect.h = 100;
+			destRect.x = 255; destRect.y = 220; destRect.w = 250; destRect.h = 80;
+			graphics.drawSurface(graphics.surfaceToTexture(textSurf), &srcRect, &destRect);
+			graphics.flip();
+			return;
+		}
+
 	graphics.clear();
 
-	GraphicsText score(graphics.getRenderer(), 30, "Hello", {255, 255, 255, 255});
+	GraphicsText score(graphics.getRenderer(), 30, to_string(gamescore), {255, 255, 255, 255});
 
-	score.draw(100, 100);
+	score.draw(10, GAME_HEIGHT/2);
 
 	for (Entity *lavaBlock : lavaBlocks) {
 		lavaBlock->gameDraw(graphics);
@@ -297,8 +349,36 @@ void GameWindow::gameDraw(Graphics &graphics) {
 		}
 	}
 
-	if(start) {
+	if(start_flag) {
 		player->gameDraw(graphics);
+
+	}
+
+	if(finished) {
+			color = {255,255,255};
+			SDL_Surface *endTextSurf = TTF_RenderText_Solid(font,"Game Over",color);
+			srcRect.x = 0; srcRect.y = 0; srcRect.w = 250; srcRect.h = 100;
+			destRect.x = 255; destRect.y = 120; destRect.w = 250; destRect.h = 100;
+			graphics.drawSurface(graphics.surfaceToTexture(endTextSurf), &srcRect, &destRect);
+
+
+			char output_str[40];
+			char score_str[25];
+			itoa(gamescore, score_str, 10);
+			strcpy(output_str, "Score: ");
+			strcat(output_str, score_str);
+
+			color = {188,188,188};
+			SDL_Surface *scoreTextSurf = TTF_RenderText_Solid(font,output_str,color);
+			srcRect.x = 0; srcRect.y = 0; srcRect.w = 500; srcRect.h = 70;
+			destRect.x = 285; destRect.y = 260; destRect.w = 180; destRect.h = 50;
+			graphics.drawSurface(graphics.surfaceToTexture(scoreTextSurf), &srcRect, &destRect);
+
+			color = {255,0,0};
+			SDL_Surface *againTextSurf = TTF_RenderText_Solid(font,"Press Button A to play again!",color);
+			srcRect.x = 0; srcRect.y = 0; srcRect.w = 500; srcRect.h = 100;
+			destRect.x = 225; destRect.y = 350; destRect.w = 300; destRect.h = 40;
+			graphics.drawSurface(graphics.surfaceToTexture(againTextSurf), &srcRect, &destRect);
 
 	}
 

@@ -33,6 +33,7 @@ void CoinObstacle::generateObstacle() {
 
 void CoinObstacle::handleCollision(Player* player) {
 	//increment player's score
+	window->setScore(window->getScore() + 100);
 	window->getSoundMixer().playSound("coin");
 	destroy();
 }

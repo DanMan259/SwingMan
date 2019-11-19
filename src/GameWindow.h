@@ -77,6 +77,10 @@ public:
 
 	void addObstacle(Obstacle* obstacle);
 
+	void setScore(const int& score);
+
+	int getScore() const;
+
 	/*
 	 * @return top blocks
 	 */
@@ -100,6 +104,8 @@ private:
 	int height[20];
 	int heightIndex = -1;
 
+	int gamescore = 0;
+
 	Graphics graphics;
 
 	SoundMixer soundMixer;
@@ -108,9 +114,13 @@ private:
 
 	bool finished;
 
-	bool start;
-
 	bool restarting;
+
+	TTF_Font *font;
+
+	bool start_flag;
+
+	bool menu_flag;
 
 	vector<Entity*> lavaBlocks;
 

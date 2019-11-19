@@ -9,7 +9,6 @@ GraphicsText::GraphicsText(SDL_Renderer* renderer, int fontSize, const string& t
 }
 
 void GraphicsText::draw(int x, int y) {
-	cout << "draw" << endl;
 	textRect.x = x;
 	textRect.y = y;
 	SDL_RenderCopy(renderer, textTexture, nullptr, &textRect);
