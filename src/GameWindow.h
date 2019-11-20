@@ -23,7 +23,7 @@ class GraphicsText;
 
 
 enum GameState {
-	START, IN_GAME, END, PAUSE
+	START, CONTROLS, IN_GAME, END, PAUSE
 };
 
 /*
@@ -154,6 +154,11 @@ private:
 
 	GraphicsText* controlsGameText;
 
+	GraphicsText* controlsBackText;
+
+	GraphicsText* controlsSwingText;
+
+	GraphicsText* controlsPauseText;
 
 	GraphicsText* score;
 };

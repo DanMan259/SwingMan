@@ -56,6 +56,7 @@ void GameWindow::gameLoop() {
 	SDL_Event event;
 	SpriteLoader spriteLoader(graphics);
 
+
 	obstacleManager = nullptr;
 	start_flag = false;
 	finished = false;
@@ -64,6 +65,9 @@ void GameWindow::gameLoop() {
 
 	restarting = false;
 
+	controlsBackText = nullptr;
+	controlsSwingText = nullptr;
+	controlsPauseText = nullptr;
 	startGameText = nullptr;
 	pauseContinueText = nullptr;
 	pauseNewGameText = nullptr;
@@ -114,6 +118,9 @@ void GameWindow::gameLoop() {
 						obstacleManager = new ObstacleManager(this);
 						state = GameState::IN_GAME;
 					}
+					if(state == GameState::CONTROLS) {
+						state = GameState::START;
+					}
 				}
 
 				if (event.key.keysym.sym == SDLK_m) {
@@ -123,6 +130,9 @@ void GameWindow::gameLoop() {
 				}
 
 				if(event.key.keysym.sym == SDLK_c) {
+					if(state == GameState::START) {
+						state = GameState::CONTROLS;
+					}
 					if(state == GameState::PAUSE) {
 						state = GameState::IN_GAME;
 					}
@@ -170,6 +180,10 @@ void GameWindow::gameLoop() {
 	}
 
 	TTF_Quit();
+
+	delete(controlsBackText);
+	delete(controlsSwingText);
+	delete(controlsPauseText);
 	delete(obstacleManager);
 	delete(player);
 	delete(pauseContinueText);
@@ -204,11 +218,14 @@ void GameWindow::restart(Graphics& graphics) {
 		obstacle->destroy();
 	}
 
+
+	delete(controlsBackText);
+	delete(controlsSwingText);
+	delete(controlsPauseText);
 	delete(player);
 	delete(obstacleManager);
 	delete(pauseContinueText);
 	delete(pauseNewGameText);
-
 	delete(startGameText);
 	delete(titleGameText);
 	delete(endGameText);
@@ -217,6 +234,9 @@ void GameWindow::restart(Graphics& graphics) {
 	delete(controlsGameText);
 	delete(score);
 
+	controlsBackText = nullptr;
+	controlsSwingText = nullptr;
+	controlsPauseText = nullptr;
 	startGameText = nullptr;
 	pauseContinueText = nullptr;
 	pauseNewGameText = nullptr;
@@ -227,11 +247,11 @@ void GameWindow::restart(Graphics& graphics) {
 	titleGameText = nullptr;
 	score = nullptr;
 
-
-	gamescore = 0;
 	player = new Player(this, 200, 150, graphics.loadImage("samurai_falling"));
 	obstacleManager = new ObstacleManager(this);
 	state = GameState::IN_GAME;
+
+	gamescore = 0;
 
 	restarting = false;
 }
@@ -268,6 +288,10 @@ void GameWindow::gameUpdate(const float &elapsedTime) {
 
 	switch(state) {
 	case GameState::PAUSE:
+	{
+		break;
+	}
+	case GameState::CONTROLS:
 	{
 		break;
 	}
@@ -388,7 +412,7 @@ void GameWindow::gameDraw(Graphics &graphics) {
 			}
 		}
 
-		if(state != GameState::START) {
+		if(state != GameState::START && state != GameState::CONTROLS) {
 			player->gameDraw(graphics);
 		}
 
@@ -413,6 +437,25 @@ void GameWindow::gameDraw(Graphics &graphics) {
 		controlsGameText->draw(250, 340);
 		break;
 	}
+	case CONTROLS:
+	{
+		if(this->controlsSwingText == nullptr) {
+			controlsSwingText = new GraphicsText(graphics.getRenderer(), 30, "res/AGENCYB.TTF", "To Swing Hold Spacebar And To Let Go Release Spacebar", {255,255,255,255});
+
+		}
+		if(this->controlsPauseText == nullptr) {
+			controlsPauseText = new GraphicsText(graphics.getRenderer(), 30, "res/AGENCYB.TTF", "To Open Up Pause Menu Press (M)", {255, 255, 255, 255});
+		}
+
+		if(this->controlsBackText == nullptr) {
+			controlsBackText = new GraphicsText(graphics.getRenderer(), 30, "res/AGENCYB.TTF", "Press (S) To Go Back To Start Screen", {255, 0, 0});
+		}
+
+		controlsSwingText->draw(120, 200);
+		controlsPauseText->draw(220, 250);
+		controlsBackText->draw(200, 350);
+	}
+	break;
 	case END:
 	{
 
