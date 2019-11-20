@@ -24,6 +24,7 @@ Player::Player() {
 	this->velocityY = 0;
 	this->deathStage = 0;
 	this->deathTicks = 0;
+	this->finishedDeath = false;
 
 
 }
@@ -39,6 +40,8 @@ Player::Player(GameWindow* game, int x, int y, SDL_Surface* sprite) : Entity(x, 
 	this->velocityX = 0;
 	this->velocityY = 0;
 	this->rope = NULL;
+	this->finishedDeath = false;
+
 
 };
 
@@ -197,6 +200,10 @@ void Player::setDead(const bool& dead) {
 
 void Player::gameDraw(Graphics& graphics) {
 
+	if(finishedDeath) {
+		return;
+	}
+
 	if(dead) {
 
 		if(deathTicks >= 5) {
@@ -227,7 +234,7 @@ void Player::gameDraw(Graphics& graphics) {
 			setSprite(graphics.loadImage("explosion_8"));
 			break;
 		default:
-			setVisible(false);
+			finishedDeath = true;
 			break;
 		}
 

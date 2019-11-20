@@ -1,8 +1,8 @@
 #include "GraphicsText.h"
 
-GraphicsText::GraphicsText(SDL_Renderer* renderer, int fontSize, const string& text, const SDL_Color& color) {
+GraphicsText::GraphicsText(SDL_Renderer* renderer, int fontSize, const string& font, const string& text, const SDL_Color& color) {
 	this->renderer = renderer;
-	this->textTexture = this->loadFont(renderer, fontSize, text, color);
+	this->textTexture = this->loadFont(renderer, fontSize, font, text, color);
 	this->textRect.w = 30;
 	this->textRect.h = 30;
 	SDL_QueryTexture(this->textTexture, nullptr, nullptr, &this->textRect.w, &this->textRect.h);
@@ -14,8 +14,8 @@ void GraphicsText::draw(int x, int y) {
 	SDL_RenderCopy(renderer, textTexture, nullptr, &textRect);
 }
 
-SDL_Texture* GraphicsText::loadFont(SDL_Renderer* renderer, int fontSize, const string& message, const SDL_Color &color) {
-	TTF_Font* font = TTF_OpenFont("res/Arial.ttf", fontSize);
+SDL_Texture* GraphicsText::loadFont(SDL_Renderer* renderer, int fontSize, const string& f, const string& message, const SDL_Color &color) {
+	TTF_Font* font = TTF_OpenFont(f.c_str(), fontSize);
 	if(font == nullptr) {
 		cout << "Unable to load font." << endl;
 		return NULL;
