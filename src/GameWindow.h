@@ -19,6 +19,12 @@ class Player;
 class Rope;
 class ObstacleManager;
 class Obstacle;
+class GraphicsText;
+
+
+enum GameState {
+	START, CONTROLS, IN_GAME, END, PAUSE
+};
 
 /*
  * This holds all of the main variables for the game. It also holds
@@ -73,7 +79,7 @@ public:
 	void endGame();
 
 
-	void restart();
+	void restart(Graphics& graphics);
 
 	void addObstacle(Obstacle* obstacle);
 
@@ -122,6 +128,8 @@ private:
 
 	bool menu_flag;
 
+	GameState state;
+
 	vector<Entity*> lavaBlocks;
 
 	vector<Entity*> topBlocks;
@@ -129,4 +137,28 @@ private:
 	ObstacleManager* obstacleManager;
 
 	vector<Obstacle*> obstacles;
+
+	GraphicsText* pauseContinueText;
+
+	GraphicsText* pauseNewGameText;
+
+	GraphicsText* endNewGameText;
+
+	GraphicsText* endScoreGameText;
+
+	GraphicsText* endGameText;
+
+	GraphicsText* titleGameText;
+
+	GraphicsText* startGameText;
+
+	GraphicsText* controlsGameText;
+
+	GraphicsText* controlsBackText;
+
+	GraphicsText* controlsSwingText;
+
+	GraphicsText* controlsPauseText;
+
+	GraphicsText* score;
 };

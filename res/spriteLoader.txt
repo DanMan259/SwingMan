@@ -26,3 +26,5 @@ coin_1	res/coin1.png
 coin_2	res/coin2.png
 coin_3	res/coin3.png
 coin_4	res/coin4.png
+bat1	res/bat1.png
+bat2	res/bat2.png

@@ -24,6 +24,7 @@ Player::Player() {
 	this->velocityY = 0;
 	this->deathStage = 0;
 	this->deathTicks = 0;
+	this->finishedDeath = false;
 
 
 }
@@ -39,6 +40,8 @@ Player::Player(GameWindow* game, int x, int y, SDL_Surface* sprite) : Entity(x, 
 	this->velocityX = 0;
 	this->velocityY = 0;
 	this->rope = NULL;
+	this->finishedDeath = false;
+
 
 };
 
@@ -48,6 +51,7 @@ void Player::resetSwinging() {
 	swinging = false;
 	swingingBlock = nullptr;
 	delete(rope);
+	rope = nullptr;
 }
 
 
@@ -119,7 +123,7 @@ void Player::gameUpdate(const float& elapstedTime) {
 				continue;
 		}
 		if(!obstacle->isDestructive()) {
-			continue;;
+			continue;
 		}
 		SDL_Rect entityRect;
 		entityRect.x = obstacle->getX();
@@ -145,12 +149,16 @@ void Player::gameUpdate(const float& elapstedTime) {
 			if(intersects == SDL_TRUE && !falling) {
 				game->getSoundMixer().playSound("top");
 				resetSwinging();
-				cout << "here" << endl;
-				game->endGame();
 				velocityY = 0;
+				game->endGame();
 				falling = true;
+				break;
 			}
 		}
+}
+
+void Player::setFalling(const bool& falling) {
+	this->falling = falling;
 }
 
 void Player::startSwinging() {
@@ -192,6 +200,10 @@ void Player::setDead(const bool& dead) {
 
 void Player::gameDraw(Graphics& graphics) {
 
+	if(finishedDeath) {
+		return;
+	}
+
 	if(dead) {
 
 		if(deathTicks >= 5) {
@@ -222,7 +234,7 @@ void Player::gameDraw(Graphics& graphics) {
 			setSprite(graphics.loadImage("explosion_8"));
 			break;
 		default:
-			setVisible(false);
+			finishedDeath = true;
 			break;
 		}
 

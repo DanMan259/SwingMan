@@ -55,6 +55,8 @@ private:
 
 	int deathStage;
 
+	bool finishedDeath;
+
 	int deathTicks;
 
 	bool swinging;

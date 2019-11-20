@@ -1,11 +1,12 @@
 #include "ObstacleManager.h"
 #include "CoinObstacle.h"
+#include "BatObstacle.h"
 #include "GeyserObstacle.h"
 #include <iostream>
 #include "time.h"
 
 namespace obstacle_constants {
-	const int TOTAL_OBSTACLES = 2;
+	const int TOTAL_OBSTACLES = 3;
 }
 
 ObstacleManager::ObstacleManager(GameWindow* window) {
@@ -47,6 +48,9 @@ Obstacle* ObstacleManager::getRandomObstacle() {
 		break;
 	case 1:
 		return new CoinObstacle(window);
+		break;
+	case 2:
+		return new BatObstacle(window);
 		break;
 	}
 
