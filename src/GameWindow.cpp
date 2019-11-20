@@ -61,11 +61,18 @@ void GameWindow::gameLoop() {
 	finished = false;
 	menu_flag = false;
 
+
+	restarting = false;
+
+	startGameText = nullptr;
 	pauseContinueText = nullptr;
 	pauseNewGameText = nullptr;
 	endGameText = nullptr;
+	titleGameText = nullptr;
 	endNewGameText = nullptr;
 	endScoreGameText = nullptr;
+	controlsGameText = nullptr;
+	score = nullptr;
 
 	SDL_Surface *blockSurface = graphics.loadImage("block");
 	for (int i = 0; i < 25; i++) {
@@ -75,7 +82,7 @@ void GameWindow::gameLoop() {
 	}
 
 	SDL_Surface *topBlockSurface = graphics.loadImage("big_grey_block");
-	for (int i = 0; i < 25; i++) {
+	for (int i = 0; i < 28; i++) {
 		Entity *block = new Entity(i * 40, 0, topBlockSurface);
 
 		block->setY(block->getY() - 10 * (rand() % 10));
@@ -102,18 +109,34 @@ void GameWindow::gameLoop() {
 						player->startSwinging();
 					}
 				}
-				if(event.key.keysym.sym == SDLK_a) {
-					obstacleManager = new ObstacleManager(this);
-					state = GameState::IN_GAME;
+				if(event.key.keysym.sym == SDLK_s) {
+					if(state == GameState::START) {
+						obstacleManager = new ObstacleManager(this);
+						state = GameState::IN_GAME;
+					}
 				}
 
 				if (event.key.keysym.sym == SDLK_m) {
-					state = (state == GameState::PAUSE ? GameState::IN_GAME : GameState::PAUSE);
+					if(state == GameState::IN_GAME) {
+						state = GameState::PAUSE;
+					}
 				}
 
-				if(event.key.keysym.sym == SDLK_r) {
-					if(finished) {
-						restart();
+				if(event.key.keysym.sym == SDLK_c) {
+					if(state == GameState::PAUSE) {
+						state = GameState::IN_GAME;
+					}
+				}
+
+				if(event.key.keysym.sym == SDLK_a) {
+					if(state == GameState::END) {
+						restart(graphics);
+					}
+				}
+
+				if(event.key.keysym.sym == SDLK_n) {
+					if(state == GameState::PAUSE) {
+						restart(graphics);
 					}
 				}
 			} else if (event.type == SDL_KEYUP) {
@@ -151,10 +174,13 @@ void GameWindow::gameLoop() {
 	delete(player);
 	delete(pauseContinueText);
 	delete(pauseNewGameText);
-
+	delete(startGameText);
 	delete(endGameText);
 	delete(endNewGameText);
 	delete(endScoreGameText);
+	delete(controlsGameText);
+	delete(titleGameText);
+	delete(score);
 	player = nullptr;
 	obstacleManager = nullptr;
 }
@@ -168,41 +194,46 @@ int GameWindow::getScore() const {
 	return gamescore;
 }
 
-void GameWindow::restart() {
-	for(Entity* topBlock : topBlocks) {
-		delete(topBlock);
-		topBlock = nullptr;
-	}
-	for(Entity* lavaBlock : lavaBlocks) {
-		delete(lavaBlock);
-		lavaBlock = nullptr;
-	}
-	for(Entity* obstacle : obstacles) {
-		delete(obstacle);
-		obstacle = nullptr;
-	}
-	this->topBlocks.clear();
-	this->lavaBlocks.clear();
-	this->obstacles.clear();
+void GameWindow::restart(Graphics& graphics) {
 
-	SDL_Surface *blockSurface = graphics.loadImage("block");
-	for (int i = 0; i < 25; i++) {
-		Entity *block = new Entity(i * 40, 380, blockSurface);
-		block->setY(block->getY() + 10 * 5);
-		lavaBlocks.push_back(block);
+
+	restarting = true;
+
+
+	for(Obstacle* obstacle : this->obstacles) {
+		obstacle->destroy();
 	}
 
-	SDL_Surface *topBlockSurface = graphics.loadImage("big_grey_block");
-	for (int i = 0; i < 25; i++) {
-		Entity *block = new Entity(i * 40, 0, topBlockSurface);
+	delete(player);
+	delete(obstacleManager);
+	delete(pauseContinueText);
+	delete(pauseNewGameText);
 
-		block->setY(block->getY() - 10 * (rand() % 10));
-		topBlocks.push_back(block);
-	}
+	delete(startGameText);
+	delete(titleGameText);
+	delete(endGameText);
+	delete(endNewGameText);
+	delete(endScoreGameText);
+	delete(controlsGameText);
+	delete(score);
 
+	startGameText = nullptr;
+	pauseContinueText = nullptr;
+	pauseNewGameText = nullptr;
+	endGameText = nullptr;
+	endNewGameText = nullptr;
+	endScoreGameText = nullptr;
+	controlsGameText = nullptr;
+	titleGameText = nullptr;
+	score = nullptr;
+
+
+	gamescore = 0;
 	player = new Player(this, 200, 150, graphics.loadImage("samurai_falling"));
 	obstacleManager = new ObstacleManager(this);
-	finished = false;
+	state = GameState::IN_GAME;
+
+	restarting = false;
 }
 void GameWindow::endGame() {
 	state = GameState::END;
@@ -230,6 +261,11 @@ SoundMixer& GameWindow::getSoundMixer() {
 
 void GameWindow::gameUpdate(const float &elapsedTime) {
 
+	if(restarting) {
+		return;
+	}
+
+
 	switch(state) {
 	case GameState::PAUSE:
 	{
@@ -237,7 +273,7 @@ void GameWindow::gameUpdate(const float &elapsedTime) {
 	}
 	case GameState::END:
 	{
-		//player->gameUpdate(elapsedTime);
+		player->gameUpdate(elapsedTime);
 		break;
 	}
 	case GameState::START:
@@ -246,7 +282,6 @@ void GameWindow::gameUpdate(const float &elapsedTime) {
 	}
 	case GameState::IN_GAME:
 	{
-		cout << "a" << endl;
 			player->gameUpdate(elapsedTime);
 
 			for (size_t i = 0; i < lavaBlocks.size(); i++) {
@@ -280,7 +315,7 @@ void GameWindow::gameUpdate(const float &elapsedTime) {
 			for (size_t i = 0; i < topBlocks.size(); i++) {
 				Entity *entity = topBlocks.at(i);
 
-				if (entity->getX() <= -120) {
+				if (entity->getX() <= -240) {
 					if (player->isSwinging()) {
 						if(entity == player->getRope()->getSwingingBlock()) {
 						player->resetSwinging();
@@ -332,11 +367,50 @@ void GameWindow::gameUpdate(const float &elapsedTime) {
 
 void GameWindow::gameDraw(Graphics &graphics) {
 
+	if(restarting) {
+		return;
+	}
+
+
 	graphics.clear();
+
+	for (Entity *lavaBlock : lavaBlocks) {
+			lavaBlock->gameDraw(graphics);
+		}
+
+		for (Entity *topBlock : topBlocks) {
+			topBlock->gameDraw(graphics);
+		}
+
+		for (Obstacle *obs : obstacles) {
+			if(!obs->isDestroyed()) {
+			obs->gameDraw(graphics);
+			}
+		}
+
+		if(state != GameState::START) {
+			player->gameDraw(graphics);
+		}
 
 	switch(state) {
 	case START:
 	{
+
+		if(this->titleGameText == nullptr) {
+			titleGameText = new GraphicsText(graphics.getRenderer(), 60, "res/AGENCYB.TTF", "SWING MAN!", {255,0,0});
+
+		}
+		if(this->startGameText == nullptr) {
+			startGameText = new GraphicsText(graphics.getRenderer(), 50, "res/AGENCYB.TTF", "Press (S) To Start Game!", {255, 255, 255, 255});
+		}
+
+		if(this->controlsGameText == nullptr) {
+			controlsGameText = new GraphicsText(graphics.getRenderer(), 30, "res/AGENCYB.TTF", "Press (C) For Game Controls", {255, 255, 255, 255});
+		}
+
+		titleGameText->draw(260, 150);
+		startGameText->draw(180, 260);
+		controlsGameText->draw(250, 340);
 		break;
 	}
 	case END:
@@ -381,6 +455,10 @@ void GameWindow::gameDraw(Graphics &graphics) {
 	}
 	case PAUSE:
 	{
+		if(this->score == nullptr) {
+			score = new GraphicsText(graphics.getRenderer(), 30, "res/Arial.ttf", to_string(gamescore), {255, 255, 255, 255});
+		}
+
 		if(this->pauseNewGameText == nullptr) {
 			SDL_Color color = {255,255,255};
 			pauseNewGameText = new GraphicsText(graphics.getRenderer(), 70, "res/AGENCYB.TTF", "(N)ew Game", color);
@@ -391,6 +469,7 @@ void GameWindow::gameDraw(Graphics &graphics) {
 			pauseContinueText = new GraphicsText(graphics.getRenderer(), 70, "res/AGENCYB.TTF", "(C)ontinue Game", color);
 		}
 
+		score->draw(10, GAME_HEIGHT/2);
 		pauseNewGameText->draw(255, 140);
 		pauseContinueText->draw(190, 240);
 		break;
@@ -398,21 +477,6 @@ void GameWindow::gameDraw(Graphics &graphics) {
 	}
 
 
-	for (Entity *lavaBlock : lavaBlocks) {
-		lavaBlock->gameDraw(graphics);
-	}
-
-	for (Entity *topBlock : topBlocks) {
-		topBlock->gameDraw(graphics);
-	}
-
-	for (Obstacle *obs : obstacles) {
-		if(!obs->isDestroyed()) {
-		obs->gameDraw(graphics);
-		}
-	}
-
-	player->gameDraw(graphics);
 
 	graphics.flip();
 

@@ -18,6 +18,10 @@ void BatObstacle::generateObstacle() {
 
 	int y = 120 + (rand() % (GameWindow::GAME_HEIGHT / 8));
 
+	window->getSoundMixer().playSound("bat");
+
+
+
 	this->launching = true;
 
 	Entity::setX(x);
@@ -36,6 +40,8 @@ void BatObstacle::handleCollision(Player* player) {
 }
 
 void BatObstacle::draw(Graphics& graphics) {
+
+
 
 	if(batTicks >= 10) {
 		if(flyingSprite) {

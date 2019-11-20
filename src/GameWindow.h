@@ -79,7 +79,7 @@ public:
 	void endGame();
 
 
-	void restart();
+	void restart(Graphics& graphics);
 
 	void addObstacle(Obstacle* obstacle);
 
@@ -147,4 +147,13 @@ private:
 	GraphicsText* endScoreGameText;
 
 	GraphicsText* endGameText;
+
+	GraphicsText* titleGameText;
+
+	GraphicsText* startGameText;
+
+	GraphicsText* controlsGameText;
+
+
+	GraphicsText* score;
 };
