@@ -20,6 +20,11 @@ class Rope;
 class ObstacleManager;
 class Obstacle;
 
+
+enum GameState {
+	START, END, PAUSE;
+}
+
 /*
  * This holds all of the main variables for the game. It also holds
  * the game loop. It is used for the initial startup of the sdl engine

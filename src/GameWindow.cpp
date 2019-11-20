@@ -87,6 +87,7 @@ void GameWindow::gameLoop() {
 
 
 
+
 	//Rope rpe = Rope(player);
 	//rope = &rpe;
 
@@ -152,6 +153,8 @@ void GameWindow::gameLoop() {
 	TTF_Quit();
 	delete(obstacleManager);
 	delete(player);
+	player = nullptr;
+	obstacleManager = nullptr;
 }
 
 
@@ -166,12 +169,15 @@ int GameWindow::getScore() const {
 void GameWindow::restart() {
 	for(Entity* topBlock : topBlocks) {
 		delete(topBlock);
+		topBlock = nullptr;
 	}
 	for(Entity* lavaBlock : lavaBlocks) {
 		delete(lavaBlock);
+		lavaBlock = nullptr;
 	}
 	for(Entity* obstacle : obstacles) {
 		delete(obstacle);
+		obstacle = nullptr;
 	}
 	this->topBlocks.clear();
 	this->lavaBlocks.clear();
@@ -254,6 +260,7 @@ void GameWindow::gameUpdate(const float &elapsedTime) {
 
 			block->setY(block->getY() + 10 * 5);//height[heightIndex++]);
 			delete (entity);
+			entity = nullptr;
 			lavaBlocks.push_back(block);
 			continue;
 		} else {
@@ -281,7 +288,7 @@ void GameWindow::gameUpdate(const float &elapsedTime) {
 			block->setY(block->getY() - 10 * (10-height[heightIndex++]));
 			topBlocks.push_back(block);
 			delete (entity);
-
+			entity = nullptr;
 			continue;
 		} else {
 
@@ -295,6 +302,7 @@ void GameWindow::gameUpdate(const float &elapsedTime) {
 		if(entity->isDestroyed()) {
 			obstacles.erase(obstacles.begin() + i);
 			delete(entity);
+			entity = nullptr;
 			cout << "destroy obstacle" << endl;
 		}
 	}
@@ -332,7 +340,11 @@ void GameWindow::gameDraw(Graphics &graphics) {
 			return;
 		}
 
+    SDL_SetRenderDrawColor(graphics.getRenderer(), 255, 0, 0, 255);
+
+
 	graphics.clear();
+
 
 	GraphicsText score(graphics.getRenderer(), 30, to_string(gamescore), {255, 255, 255, 255});
 

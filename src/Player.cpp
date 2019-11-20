@@ -48,6 +48,7 @@ void Player::resetSwinging() {
 	swinging = false;
 	swingingBlock = nullptr;
 	delete(rope);
+	rope = nullptr;
 }
 
 
@@ -119,7 +120,7 @@ void Player::gameUpdate(const float& elapstedTime) {
 				continue;
 		}
 		if(!obstacle->isDestructive()) {
-			continue;;
+			continue;
 		}
 		SDL_Rect entityRect;
 		entityRect.x = obstacle->getX();
@@ -145,12 +146,16 @@ void Player::gameUpdate(const float& elapstedTime) {
 			if(intersects == SDL_TRUE && !falling) {
 				game->getSoundMixer().playSound("top");
 				resetSwinging();
-				cout << "here" << endl;
-				game->endGame();
 				velocityY = 0;
+				game->endGame();
 				falling = true;
+				break;
 			}
 		}
+}
+
+void Player::setFalling(const bool& falling) {
+	this->falling = falling;
 }
 
 void Player::startSwinging() {
