@@ -484,9 +484,9 @@ void GameWindow::gameDraw(Graphics &graphics) {
 			endNewGameText = new GraphicsText(graphics.getRenderer(), 40, "res/AGENCYB.TTF", "Press A to Play Again!", color);
 		}
 
-		endScoreGameText->draw(290, 240);
+		endScoreGameText->draw(295, 240);
 		endNewGameText->draw(240, 330);
-		endGameText->draw(255, 120);
+		endGameText->draw(260, 120);
 
 		break;
 	}
