@@ -2,12 +2,13 @@
 #include "CoinObstacle.h"
 #include "BatObstacle.h"
 #include "GeyserObstacle.h"
+#include "ZoomPowerUp.h"
 #include "InvincibilityPowerUp.h"
 #include <iostream>
 #include "time.h"
 
 namespace obstacle_constants {
-	const int TOTAL_OBSTACLES = 4;
+	const int TOTAL_OBSTACLES = 5;
 }
 
 ObstacleManager::ObstacleManager(GameWindow* window) {
@@ -33,7 +34,7 @@ void ObstacleManager::gameUpdate() {
 
 	gameTicks++;
 
-	if(gameTicks >= 10) {
+	if(gameTicks >= 5) {
 		lastObstacleTime--;
 		gameTicks = 0;
 	}
@@ -55,6 +56,8 @@ Obstacle* ObstacleManager::getRandomObstacle() {
 		break;
 	case 3:
 		return new InvincibilityPowerUp(window);
+	case 4:
+		return new ZoomPowerUp(window);
 	}
 
 	return nullptr;

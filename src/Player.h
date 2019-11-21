@@ -45,6 +45,8 @@ public:
 
 	void setMortality(const bool& value);
 	bool isMortal();
+	bool isZoom();
+	void setZoom(const bool& value);
 
 private:
 	GameWindow* game;
@@ -54,6 +56,8 @@ private:
 	Rope* rope;
 
 	bool dead;
+
+	bool zoom = false;
 
 	bool mortal = true;
 

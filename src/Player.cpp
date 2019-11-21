@@ -90,13 +90,18 @@ void Player::gameUpdate(const float& elapstedTime) {
 	}
 
 	if(!dead && !swinging) {
-		move(0, getYVelocity()/2.7 + (acc/2));
-		acc++;
+		if(isZoom()==false){
+			move(0, getYVelocity()/2.7 + (acc/2));
+			acc++;
+		}
 	}
-	if(swinging) {
-		rope->update();
-		acc = 0;
+	if(isZoom()==false){
+		if(swinging) {
+			rope->update();
+			acc = 0;
+		}
 	}
+
 	//collisions
 	SDL_Rect playerRect;
 	playerRect.x = getX();
@@ -217,6 +222,14 @@ void Player::setInvTicks(int value){
 	this->invincibilityTicks = value;
 }
 
+bool Player::isZoom(){
+	return zoom;
+}
+
+void Player::setZoom(const bool& value){
+	this->zoom = value;
+}
+
 void Player::gameDraw(Graphics& graphics) {
 
 	if(finishedDeath) {
@@ -273,9 +286,16 @@ void Player::gameDraw(Graphics& graphics) {
 		if(invincibilityTicks>400){
 			setMortality(true);
 			invincibilityTicks=0;
-			cout<<"DONE-----------"<<endl;
+			if(isZoom() == true){
+				this->setXVelocity(this->getXVelocity()/3);
+				setZoom(false);
+				setMortality(false);
+				invincibilityTicks=350;
+			}
+
 		}
 		else{
+
 			invincibilityTicks++;
 		}
 	}
@@ -292,7 +312,10 @@ void Player::gameDraw(Graphics& graphics) {
 			if(isMortal())
 				setSprite(graphics.loadImage("samurai_falling"));
 			else
-				setSprite(graphics.loadImage("invincible_falling"));
+				if(isZoom())
+					setSprite(graphics.loadImage("samurai_zooming"));
+				else
+					setSprite(graphics.loadImage("invincible_falling"));
 
 		}
 	}
