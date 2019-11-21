@@ -42,23 +42,20 @@ void ObstacleManager::gameUpdate() {
 
 
 Obstacle* ObstacleManager::getRandomObstacle() {
-	int obs = rand() % obstacle_constants::TOTAL_OBSTACLES;
+	int obs = rand() % (obstacle_constants::TOTAL_OBSTACLES * 10);
 	cout << obs << endl;
-	switch(obs) {
-	case 0:
+
+	if(obs <20)
 		return new GeyserObstacle(window);
-		break;
-	case 1:
+	else if(obs<25 && obs>20)
 		return new CoinObstacle(window);
-		break;
-	case 2:
+	else if(obs<40 && obs>25)
 		return new BatObstacle(window);
-		break;
-	case 3:
+	else if(obs<45 && obs>40)
 		return new InvincibilityPowerUp(window);
-	case 4:
+	else if(obs<50 && obs>45)
 		return new ZoomPowerUp(window);
-	}
+
 
 	return nullptr;
 }

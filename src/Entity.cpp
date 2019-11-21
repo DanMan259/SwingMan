@@ -43,7 +43,7 @@ Entity::Entity(const Entity& other) {
 };
 
 Entity::~Entity() {
-	cout << "here" << endl;
+	//cout << "here" << endl;
 	SDL_DestroyTexture(texture);
 }
 

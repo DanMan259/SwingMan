@@ -23,7 +23,7 @@ Rope::Rope(Player *attached, Entity* swingingBlock) {
 	this->length = sqrt((vectorX*vectorX)+(vectorY*vectorY));
 	this->initAngle = acos(abs(vectorY)/length);
 	this->ropeStart = SDL_GetTicks();
-	this->angularFreq = -0.1*((300/vectorY));
+	this->angularFreq = -0.1*((350/vectorY));
 
 }
 

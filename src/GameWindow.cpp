@@ -182,7 +182,7 @@ void GameWindow::gameLoop() {
 					delete(score);
 					player = nullptr;
 					obstacleManager = nullptr;
-					cout << "A" << endl;
+					//cout << "A" << endl;
 				return;
 			}
 		}
@@ -377,7 +377,7 @@ void GameWindow::gameUpdate(const float &elapsedTime) {
 					obstacles.erase(obstacles.begin() + i);
 					delete(entity);
 					entity = nullptr;
-					cout << "destroy obstacle" << endl;
+					//cout << "destroy obstacle" << endl;
 				}
 			}
 

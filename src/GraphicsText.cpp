@@ -9,7 +9,7 @@ GraphicsText::GraphicsText(SDL_Renderer* renderer, int fontSize, const string& f
 }
 
 GraphicsText::~GraphicsText() {
-	cout << "a" << endl;
+	//cout << "a" << endl;
 	SDL_DestroyTexture(textTexture);
 }
 
@@ -35,7 +35,7 @@ SDL_Texture* GraphicsText::loadFont(SDL_Renderer* renderer, int fontSize, const 
 		cout << "Unable to load text texture." << endl;
 		return NULL;
 	}
-	cout << "here" << endl;
+	//cout << "here" << endl;
 
 	SDL_FreeSurface(text_surface);
 	return text_texture;
