@@ -46,7 +46,9 @@ void InvincibilityPowerUp::draw(Graphics& graphics) {
 		return;
 	}
 
+
 	setSprite(graphics.loadImage("star"));
+
 
 	Entity::gameDraw(graphics);
 }

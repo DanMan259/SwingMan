@@ -77,6 +77,9 @@ void Player::setXVelocity(int value) {
 void Player::setYVelocity(int value) {
 	this->velocityY = value;
 }
+GameWindow* Player::getGameWin(){
+	return this->game;
+}
 
 void Player::gameUpdate(const float& elapstedTime) {
 
@@ -149,6 +152,7 @@ void Player::gameUpdate(const float& elapstedTime) {
 			entityRect.h = topBlock->getHeight();
 			SDL_bool intersects = SDL_IntersectRect(&playerRect, &entityRect, &result);
 			if(intersects == SDL_TRUE && !falling) {
+
 				game->getSoundMixer().playSound("top");
 				resetSwinging();
 				velocityY = 0;
@@ -262,7 +266,7 @@ void Player::gameDraw(Graphics& graphics) {
 
 	}
 	if(isMortal() == false){
-		if(invincibilityTicks>100){
+		if(invincibilityTicks>1000){
 			setMortality(true);
 			invincibilityTicks=0;
 			cout<<"DONE-----------"<<endl;
