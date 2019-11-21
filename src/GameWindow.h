@@ -107,7 +107,7 @@ private:
 	/*
 	 * The graphics object
 	 */
-	int height[20];
+	int height[28];
 	int heightIndex = -1;
 
 	int gamescore = 0;

@@ -3,8 +3,8 @@ block	res/red-block.png
 brown_block	res/brown_block.png
 player	res/player.png
 grey_block	res/grey_block.png
-cracked_grey	res/cracked_grey_block.png
 big_grey_block	res/big_grey_block.png
+gravel_texture	res/rock_texture.png
 samurai_falling	res/samurai_falling.png
 samurai_swinging	res/samurai_swinging.png
 samurai_zooming	res/samurai_zooming.png

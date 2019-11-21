@@ -306,7 +306,10 @@ void Player::gameDraw(Graphics& graphics) {
 			if(isMortal())
 				setSprite(graphics.loadImage("samurai_swinging"));
 			else
-				setSprite(graphics.loadImage("invincible_swinging"));
+				if(isZoom())
+					setSprite(graphics.loadImage("samurai_zooming"));
+				else
+					setSprite(graphics.loadImage("invincible_swinging"));
 
 		} else {
 			if(isMortal())

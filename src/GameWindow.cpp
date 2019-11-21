@@ -83,12 +83,19 @@ void GameWindow::gameLoop() {
 		block->setY(block->getY() + 10 * 5);
 		lavaBlocks.push_back(block);
 	}
+	if(heightIndex == -1){
+		double divider = (double(rand()%2)+2);
+		for(int j = 0; j<28; j++){
+			height[j] = int(5.0*sin(double(j) / divider)+5.0);
+		}
+		heightIndex = 0;
+	}
 
-	SDL_Surface *topBlockSurface = graphics.loadImage("big_grey_block");
+	SDL_Surface *topBlockSurface = graphics.loadImage("gravel_texture");
 	for (int i = 0; i < 28; i++) {
 		Entity *block = new Entity(i * 40, 0, topBlockSurface);
 
-		block->setY(block->getY() - 10 * (rand() % 10));
+		block->setY(block->getY() - 10 * height[i]);//(rand() % 10));
 		topBlocks.push_back(block);
 	}
 
