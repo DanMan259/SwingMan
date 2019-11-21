@@ -32,7 +32,9 @@ void BatObstacle::generateObstacle() {
 void BatObstacle::handleCollision(Player* player) {
 	if(!player->isFalling()) {
 		window->getSoundMixer().playSound("top");
+
 		if(player->isMortal()){
+
 			player->resetSwinging();
 			player->setYVelocity(0);
 			player->setFalling(true);

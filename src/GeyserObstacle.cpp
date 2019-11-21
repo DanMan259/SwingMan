@@ -36,10 +36,10 @@ void GeyserObstacle::generateObstacle() {
 }
 
 void GeyserObstacle::handleCollision(Player* player) {
-	window->getSoundMixer().playSound("explosion");
 	if(player->isMortal()){
-	player->setDead(true);
-	window->endGame();
+		window->getSoundMixer().playSound("explosion");
+		player->setDead(true);
+		window->endGame();
 	}
 }
 

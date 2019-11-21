@@ -213,6 +213,10 @@ bool Player::isMortal(){
 	return this->mortal;
 }
 
+void Player::setInvTicks(int value){
+	this->invincibilityTicks = value;
+}
+
 void Player::gameDraw(Graphics& graphics) {
 
 	if(finishedDeath) {
@@ -266,7 +270,7 @@ void Player::gameDraw(Graphics& graphics) {
 
 	}
 	if(isMortal() == false){
-		if(invincibilityTicks>1000){
+		if(invincibilityTicks>400){
 			setMortality(true);
 			invincibilityTicks=0;
 			cout<<"DONE-----------"<<endl;
@@ -279,9 +283,17 @@ void Player::gameDraw(Graphics& graphics) {
 
 	if(!dead) {
 		if(swinging) {
-			setSprite(graphics.loadImage("samurai_swinging"));
+			if(isMortal())
+				setSprite(graphics.loadImage("samurai_swinging"));
+			else
+				setSprite(graphics.loadImage("invincible_swinging"));
+
 		} else {
-			setSprite(graphics.loadImage("samurai_falling"));
+			if(isMortal())
+				setSprite(graphics.loadImage("samurai_falling"));
+			else
+				setSprite(graphics.loadImage("invincible_falling"));
+
 		}
 	}
 

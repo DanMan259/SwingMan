@@ -7,6 +7,8 @@ big_grey_block	res/big_grey_block.png
 samurai_falling	res/samurai_falling.png
 samurai_swinging	res/samurai_swinging.png
 star	res/invincible.png
+invincible_falling	res/invincible_samurai_falling.png
+invincible_swinging	res/invincible_samurai_swinging.png
 explosion_1	res/explosion_1.png
 explosion_2	res/explosion_2.png
 explosion_3	res/explosion_3.png

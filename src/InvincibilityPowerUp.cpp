@@ -33,8 +33,9 @@ void InvincibilityPowerUp::generateObstacle() {
 
 void InvincibilityPowerUp::handleCollision(Player* player) {
 	//increment player's score
-	window->setScore(window->getScore() + 10000);
+	window->setScore(window->getScore() + 100);
 	player->setMortality(false);
+	player->setInvTicks(0);
 	window->getSoundMixer().playSound("coin");
 	destroy();
 }
