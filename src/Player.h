@@ -41,6 +41,8 @@ public:
 	void setXVelocity(int value);
 	void setYVelocity(int value);
 
+	void setMortality(const bool& value);
+	bool isMortal();
 
 private:
 	GameWindow* game;
@@ -51,6 +53,8 @@ private:
 
 	bool dead;
 
+	bool mortal = true;
+
 	bool falling;
 
 	int deathStage;
@@ -58,6 +62,8 @@ private:
 	bool finishedDeath;
 
 	int deathTicks;
+
+	int invincibilityTicks=0;
 
 	bool swinging;
 

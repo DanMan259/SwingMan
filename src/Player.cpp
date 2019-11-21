@@ -113,8 +113,10 @@ void Player::gameUpdate(const float& elapstedTime) {
 		SDL_bool intersects = SDL_IntersectRect(&playerRect, &entityRect, &result);
 		if(intersects == SDL_TRUE) {
 			game->getSoundMixer().playSound("explosion");
+
 			dead = true;
 			game->endGame();
+
 			break;
 		}
 	}
@@ -150,8 +152,10 @@ void Player::gameUpdate(const float& elapstedTime) {
 				game->getSoundMixer().playSound("top");
 				resetSwinging();
 				velocityY = 0;
+
 				game->endGame();
 				falling = true;
+
 				break;
 			}
 		}
@@ -197,6 +201,13 @@ void Player::setDead(const bool& dead) {
 	this->dead = dead;
 }
 
+void Player::setMortality(const bool& value){
+	this->mortal = value;
+}
+
+bool Player::isMortal(){
+	return this->mortal;
+}
 
 void Player::gameDraw(Graphics& graphics) {
 
@@ -249,6 +260,16 @@ void Player::gameDraw(Graphics& graphics) {
 			rope->draw(graphics);
 		}
 
+	}
+	if(isMortal() == false){
+		if(invincibilityTicks>100){
+			setMortality(true);
+			invincibilityTicks=0;
+			cout<<"DONE-----------"<<endl;
+		}
+		else{
+			invincibilityTicks++;
+		}
 	}
 
 
