@@ -12,6 +12,8 @@ class GraphicsText {
 public:
 	GraphicsText(SDL_Renderer* renderer, int fontSize, const string& font, const string &text, const SDL_Color &color);
 
+	~GraphicsText();
+
 	void draw(int x, int y);
 
 private:
