@@ -77,9 +77,6 @@ void Player::setXVelocity(int value) {
 void Player::setYVelocity(int value) {
 	this->velocityY = value;
 }
-GameWindow* Player::getGameWin(){
-	return this->game;
-}
 
 void Player::gameUpdate(const float& elapstedTime) {
 

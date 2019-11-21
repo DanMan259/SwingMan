@@ -46,27 +46,8 @@ void InvincibilityPowerUp::draw(Graphics& graphics) {
 		return;
 	}
 
-	if(ticks >= 2) {
-		switch(stage) {
-		case 0:
-			setSprite(graphics.loadImage("coin_1"));
-			break;
-		case 1:
-			setSprite(graphics.loadImage("coin_2"));
-			break;
-		case 2:
-			setSprite(graphics.loadImage("coin_3"));
-			break;
-		case 3:
-			setSprite(graphics.loadImage("coin_4"));
-			stage = 0;
-			break;
-		}
+	setSprite(graphics.loadImage("star"));
 
-		stage++;
-		ticks = 0;
-	}
-	ticks++;
 	Entity::gameDraw(graphics);
 }
 
