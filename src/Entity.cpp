@@ -43,7 +43,8 @@ Entity::Entity(const Entity& other) {
 };
 
 Entity::~Entity() {
-
+	cout << "here" << endl;
+	SDL_DestroyTexture(texture);
 }
 
 void Entity::setSprite(SDL_Surface* sprite) {
@@ -73,7 +74,7 @@ void Entity::gameDraw(Graphics& graphics) {
 	}
 
 	if(texture == NULL) {
-		texture = graphics.surfaceToTexture(sprite);
+	texture = graphics.surfaceToTexture(sprite);
 	}
 
 	SDL_Rect srcRect;
@@ -87,6 +88,8 @@ void Entity::gameDraw(Graphics& graphics) {
 	destRect.w = width;
 	destRect.h = height;
 	graphics.drawSurface(texture, &srcRect, &destRect);
+
+
 }
 
 SDL_Surface* Entity::getSprite() const {

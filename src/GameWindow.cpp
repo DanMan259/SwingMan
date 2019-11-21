@@ -1,7 +1,6 @@
 #include <SDL.h>
 #include <SDL_Mixer.h>
 #include <SDL_TTF.h>
-#include <SDL_TTF.h>
 
 #include <iostream>
 
@@ -115,10 +114,14 @@ void GameWindow::gameLoop() {
 				}
 				if(event.key.keysym.sym == SDLK_s) {
 					if(state == GameState::START) {
-						obstacleManager = new ObstacleManager(this);
-						state = GameState::IN_GAME;
+						restart(graphics);
 					}
 					if(state == GameState::CONTROLS) {
+						state = GameState::START;
+					}
+				}
+				if(event.key.keysym.sym == SDLK_g) {
+				if(state == GameState::PAUSE) {
 						state = GameState::START;
 					}
 				}
@@ -144,11 +147,8 @@ void GameWindow::gameLoop() {
 					}
 				}
 
-				if(event.key.keysym.sym == SDLK_n) {
-					if(state == GameState::PAUSE) {
-						restart(graphics);
-					}
-				}
+
+
 			} else if (event.type == SDL_KEYUP) {
 
 				if (event.key.keysym.sym == SDLK_SPACE) {
@@ -158,6 +158,24 @@ void GameWindow::gameLoop() {
 				}
 
 			} else if (event.type == SDL_QUIT) {
+					TTF_Quit();
+					delete(controlsBackText);
+					delete(controlsSwingText);
+					delete(controlsPauseText);
+					delete(obstacleManager);
+					delete(player);
+					delete(pauseContinueText);
+					delete(pauseNewGameText);
+					delete(startGameText);
+					delete(endGameText);
+					delete(endNewGameText);
+					delete(endScoreGameText);
+					delete(controlsGameText);
+					delete(titleGameText);
+					delete(score);
+					player = nullptr;
+					obstacleManager = nullptr;
+					cout << "A" << endl;
 				return;
 			}
 		}
@@ -179,24 +197,7 @@ void GameWindow::gameLoop() {
 
 	}
 
-	TTF_Quit();
 
-	delete(controlsBackText);
-	delete(controlsSwingText);
-	delete(controlsPauseText);
-	delete(obstacleManager);
-	delete(player);
-	delete(pauseContinueText);
-	delete(pauseNewGameText);
-	delete(startGameText);
-	delete(endGameText);
-	delete(endNewGameText);
-	delete(endScoreGameText);
-	delete(controlsGameText);
-	delete(titleGameText);
-	delete(score);
-	player = nullptr;
-	obstacleManager = nullptr;
 }
 
 
@@ -504,7 +505,7 @@ void GameWindow::gameDraw(Graphics &graphics) {
 
 		if(this->pauseNewGameText == nullptr) {
 			SDL_Color color = {255,255,255};
-			pauseNewGameText = new GraphicsText(graphics.getRenderer(), 70, "res/AGENCYB.TTF", "(N)ew Game", color);
+			pauseNewGameText = new GraphicsText(graphics.getRenderer(), 70, "res/AGENCYB.TTF", "(G)o Back To Start Screen", color);
 		}
 
 		if(this->pauseContinueText == nullptr) {
@@ -513,7 +514,7 @@ void GameWindow::gameDraw(Graphics &graphics) {
 		}
 
 		score->draw(10, GAME_HEIGHT/2);
-		pauseNewGameText->draw(255, 140);
+		pauseNewGameText->draw(100, 140);
 		pauseContinueText->draw(190, 240);
 		break;
 	}

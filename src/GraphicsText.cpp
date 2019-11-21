@@ -8,6 +8,11 @@ GraphicsText::GraphicsText(SDL_Renderer* renderer, int fontSize, const string& f
 	SDL_QueryTexture(this->textTexture, nullptr, nullptr, &this->textRect.w, &this->textRect.h);
 }
 
+GraphicsText::~GraphicsText() {
+	cout << "a" << endl;
+	SDL_DestroyTexture(textTexture);
+}
+
 void GraphicsText::draw(int x, int y) {
 	textRect.x = x;
 	textRect.y = y;
@@ -30,6 +35,7 @@ SDL_Texture* GraphicsText::loadFont(SDL_Renderer* renderer, int fontSize, const 
 		cout << "Unable to load text texture." << endl;
 		return NULL;
 	}
+	cout << "here" << endl;
 
 	SDL_FreeSurface(text_surface);
 	return text_texture;
