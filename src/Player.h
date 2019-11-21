@@ -40,6 +40,7 @@ public:
 	int getYVelocity() const;
 	void setXVelocity(int value);
 	void setYVelocity(int value);
+	GameWindow* getGameWin();
 
 
 private:
