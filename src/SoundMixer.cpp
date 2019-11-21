@@ -8,6 +8,7 @@ SoundMixer::SoundMixer() {
 	addSound("explosion", "res/explosion_effect.wav");
 	addSound("geyser", "res/geyser_effect.wav");
 	addSound("bat", "res/bat_effect.wav");
+	addSound("rope", "res/rope_effect.wav");
 	//all music
 	addMusic("music", "res/8bitmusic.mp3");
 
