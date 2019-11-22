@@ -383,7 +383,7 @@ void GameWindow::gameUpdate(const float &elapsedTime) {
 					if(heightIndex == 28){
 						heightIndex = 0;
 					}
-					entity->setY(entity->getY() + ((this->height[heightIndex]-5)/2));
+					entity->setY(entity->getY() + ((this->height[heightIndex]-5)));
 				}
 				entity->gameUpdate(elapsedTime);
 			}
