@@ -102,6 +102,7 @@ public:
 
 	vector<Obstacle*> getObstacles() const;
 
+
 private:
 
 	/*
@@ -161,4 +162,5 @@ private:
 	GraphicsText* controlsPauseText;
 
 	GraphicsText* score;
+
 };

@@ -253,9 +253,11 @@ void GameWindow::restart(Graphics& graphics) {
 
 	restarting = false;
 }
+
 void GameWindow::endGame() {
 	state = GameState::END;
 }
+
 
 vector<Entity*> GameWindow::getLavaBlocks() const {
 	return lavaBlocks;
@@ -343,7 +345,9 @@ void GameWindow::gameUpdate(const float &elapsedTime) {
 					}
 					topBlocks.erase(topBlocks.begin() + i);
 
-					gamescore++;
+					if(state == GameState::IN_GAME) {
+						gamescore++;
+					}
 					Entity *block = new Entity(
 							topBlocks.at(topBlocks.size() - 1)->getX()
 									+ entity->getWidth(), 0, entity->getSprite());
@@ -376,7 +380,9 @@ void GameWindow::gameUpdate(const float &elapsedTime) {
 			}
 
 			if(obstacleManager != nullptr) {
+				if(state == GameState::IN_GAME) {
 				obstacleManager->gameUpdate();
+				}
 			}
 
 			player->gameUpdate(elapsedTime);
@@ -407,7 +413,9 @@ void GameWindow::gameDraw(Graphics &graphics) {
 
 		for (Obstacle *obs : obstacles) {
 			if(!obs->isDestroyed()) {
+				if(state != GameState::START && state != GameState::CONTROLS) {
 			obs->gameDraw(graphics);
+				}
 			}
 		}
 

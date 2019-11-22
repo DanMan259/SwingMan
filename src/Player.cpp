@@ -175,6 +175,9 @@ void Player::setFalling(const bool& falling) {
 }
 
 void Player::startSwinging() {
+	if(zoom) {
+		return;
+	}
 	vector<Entity*> qualifiableBlocks;
 	for(Entity* entity : game->getTopBlocks()) {
 		int distance = entity->getX() - getX();
