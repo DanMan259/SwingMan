@@ -214,13 +214,15 @@ void Player::gameUpdate(const float& elapstedTime) {
 
 //attach rope to best ceiling block candidate code
 void Player::startSwinging() {
-	if(!isZoom()){
-		vector<Entity*> qualifiableBlocks;
-		for(Entity* entity : game->getTopBlocks()) {
-			int distance = entity->getX() - getX();
-			if(distance < player_constants::MAX_DISTANCE_ROPE && distance > 0) {
-				qualifiableBlocks.push_back(entity);
-			}
+
+	if(zoom) {
+		return;
+	}
+	vector<Entity*> qualifiableBlocks;
+	for(Entity* entity : game->getTopBlocks()) {
+		int distance = entity->getX() - getX();
+		if(distance < player_constants::MAX_DISTANCE_ROPE && distance > 0) {
+			qualifiableBlocks.push_back(entity);
 		}
 
 		if(qualifiableBlocks.empty()) {

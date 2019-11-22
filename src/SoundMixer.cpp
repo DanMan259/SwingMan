@@ -69,7 +69,6 @@ void SoundMixer::playMusic(const string& path) {
 	Mix_PlayMusic(m, -1);
 }
 
-
 bool SoundMixer::addMusic(const string& name, const string& music) {
 	Mix_Music* m = Mix_LoadMUS(music.c_str());
 	if(m == nullptr) {

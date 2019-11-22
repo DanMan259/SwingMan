@@ -19,6 +19,8 @@ public:
 
 	void playMusic(const string& path);
 
+	void muteMusic();
+
 
 
 private:
