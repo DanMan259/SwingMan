@@ -12,7 +12,7 @@ namespace player_constants {
 	const int GRAVITY = 4;
 	const int MAX_DISTANCE_ROPE = 130;
 }
-//initialize variables for game start
+
 Player::Player() {
 	this->game= NULL;
 	this->dead = false;
@@ -28,7 +28,7 @@ Player::Player() {
 
 
 }
-//set player state
+
 Player::Player(GameWindow* game, int x, int y, SDL_Surface* sprite) : Entity(x, y, sprite) {
 	this->game = game;
 	this->dead = false;
@@ -46,7 +46,7 @@ Player::Player(GameWindow* game, int x, int y, SDL_Surface* sprite) : Entity(x, 
 };
 
 
-//unattach the rope from the topblock
+
 void Player::resetSwinging() {
 	swinging = false;
 	swingingBlock = nullptr;
@@ -54,10 +54,15 @@ void Player::resetSwinging() {
 	rope = nullptr;
 }
 
-//accessors--------------------------
+
 bool Player::isSwinging() const {
 	return swinging;
 }
+
+Rope* Player::getRope() const {
+	return rope;
+}
+
 int Player::getXVelocity() const {
 	return velocityX;
 }
@@ -65,25 +70,6 @@ int Player::getXVelocity() const {
 int Player::getYVelocity() const {
 	return velocityY;
 }
-
-Rope* Player::getRope() const {
-	return rope;
-}
-bool Player::isFalling() const{
-	return falling;
-}
-
-bool Player::isMortal(){
-	return this->mortal;
-}
-
-bool Player::isZoom(){
-	return zoom;
-}
-
-
-
-//mutators----------------------------------
 void Player::setXVelocity(int value) {
 	this->velocityX = value;
 
@@ -91,32 +77,9 @@ void Player::setXVelocity(int value) {
 void Player::setYVelocity(int value) {
 	this->velocityY = value;
 }
-
 GameWindow* Player::getGameWin(){
 	return this->game;
 }
-
-
-void Player::setDead(const bool& dead) {
-	this->dead = dead;
-}
-
-void Player::setMortality(const bool& value){
-	this->mortal = value;
-}
-
-
-void Player::setZoom(const bool& value){
-	this->zoom = value;
-}
-void Player::setInvTicks(int value){
-	this->invincibilityTicks = value;
-}
-void Player::setFalling(const bool& falling) {
-	this->falling = falling;
-}
-
-//------------------------------------------
 
 void Player::gameUpdate(const float& elapstedTime) {
 
@@ -145,10 +108,7 @@ void Player::gameUpdate(const float& elapstedTime) {
 	playerRect.y = getY();
 	playerRect.w = getWidth();
 	playerRect.h = getHeight();
-
 	SDL_Rect result;
-
-	//lava block collisions
 	for(Entity* lavaBlock : game->getLavaBlocks()) {
 		if(lavaBlock == nullptr) {
 			continue;
@@ -168,7 +128,6 @@ void Player::gameUpdate(const float& elapstedTime) {
 			break;
 		}
 	}
-	//obstacle collisions
 	for(Obstacle* obstacle : game->getObstacles()) {
 		if(obstacle == nullptr) {
 				continue;
@@ -187,7 +146,6 @@ void Player::gameUpdate(const float& elapstedTime) {
 			break;
 		}
 	}
-	//ceiling collisions
 	for(Entity* topBlock : game->getTopBlocks()) {
 			if(topBlock == nullptr) {
 				continue;
@@ -212,9 +170,11 @@ void Player::gameUpdate(const float& elapstedTime) {
 		}
 }
 
-//attach rope to best ceiling block candidate code
-void Player::startSwinging() {
+void Player::setFalling(const bool& falling) {
+	this->falling = falling;
+}
 
+void Player::startSwinging() {
 	if(zoom) {
 		return;
 	}
@@ -224,31 +184,55 @@ void Player::startSwinging() {
 		if(distance < player_constants::MAX_DISTANCE_ROPE && distance > 0) {
 			qualifiableBlocks.push_back(entity);
 		}
-
-		if(qualifiableBlocks.empty()) {
-			return;
-		}
-
-		int distance = qualifiableBlocks.at(0)->getX() - getX();
-		Entity *temp;
-		for(size_t i = 1; i < qualifiableBlocks.size(); i++) {
-			Entity* block = qualifiableBlocks.at(i);
-			int d = block->getX() - getX();
-
-			if(d > distance) {
-				temp = block;
-			}
-		}
-
-		this->rope = new Rope(this, temp);
-		swinging = true;
 	}
+
+	if(qualifiableBlocks.empty()) {
+		return;
+	}
+
+	int distance = qualifiableBlocks.at(0)->getX() - getX();
+	Entity *temp;
+	for(size_t i = 1; i < qualifiableBlocks.size(); i++) {
+		Entity* block = qualifiableBlocks.at(i);
+		int d = block->getX() - getX();
+
+		if(d > distance) {
+			temp = block;
+		}
+	}
+
+	this->rope = new Rope(this, temp);
+	swinging = true;
 }
 
+bool Player::isFalling() const{
+	return falling;
+}
 
+void Player::setDead(const bool& dead) {
+	this->dead = dead;
+}
 
+void Player::setMortality(const bool& value){
+	this->mortal = value;
+}
 
-//render player model depending on it's state
+bool Player::isMortal(){
+	return this->mortal;
+}
+
+void Player::setInvTicks(int value){
+	this->invincibilityTicks = value;
+}
+
+bool Player::isZoom(){
+	return zoom;
+}
+
+void Player::setZoom(const bool& value){
+	this->zoom = value;
+}
+
 void Player::gameDraw(Graphics& graphics) {
 
 	if(finishedDeath) {
@@ -301,7 +285,6 @@ void Player::gameDraw(Graphics& graphics) {
 		}
 
 	}
-	//if it has a power up that makes it invincible then ensure the player returns to normal after a certain amount of time
 	if(isMortal() == false){
 		if(invincibilityTicks>400){
 			setMortality(true);
@@ -310,7 +293,7 @@ void Player::gameDraw(Graphics& graphics) {
 				this->setXVelocity(this->getXVelocity()/3);
 				setZoom(false);
 				setMortality(false);
-				invincibilityTicks=350;//continue being invincible for 50 ticks so that the player does not immediately die after zoom
+				invincibilityTicks=350;
 			}
 
 		}
@@ -320,7 +303,7 @@ void Player::gameDraw(Graphics& graphics) {
 		}
 	}
 
-	//choose the correct player sprite depending on the player state
+
 	if(!dead) {
 		if(swinging) {
 			if(isMortal())
@@ -342,6 +325,6 @@ void Player::gameDraw(Graphics& graphics) {
 
 		}
 	}
-	//render
+
 	Entity::gameDraw(graphics);
 }
