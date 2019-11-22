@@ -33,13 +33,13 @@ void ZoomPowerUp::generateObstacle() {
 
 void ZoomPowerUp::handleCollision(Player* player) {
 	//increment player's score
+	window->getSoundMixer().playSound("zoom");
 	window->setScore(window->getScore() + 100);
 	player->setZoom(true);
 	player->setXVelocity(30);
 	player->setYVelocity(0);
 	player->setMortality(false);
 	player->setInvTicks(200);
-	window->getSoundMixer().playSound("coin");
 	destroy();
 }
 

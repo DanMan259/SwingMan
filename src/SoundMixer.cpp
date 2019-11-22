@@ -9,6 +9,9 @@ SoundMixer::SoundMixer() {
 	addSound("geyser", "res/geyser_effect.wav");
 	addSound("bat", "res/bat_effect.wav");
 	addSound("rope", "res/rope_effect.wav");
+	addSound("zoom", "res/FireBall.mp3");
+	addSound("invincibility", "res/invincibility.wav");
+
 	//all music
 	addMusic("music", "res/8bitmusic.mp3");
 
