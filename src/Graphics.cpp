@@ -39,11 +39,11 @@ SDL_Texture* Graphics::surfaceToTexture(SDL_Surface* &surface) {
 }
 
 
-void Graphics::drawSurface(SDL_Texture* source, SDL_Rect* sourceRectangle, SDL_Rect* destinationRectangle) {
+void Graphics::drawSurface(SDL_Texture* &source, SDL_Rect* sourceRectangle, SDL_Rect* destinationRectangle) {
 	SDL_RenderCopy(this->renderer, source, sourceRectangle, destinationRectangle);
 }
 
-void Graphics::drawRect(SDL_Rect* rect) const {
+void Graphics::drawRect(const SDL_Rect* &rect) const {
 	SDL_RenderDrawRect(this->renderer, rect);
 }
 

@@ -43,7 +43,6 @@ void ObstacleManager::gameUpdate() {
 
 Obstacle* ObstacleManager::getRandomObstacle() {
 	int obs = rand() % (obstacle_constants::TOTAL_OBSTACLES * 10);
-	cout << obs << endl;
 
 	if(obs <20)
 		return new GeyserObstacle(window);
