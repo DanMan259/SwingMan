@@ -10,7 +10,9 @@ GraphicsText::GraphicsText(SDL_Renderer* renderer, int fontSize, const string& f
 
 GraphicsText::~GraphicsText() {
 	//cout << "a" << endl;
-	SDL_DestroyTexture(textTexture);
+	if(textTexture != nullptr) {
+		SDL_DestroyTexture(this->textTexture);
+	}
 }
 
 void GraphicsText::draw(int x, int y) {
@@ -20,6 +22,7 @@ void GraphicsText::draw(int x, int y) {
 }
 
 SDL_Texture* GraphicsText::loadFont(SDL_Renderer* renderer, int fontSize, const string& f, const string& message, const SDL_Color &color) {
+
 	TTF_Font* font = TTF_OpenFont(f.c_str(), fontSize);
 	if(font == nullptr) {
 		cout << "Unable to load font." << endl;
@@ -35,8 +38,8 @@ SDL_Texture* GraphicsText::loadFont(SDL_Renderer* renderer, int fontSize, const 
 		cout << "Unable to load text texture." << endl;
 		return NULL;
 	}
-	//cout << "here" << endl;
 
+	TTF_CloseFont(font);
 	SDL_FreeSurface(text_surface);
 	return text_texture;
 }

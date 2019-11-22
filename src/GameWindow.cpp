@@ -165,6 +165,8 @@ void GameWindow::gameLoop() {
 				}
 
 			} else if (event.type == SDL_QUIT) {
+				cout << "AB" << endl;
+
 					TTF_Quit();
 					delete(controlsBackText);
 					delete(controlsSwingText);
@@ -200,7 +202,11 @@ void GameWindow::gameLoop() {
 
 		int end = SDL_GetTicks();
 
-		SDL_Delay(MAX_FRAME_TIME - (end - start));
+		int sleepTime = (MAX_FRAME_TIME - (end - start));
+
+		if(sleepTime > 0) {
+			SDL_Delay(sleepTime);
+		}
 
 	}
 
@@ -225,22 +231,6 @@ void GameWindow::restart(Graphics& graphics) {
 	for(Obstacle* obstacle : this->obstacles) {
 		obstacle->destroy();
 	}
-
-
-	delete(controlsBackText);
-	delete(controlsSwingText);
-	delete(controlsPauseText);
-	delete(player);
-	delete(obstacleManager);
-	delete(pauseContinueText);
-	delete(pauseNewGameText);
-	delete(startGameText);
-	delete(titleGameText);
-	delete(endGameText);
-	delete(endNewGameText);
-	delete(endScoreGameText);
-	delete(controlsGameText);
-	delete(score);
 
 	controlsBackText = nullptr;
 	controlsSwingText = nullptr;
@@ -314,8 +304,6 @@ void GameWindow::gameUpdate(const float &elapsedTime) {
 	}
 	case GameState::IN_GAME:
 	{
-			player->gameUpdate(elapsedTime);
-
 			for (size_t i = 0; i < lavaBlocks.size(); i++) {
 				Entity *entity = lavaBlocks.at(i);
 				if (entity->getX() <= -40) {
@@ -390,6 +378,9 @@ void GameWindow::gameUpdate(const float &elapsedTime) {
 			if(obstacleManager != nullptr) {
 				obstacleManager->gameUpdate();
 			}
+
+			player->gameUpdate(elapsedTime);
+
 		break;
 	}
 	}

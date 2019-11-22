@@ -33,7 +33,7 @@ public:
 	Entity(const Entity& copy);
 
 	//Destructor used for taking stuff off the heap
-	~Entity();
+	virtual ~Entity();
 
 	/*
 	 * This method is responsible for handling all of the

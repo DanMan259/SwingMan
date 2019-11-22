@@ -26,10 +26,10 @@ public:
 
 	void drawLine(const int &x1, const int &y1, const int &x2, const int &y2) const;
 
-	void drawSurface(SDL_Texture* source, SDL_Rect* sourceRectangle, SDL_Rect* destinationRectangle);
+	void drawSurface(SDL_Texture* &source, SDL_Rect* sourceRectangle, SDL_Rect* destinationRectangle);
 
 
-	void drawRect(SDL_Rect* rect) const;
+	void drawRect(const SDL_Rect* &rect) const;
 
 	void flip();
 
