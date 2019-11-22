@@ -380,10 +380,20 @@ void GameWindow::gameUpdate(const float &elapsedTime) {
 
 				cout<<entity->ObstacleID()<<endl;
 				if(entity->ObstacleID() == 0){
+					//if we want to make the game much much harder
+					/*
 					if(heightIndex == 28){
 						heightIndex = 0;
 					}
-					entity->setY(entity->getY() + ((this->height[heightIndex]-5)));
+					if(player->getY() < entity->getY()){
+						entity->setY(entity->getY() - 1);
+
+					}
+					else if(player->getY() > entity->getY()){
+						entity->setY(entity->getY() + 1);
+					}*/
+
+					entity->setY(entity->getY() + (this->height[heightIndex]-5)/2);
 				}
 				entity->gameUpdate(elapsedTime);
 			}
