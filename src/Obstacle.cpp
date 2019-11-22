@@ -50,6 +50,9 @@ void Obstacle::gameUpdate(const float& elapsedTime) {
 
 }
 
+int Obstacle::ObstacleID(){
+	return -1;
+}
 
 
 

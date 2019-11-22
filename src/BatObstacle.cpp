@@ -62,6 +62,9 @@ void BatObstacle::draw(Graphics& graphics) {
 	Entity::gameDraw(graphics);
 }
 
+int BatObstacle::ObstacleID(){
+	return 0;
+}
 
 
 

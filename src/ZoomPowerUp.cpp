@@ -43,6 +43,9 @@ void ZoomPowerUp::handleCollision(Player* player) {
 	destroy();
 }
 
+int ZoomPowerUp::ObstacleID(){
+	return 4;
+}
 
 void ZoomPowerUp::draw(Graphics& graphics) {
 

@@ -38,6 +38,8 @@ public:
 	 */
 	virtual ~InvincibilityPowerUp();
 
+	virtual int ObstacleID();
+
 private:
 
 	/*

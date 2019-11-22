@@ -30,6 +30,9 @@ void CoinObstacle::generateObstacle() {
 	Entity::setY(y);
 
 }
+int CoinObstacle::ObstacleID(){
+	return 2;
+}
 
 void CoinObstacle::handleCollision(Player* player) {
 	//increment player's score

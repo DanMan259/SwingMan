@@ -43,6 +43,10 @@ void GeyserObstacle::handleCollision(Player* player) {
 	}
 }
 
+int GeyserObstacle::ObstacleID(){
+	return 1;
+}
+
 
 void GeyserObstacle::draw(Graphics& graphics) {
 

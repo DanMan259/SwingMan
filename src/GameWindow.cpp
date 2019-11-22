@@ -13,6 +13,7 @@
 #include "Rope.h"
 #include "GeyserObstacle.h"
 #include "Obstacle.h"
+#include "BatObstacle.h"
 #include <cmath>
 #include <vector>
 
@@ -372,6 +373,14 @@ void GameWindow::gameUpdate(const float &elapsedTime) {
 			for (size_t i = 0; i < obstacles.size(); i++) {
 				Obstacle *entity = obstacles.at(i);
 				entity->setX(entity->getX() - player->getXVelocity());
+
+				cout<<entity->ObstacleID()<<endl;
+				if(entity->ObstacleID() == 0){
+					if(heightIndex == 28){
+						heightIndex = 0;
+					}
+					entity->setY(entity->getY() + ((this->height[heightIndex]-5)/2));
+				}
 				entity->gameUpdate(elapsedTime);
 			}
 

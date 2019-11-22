@@ -40,6 +40,9 @@ void InvincibilityPowerUp::handleCollision(Player* player) {
 	destroy();
 }
 
+int InvincibilityPowerUp::ObstacleID(){
+	return 3;
+}
 
 void InvincibilityPowerUp::draw(Graphics& graphics) {
 
