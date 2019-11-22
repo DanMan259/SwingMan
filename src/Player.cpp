@@ -214,31 +214,33 @@ void Player::gameUpdate(const float& elapstedTime) {
 
 //attach rope to best ceiling block candidate code
 void Player::startSwinging() {
-	vector<Entity*> qualifiableBlocks;
-	for(Entity* entity : game->getTopBlocks()) {
-		int distance = entity->getX() - getX();
-		if(distance < player_constants::MAX_DISTANCE_ROPE && distance > 0) {
-			qualifiableBlocks.push_back(entity);
+	if(!isZoom()){
+		vector<Entity*> qualifiableBlocks;
+		for(Entity* entity : game->getTopBlocks()) {
+			int distance = entity->getX() - getX();
+			if(distance < player_constants::MAX_DISTANCE_ROPE && distance > 0) {
+				qualifiableBlocks.push_back(entity);
+			}
 		}
-	}
 
-	if(qualifiableBlocks.empty()) {
-		return;
-	}
-
-	int distance = qualifiableBlocks.at(0)->getX() - getX();
-	Entity *temp;
-	for(size_t i = 1; i < qualifiableBlocks.size(); i++) {
-		Entity* block = qualifiableBlocks.at(i);
-		int d = block->getX() - getX();
-
-		if(d > distance) {
-			temp = block;
+		if(qualifiableBlocks.empty()) {
+			return;
 		}
-	}
 
-	this->rope = new Rope(this, temp);
-	swinging = true;
+		int distance = qualifiableBlocks.at(0)->getX() - getX();
+		Entity *temp;
+		for(size_t i = 1; i < qualifiableBlocks.size(); i++) {
+			Entity* block = qualifiableBlocks.at(i);
+			int d = block->getX() - getX();
+
+			if(d > distance) {
+				temp = block;
+			}
+		}
+
+		this->rope = new Rope(this, temp);
+		swinging = true;
+	}
 }
 
 
