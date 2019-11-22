@@ -30,9 +30,9 @@ Rope::Rope(Player *attached, Entity* swingingBlock) {
 void Rope::update() {
 	time = (SDL_GetTicks() - ropeStart)*(PI/180);
 	//attached->setX(int(length*-sin(angularFreq*time+initAngle))+swingingBlock->getX());
-	attached->setYVelocity(int(length*angularFreq*-sin(angularFreq*time+initAngle)));//2.6 is just a constant that makes it work
+	attached->setYVelocity(int(length*angularFreq*-sin(angularFreq*time+initAngle)));
 	attached->setY(int(length*cos(angularFreq*time+initAngle))+swingingBlock->getY());
-	attached->setXVelocity(int(length*angularFreq*-cos(angularFreq*time+initAngle)/2.8));//2.6 is just a constant that makes it work
+	attached->setXVelocity(int(length*angularFreq*-cos(angularFreq*time+initAngle)/2.8));//2.8 is just a constant that slows down the screen since it is too fast without it
 
 
 }
