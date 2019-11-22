@@ -378,7 +378,6 @@ void GameWindow::gameUpdate(const float &elapsedTime) {
 				Obstacle *entity = obstacles.at(i);
 				entity->setX(entity->getX() - player->getXVelocity());
 
-				cout<<entity->ObstacleID()<<endl;
 				if(entity->ObstacleID() == 0){
 					//if we want to make the game much much harder
 					/*
