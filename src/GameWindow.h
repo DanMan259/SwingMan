@@ -161,6 +161,8 @@ private:
 
 	GraphicsText* controlsPauseText;
 
+	GraphicsText* startSettingsText;
+
 	GraphicsText* score;
 
 };

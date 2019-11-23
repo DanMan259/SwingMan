@@ -43,8 +43,12 @@ void Graphics::drawSurface(SDL_Texture* &source, SDL_Rect* sourceRectangle, SDL_
 	SDL_RenderCopy(this->renderer, source, sourceRectangle, destinationRectangle);
 }
 
-void Graphics::drawRect(const SDL_Rect* &rect) const {
-	SDL_RenderDrawRect(this->renderer, rect);
+void Graphics::drawRect(const SDL_Rect &rect) const {
+	SDL_RenderDrawRect(this->renderer, &rect);
+}
+
+void Graphics::drawFilledRect(const SDL_Rect &rect) const {
+	SDL_RenderFillRect(this->renderer, &rect);
 }
 
 void Graphics::flip() {

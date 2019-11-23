@@ -29,7 +29,10 @@ public:
 	void drawSurface(SDL_Texture* &source, SDL_Rect* sourceRectangle, SDL_Rect* destinationRectangle);
 
 
-	void drawRect(const SDL_Rect* &rect) const;
+	void drawRect(const SDL_Rect &rect) const;
+
+	void drawFilledRect(const SDL_Rect &rect) const;
+
 
 	void flip();
 
