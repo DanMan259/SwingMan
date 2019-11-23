@@ -291,6 +291,8 @@ void Player::gameDraw(Graphics& graphics) {
 			invincibilityTicks=0;
 			if(isZoom() == true){
 				this->setXVelocity(this->getXVelocity()/3);
+				this->setYVelocity(-15);
+
 				setZoom(false);
 				setMortality(false);
 				invincibilityTicks=350;

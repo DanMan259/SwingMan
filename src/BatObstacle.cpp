@@ -16,7 +16,7 @@ void BatObstacle::generateObstacle() {
 	srand(time(NULL));
 	int x = (GameWindow::GAME_WIDTH);
 
-	int y = 120 + (rand() % (GameWindow::GAME_HEIGHT / 8));
+	int y = 120 + (rand() % (GameWindow::GAME_HEIGHT / 4));
 
 	window->getSoundMixer().playSound("bat");
 
@@ -58,11 +58,11 @@ void BatObstacle::draw(Graphics& graphics) {
 	}
 
 	batTicks++;
-
-	Entity::gameDraw(graphics);
 }
 
-
+int BatObstacle::ObstacleID(){
+	return 0;
+}
 
 
 

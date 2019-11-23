@@ -86,6 +86,8 @@ public:
 	 */
 	virtual void handleCollision(Player* player) = 0;
 
+	virtual int ObstacleID();
+
 protected:
 
 	/*

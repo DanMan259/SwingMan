@@ -122,8 +122,10 @@ void GameWindow::gameLoop() {
 
 			if (event.type == SDL_KEYDOWN) {
 				if (event.key.keysym.sym == SDLK_SPACE) {
-					if(!player->isSwinging() && !player->isFalling()) {
-						player->startSwinging();
+					if(state == GameState::IN_GAME) {
+						if(!player->isSwinging() && !player->isFalling()) {
+							player->startSwinging();
+						}
 					}
 				}
 
@@ -268,6 +270,9 @@ void GameWindow::gameLoop() {
 }
 
 
+GameState GameWindow::getGameState() const {
+	return state;
+}
 void GameWindow::setScore(const int& score) {
 	this->gamescore = score;
 }
@@ -431,6 +436,23 @@ void GameWindow::gameUpdate(const float &elapsedTime) {
 			for (size_t i = 0; i < obstacles.size(); i++) {
 				Obstacle *entity = obstacles.at(i);
 				entity->setX(entity->getX() - player->getXVelocity());
+
+				if(entity->ObstacleID() == 0){
+					//if we want to make the game much much harder
+					/*
+					if(heightIndex == 28){
+						heightIndex = 0;
+					}
+					if(player->getY() < entity->getY()){
+						entity->setY(entity->getY() - 1);
+
+					}
+					else if(player->getY() > entity->getY()){
+						entity->setY(entity->getY() + 1);
+					}*/
+
+					entity->setY(entity->getY() + (this->height[heightIndex]-5)/2);
+				}
 				entity->gameUpdate(elapsedTime);
 			}
 
@@ -445,6 +467,7 @@ void GameWindow::gameUpdate(const float &elapsedTime) {
 		break;
 	}
 	}
+
 
 
 }
@@ -567,7 +590,7 @@ void GameWindow::gameDraw(Graphics &graphics) {
 			endNewGameText = new GraphicsText(graphics.getRenderer(), 40, "res/AGENCYB.TTF", "Press A to Play Again!", color);
 		}
 
-		endScoreGameText->draw(287, 240);
+		endScoreGameText->draw(283, 240);
 		endNewGameText->draw(240, 330);
 		endGameText->draw(260, 120);
 
@@ -581,9 +604,8 @@ void GameWindow::gameDraw(Graphics &graphics) {
 	}
 	case PAUSE:
 	{
-		if(this->score == nullptr) {
-			score = new GraphicsText(graphics.getRenderer(), 30, "res/Arial.ttf", to_string(gamescore), {255, 255, 255, 255});
-		}
+		score = new GraphicsText(graphics.getRenderer(), 30, "res/Arial.ttf", to_string(gamescore), {255, 255, 255, 255});
+
 
 		if(this->pauseContinueText == nullptr) {
 			SDL_Color color = {255,255,255};

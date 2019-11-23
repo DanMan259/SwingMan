@@ -32,6 +32,8 @@ public:
 
 	void gameUpdate(const float& elapsedTime);
 
+	virtual int ObstacleID();
+
 private:
 
 	bool launching;

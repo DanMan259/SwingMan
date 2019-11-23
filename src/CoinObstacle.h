@@ -39,6 +39,8 @@ public:
 	 */
 	virtual ~CoinObstacle();
 
+	virtual int ObstacleID();
+
 private:
 
 	/*

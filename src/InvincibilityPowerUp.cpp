@@ -36,10 +36,13 @@ void InvincibilityPowerUp::handleCollision(Player* player) {
 	window->setScore(window->getScore() + 100);
 	player->setMortality(false);
 	player->setInvTicks(0);
-	window->getSoundMixer().playSound("coin");
+	window->getSoundMixer().playSound("invincibility");
 	destroy();
 }
 
+int InvincibilityPowerUp::ObstacleID(){
+	return 3;
+}
 
 void InvincibilityPowerUp::draw(Graphics& graphics) {
 
@@ -50,10 +53,7 @@ void InvincibilityPowerUp::draw(Graphics& graphics) {
 
 	setSprite(graphics.loadImage("star"));
 
-
-	Entity::gameDraw(graphics);
 }
-
 
 
 

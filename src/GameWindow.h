@@ -102,6 +102,8 @@ public:
 
 	vector<Obstacle*> getObstacles() const;
 
+	GameState getGameState() const;
+
 
 private:
 

@@ -30,6 +30,9 @@ void CoinObstacle::generateObstacle() {
 	Entity::setY(y);
 
 }
+int CoinObstacle::ObstacleID(){
+	return 2;
+}
 
 void CoinObstacle::handleCollision(Player* player) {
 	//increment player's score
@@ -66,9 +69,7 @@ void CoinObstacle::draw(Graphics& graphics) {
 		ticks = 0;
 	}
 	ticks++;
-	Entity::gameDraw(graphics);
 }
-
 
 
 
