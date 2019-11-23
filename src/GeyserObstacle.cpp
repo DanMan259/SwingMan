@@ -117,7 +117,5 @@ void GeyserObstacle::draw(Graphics& graphics) {
 		ticks = 0;
 	}
 	ticks++;
-	Entity::gameDraw(graphics);
 }
-
 

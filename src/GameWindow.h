@@ -102,6 +102,8 @@ public:
 
 	vector<Obstacle*> getObstacles() const;
 
+	GameState getGameState() const;
+
 
 private:
 
@@ -160,6 +162,8 @@ private:
 	GraphicsText* controlsSwingText;
 
 	GraphicsText* controlsPauseText;
+
+	GraphicsText* startSettingsText;
 
 	GraphicsText* score;
 

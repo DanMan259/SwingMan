@@ -69,9 +69,7 @@ void CoinObstacle::draw(Graphics& graphics) {
 		ticks = 0;
 	}
 	ticks++;
-	Entity::gameDraw(graphics);
 }
-
 
 
 

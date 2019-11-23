@@ -93,4 +93,3 @@ bool SoundMixer::addSound(const string& name, const string& sound) {
 	this->sounds.insert(std::pair<std::string, Mix_Chunk*>(name, s));
 	return true;
 }
-

@@ -23,6 +23,15 @@ Obstacle::~Obstacle() {
 }
 
 void Obstacle::gameDraw(Graphics& graphics) {
+
+	Entity::gameDraw(graphics);
+
+
+	if(window->getGameState() != GameState::IN_GAME
+			&& window->getGameState() != GameState::END) {
+		return;
+	}
+
 	draw(graphics);
 }
 
@@ -53,6 +62,4 @@ void Obstacle::gameUpdate(const float& elapsedTime) {
 int Obstacle::ObstacleID(){
 	return -1;
 }
-
-
 

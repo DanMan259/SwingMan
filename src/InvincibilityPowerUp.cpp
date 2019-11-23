@@ -53,10 +53,7 @@ void InvincibilityPowerUp::draw(Graphics& graphics) {
 
 	setSprite(graphics.loadImage("star"));
 
-
-	Entity::gameDraw(graphics);
 }
-
 
 
 

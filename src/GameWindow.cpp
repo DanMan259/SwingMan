@@ -26,6 +26,12 @@ const int MAX_FRAME_TIME = 1000 / FPS;
 int topPattern[81];
 int topPatternIndex;
 
+int menu_dot_position_y[] = {235, 295, 355};
+int menu_position_index = 0;
+
+int pause_menu_dot_position_y[] = {200, 270};
+int pause_position_index = 0;
+
 int main(int argv, char **args) {
 	GameWindow game;
 	return 0;
@@ -70,6 +76,7 @@ void GameWindow::gameLoop() {
 	controlsPauseText = nullptr;
 	startGameText = nullptr;
 	pauseContinueText = nullptr;
+	startSettingsText = nullptr;
 	pauseNewGameText = nullptr;
 	endGameText = nullptr;
 	titleGameText = nullptr;
@@ -116,38 +123,86 @@ void GameWindow::gameLoop() {
 
 			if (event.type == SDL_KEYDOWN) {
 				if (event.key.keysym.sym == SDLK_SPACE) {
-					if(!player->isSwinging() && !player->isFalling()) {
-						player->startSwinging();
+					if(state == GameState::IN_GAME) {
+						if(!player->isSwinging() && !player->isFalling()) {
+							player->startSwinging();
+						}
+					}
+				}
+
+				if(event.key.keysym.sym == SDLK_DOWN) {
+					if(state == GameState::START) {
+						menu_position_index = (menu_position_index + 1) % 3;
+					}
+					if(state == GameState::PAUSE) {
+						pause_position_index = (pause_position_index + 1) % 2;
+					}
+				}
+
+				if(event.key.keysym.sym == SDLK_RETURN) {
+					if(state == GameState::START) {
+						switch(menu_position_index % 3) {
+						case 0:
+							//start
+							restart(graphics);
+							break;
+						case 1:
+							//controls
+							cout << "here" << endl;
+							state = GameState::CONTROLS;
+							break;
+						case 2:
+							//settings
+							break;
+						}
+					}
+						if(state == GameState::PAUSE) {
+							switch(pause_position_index % 2) {
+							case 0:
+								//start
+								state = GameState::IN_GAME;
+								break;
+							case 1:
+								//controls
+								state = GameState::START;
+								menu_position_index = 0;
+								break;
+							}
+					}
+				}
+
+				if(event.key.keysym.sym == SDLK_UP) {
+					if(state == GameState::START) {
+						if(menu_position_index == 0) {
+							menu_position_index = 2;
+						} else {
+							menu_position_index = (menu_position_index - 1) % 3;
+						}
+					}
+
+					if(state == GameState::PAUSE) {
+						if(pause_position_index == 0) {
+							pause_position_index = 1;
+						} else {
+							pause_position_index = (pause_position_index - 1) % 2;
+						}
 					}
 				}
 				if(event.key.keysym.sym == SDLK_s) {
-					if(state == GameState::START) {
-						restart(graphics);
-					}
 					if(state == GameState::CONTROLS) {
 						state = GameState::START;
 					}
 				}
-				if(event.key.keysym.sym == SDLK_g) {
-				if(state == GameState::PAUSE) {
-						state = GameState::START;
-					}
-				}
+
 
 				if (event.key.keysym.sym == SDLK_m) {
 					if(state == GameState::IN_GAME) {
+						pause_position_index = 0;
 						state = GameState::PAUSE;
 					}
 				}
 
-				if(event.key.keysym.sym == SDLK_c) {
-					if(state == GameState::START) {
-						state = GameState::CONTROLS;
-					}
-					if(state == GameState::PAUSE) {
-						state = GameState::IN_GAME;
-					}
-				}
+
 
 				if(event.key.keysym.sym == SDLK_a) {
 					if(state == GameState::END) {
@@ -175,6 +230,7 @@ void GameWindow::gameLoop() {
 					delete(obstacleManager);
 					delete(player);
 					delete(pauseContinueText);
+					delete(this->startSettingsText);
 					delete(pauseNewGameText);
 					delete(startGameText);
 					delete(endGameText);
@@ -215,6 +271,9 @@ void GameWindow::gameLoop() {
 }
 
 
+GameState GameWindow::getGameState() const {
+	return state;
+}
 void GameWindow::setScore(const int& score) {
 	this->gamescore = score;
 }
@@ -242,6 +301,7 @@ void GameWindow::restart(Graphics& graphics) {
 	endGameText = nullptr;
 	endNewGameText = nullptr;
 	endScoreGameText = nullptr;
+	startSettingsText = nullptr;
 	controlsGameText = nullptr;
 	titleGameText = nullptr;
 	score = nullptr;
@@ -410,6 +470,7 @@ void GameWindow::gameUpdate(const float &elapsedTime) {
 	}
 
 
+
 }
 
 void GameWindow::gameDraw(Graphics &graphics) {
@@ -450,16 +511,37 @@ void GameWindow::gameDraw(Graphics &graphics) {
 
 		}
 		if(this->startGameText == nullptr) {
-			startGameText = new GraphicsText(graphics.getRenderer(), 50, "res/AGENCYB.TTF", "Press (S) To Start Game!", {255, 255, 255, 255});
+			startGameText = new GraphicsText(graphics.getRenderer(), 35, "res/AGENCYB.TTF", "Start Game", {255, 255, 255, 255});
 		}
 
 		if(this->controlsGameText == nullptr) {
-			controlsGameText = new GraphicsText(graphics.getRenderer(), 30, "res/AGENCYB.TTF", "Press (C) For Game Controls", {255, 255, 255, 255});
+			controlsGameText = new GraphicsText(graphics.getRenderer(), 35, "res/AGENCYB.TTF", "Controls", {255, 255, 255, 255});
 		}
 
-		titleGameText->draw(260, 150);
-		startGameText->draw(180, 260);
-		controlsGameText->draw(250, 340);
+		if(this->startSettingsText == nullptr) {
+			startSettingsText = new GraphicsText(graphics.getRenderer(), 35, "res/AGENCYB.TTF", "Settings", {255, 255, 255, 255});
+		}
+
+		SDL_Rect dot;
+
+
+		dot.w = 15;
+		dot.h = 15;
+		dot.x = 285;
+		dot.y = menu_dot_position_y[menu_position_index];
+
+		SDL_SetRenderDrawColor(graphics.getRenderer(), 255, 255, 255, 255);
+
+		graphics.drawFilledRect(dot);
+
+		SDL_SetRenderDrawColor(graphics.getRenderer(), 0, 0, 0, 0);
+
+		titleGameText->draw(270, 120);
+
+
+		startGameText->draw(320, 220);
+		controlsGameText->draw(335, 280);
+		startSettingsText->draw(335, 340);
 		break;
 	}
 	case CONTROLS:
@@ -509,7 +591,7 @@ void GameWindow::gameDraw(Graphics &graphics) {
 			endNewGameText = new GraphicsText(graphics.getRenderer(), 40, "res/AGENCYB.TTF", "Press A to Play Again!", color);
 		}
 
-		endScoreGameText->draw(295, 240);
+		endScoreGameText->draw(283, 240);
 		endNewGameText->draw(240, 330);
 		endGameText->draw(260, 120);
 
@@ -523,23 +605,37 @@ void GameWindow::gameDraw(Graphics &graphics) {
 	}
 	case PAUSE:
 	{
-		if(this->score == nullptr) {
-			score = new GraphicsText(graphics.getRenderer(), 30, "res/Arial.ttf", to_string(gamescore), {255, 255, 255, 255});
+		score = new GraphicsText(graphics.getRenderer(), 30, "res/Arial.ttf", to_string(gamescore), {255, 255, 255, 255});
+
+
+		if(this->pauseContinueText == nullptr) {
+			SDL_Color color = {255,255,255};
+			pauseContinueText = new GraphicsText(graphics.getRenderer(), 40, "res/AGENCYB.TTF", "Continue", color);
 		}
 
 		if(this->pauseNewGameText == nullptr) {
 			SDL_Color color = {255,255,255};
-			pauseNewGameText = new GraphicsText(graphics.getRenderer(), 70, "res/AGENCYB.TTF", "(G)o Back To Start Screen", color);
+			pauseNewGameText = new GraphicsText(graphics.getRenderer(), 40, "res/AGENCYB.TTF", "Start Screen", color);
 		}
 
-		if(this->pauseContinueText == nullptr) {
-			SDL_Color color = {255,255,255};
-			pauseContinueText = new GraphicsText(graphics.getRenderer(), 70, "res/AGENCYB.TTF", "(C)ontinue Game", color);
-		}
+		SDL_Rect dot;
+
+
+		dot.w = 15;
+		dot.h = 15;
+		dot.x = 285;
+		dot.y = pause_menu_dot_position_y[pause_position_index];
+
+		SDL_SetRenderDrawColor(graphics.getRenderer(), 255, 255, 255, 255);
+
+		graphics.drawFilledRect(dot);
+
+		SDL_SetRenderDrawColor(graphics.getRenderer(), 0, 0, 0, 0);
+
 
 		score->draw(10, GAME_HEIGHT/2);
-		pauseNewGameText->draw(100, 140);
-		pauseContinueText->draw(190, 240);
+		pauseNewGameText->draw(320, 250);
+		pauseContinueText->draw(320, 180);
 		break;
 	}
 	}

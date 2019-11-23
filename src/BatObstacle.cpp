@@ -58,15 +58,11 @@ void BatObstacle::draw(Graphics& graphics) {
 	}
 
 	batTicks++;
-
-	Entity::gameDraw(graphics);
 }
 
 int BatObstacle::ObstacleID(){
 	return 0;
 }
-
-
 
 
 

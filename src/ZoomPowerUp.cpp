@@ -57,9 +57,7 @@ void ZoomPowerUp::draw(Graphics& graphics) {
 	setSprite(graphics.loadImage("zoom"));
 
 
-	Entity::gameDraw(graphics);
 }
-
 
 
 
