@@ -440,7 +440,7 @@ void GameWindow::gameUpdate(const float &elapsedTime) {
 
 				if(entity->ObstacleID() == 0){
 					//if we want to make the game much much harder
-					/*
+
 					if(heightIndex == 28){
 						heightIndex = 0;
 					}
@@ -450,7 +450,7 @@ void GameWindow::gameUpdate(const float &elapsedTime) {
 					}
 					else if(player->getY() > entity->getY()){
 						entity->setY(entity->getY() + 1);
-					}*/
+					}
 
 					entity->setY(entity->getY() + (this->height[heightIndex]-5)/2);
 				}
