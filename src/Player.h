@@ -129,29 +129,79 @@ public:
 	void setZoom(const bool& value);
 
 private:
+
+	/*
+	 * The game window
+	 */
 	GameWindow* game;
+
+	/*
+	 * The x velocity of player
+	 */
 	int velocityX;
+
+	/*
+	 * The y velocity of player
+	 */
 	int velocityY;
+
+	/*
+	 * The acc of the player
+	 */
 	int acc = 0;
+
+	/*
+	 * The rope attached to player
+	 */
 	Rope* rope;
 
+	/*
+	 * If the player is dead
+	 */
 	bool dead;
 
+	/*
+	 * If player is zooming (for a power up)
+	 */
 	bool zoom = false;
 
+	/*
+	 * If player is mortal
+	 */
 	bool mortal = true;
 
+	/*
+	 * If player is falling
+	 */
 	bool falling;
 
+	/*
+	 * The death stage of the player
+	 */
 	int deathStage;
 
+	/*
+	 * If the player has finished dieing
+	 */
 	bool finishedDeath;
 
+	/*
+	 * The death ticks used for changing sprites
+	 */
 	int deathTicks;
 
+	/*
+	 * How long the player has been invicible for
+	 */
 	int invincibilityTicks=0;
 
+	/*
+	 * If the player is swinging on a rope
+	 */
 	bool swinging;
 
+	/*
+	 * The top block the player is swinging from
+	 */
 	Entity* swingingBlock;
 };
