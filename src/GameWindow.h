@@ -88,6 +88,8 @@ public:
 
 	int getScore() const;
 
+	bool getDifficulty() const;
+
 	/*
 	 * @return top blocks
 	 */
@@ -134,6 +136,8 @@ private:
 
 	bool muteSound;
 
+	bool difficulty;
+
 	GameState state;
 
 	vector<Entity*> lavaBlocks;
@@ -173,6 +177,8 @@ private:
 	GraphicsText* musicSettingsText;
 
 	GraphicsText* soundSettingsText;
+
+	GraphicsText* difficultySettingsText;
 
 	GraphicsText* startScreenSettingsText;
 

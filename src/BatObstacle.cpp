@@ -2,6 +2,7 @@
 #include "time.h"
 
 
+
 BatObstacle::BatObstacle(GameWindow* window) : Obstacle(window, 0, 0, NULL, true, 50) {
 	this->batTicks = 0;
 	this->flyingSprite = false;
@@ -63,6 +64,5 @@ void BatObstacle::draw(Graphics& graphics) {
 int BatObstacle::ObstacleID(){
 	return 0;
 }
-
 
 

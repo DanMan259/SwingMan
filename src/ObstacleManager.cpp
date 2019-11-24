@@ -43,17 +43,29 @@ void ObstacleManager::gameUpdate() {
 
 Obstacle* ObstacleManager::getRandomObstacle() {
 	int obs = rand() % (obstacle_constants::TOTAL_OBSTACLES * 10);
-
-	if(obs <20)
-		return new GeyserObstacle(window);
-	else if(obs<25 && obs>20)
-		return new CoinObstacle(window);
-	else if(obs<40 && obs>25)
-		return new BatObstacle(window);
-	else if(obs<45 && obs>40)
-		return new InvincibilityPowerUp(window);
-	else if(obs<50 && obs>45)
-		return new ZoomPowerUp(window);
+	if(window->getDifficulty() == false){//hard
+		if(obs <20)
+			return new GeyserObstacle(window);
+		else if(obs<25 && obs>20)
+			return new CoinObstacle(window);
+		else if(obs<40 && obs>25)
+			return new BatObstacle(window);
+		else if(obs<45 && obs>40)
+			return new InvincibilityPowerUp(window);
+		else if(obs<50 && obs>45)
+			return new ZoomPowerUp(window);
+	}else{//easy
+		if(obs <15)
+			return new GeyserObstacle(window);
+		else if(obs<30 && obs>15)
+			return new CoinObstacle(window);
+		else if(obs<40 && obs>30)
+			return new BatObstacle(window);
+		else if(obs<47 && obs>40)
+			return new InvincibilityPowerUp(window);
+		else if(obs<50 && obs>47)
+			return new ZoomPowerUp(window);
+	}
 
 
 	return nullptr;

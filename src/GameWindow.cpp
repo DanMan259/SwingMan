@@ -32,7 +32,7 @@ int menu_position_index = 0;
 int pause_menu_dot_position_y[] = {200, 270};
 int pause_position_index = 0;
 
-int settings_menu_dot_position_y[] = {200, 270, 340};
+int settings_menu_dot_position_y[] = {150, 220, 290, 360};
 int settings_position_index = 0;
 
 int main(int argv, char **args) {
@@ -70,6 +70,7 @@ void GameWindow::gameLoop() {
 	finished = false;
 	muteMusic = false;
 	muteSound = false;
+	difficulty = true;
 
 	restarting = false;
 
@@ -81,6 +82,7 @@ void GameWindow::gameLoop() {
 	musicSettingsText = nullptr;
 	startScreenSettingsText = nullptr;
 	soundSettingsText = nullptr;
+	difficultySettingsText = nullptr;
 	startSettingsText = nullptr;
 	pauseNewGameText = nullptr;
 	endGameText = nullptr;
@@ -143,7 +145,7 @@ void GameWindow::gameLoop() {
 						pause_position_index = (pause_position_index + 1) % 2;
 					}
 					if(state == GameState::SETTINGS) {
-						settings_position_index = (settings_position_index + 1) % 3;
+						settings_position_index = (settings_position_index + 1) % 4;
 					}
 				}
 
@@ -189,7 +191,7 @@ void GameWindow::gameLoop() {
 					}
 
 						if(state == GameState::SETTINGS) {
-							switch(settings_position_index % 3) {
+							switch(settings_position_index % 4) {
 							case 0:
 								//start
 								soundMixer->muteMusic(muteMusic ? false : true);
@@ -205,12 +207,21 @@ void GameWindow::gameLoop() {
 								//controls
 								break;
 							case 2:
+								cout<<"difficulty";
+								soundMixer->playSound(this, "button");
+								difficulty=!difficulty;
+								difficultySettingsText = nullptr;
+
+								break;
+
+							case 3:
 								state = GameState::START;
 								settings_position_index = 0;
 								soundMixer->playSound(this, "button");
 
 								break;
 							}
+
 
 							continue;
 						}
@@ -235,9 +246,9 @@ void GameWindow::gameLoop() {
 
 					if(state == GameState::SETTINGS) {
 						if(settings_position_index == 0) {
-							settings_position_index = 2;
+							settings_position_index = 3;
 						} else {
-							settings_position_index = (settings_position_index - 1) % 3;
+							settings_position_index = (settings_position_index - 1) % 4;
 						}
 					}
 				}
@@ -289,6 +300,7 @@ void GameWindow::gameLoop() {
 					delete(musicSettingsText);
 					delete(startScreenSettingsText);
 					delete(soundSettingsText);
+					delete(difficultySettingsText);
 					delete(this->startSettingsText);
 					delete(pauseNewGameText);
 					delete(startGameText);
@@ -342,6 +354,9 @@ int GameWindow::getScore() const {
 	return gamescore;
 }
 
+bool GameWindow::getDifficulty() const{
+	return difficulty;
+}
 bool GameWindow::isSoundMuted() const {
 	return this->muteSound;
 }
@@ -367,6 +382,7 @@ void GameWindow::restart(Graphics& graphics) {
 	musicSettingsText = nullptr;
 	startScreenSettingsText = nullptr;
 	soundSettingsText = nullptr;
+	difficultySettingsText = nullptr;
 	endScoreGameText = nullptr;
 	startSettingsText = nullptr;
 	controlsGameText = nullptr;
@@ -515,15 +531,17 @@ void GameWindow::gameUpdate(const float &elapsedTime) {
 					if(heightIndex == 28){
 						heightIndex = 0;
 					}
-					if(player->getY() < entity->getY()){
-						entity->setY(entity->getY() - 1);
+					if(difficulty == false){
+						if(player->getY() < entity->getY()){
+							entity->setY(entity->getY() - 1);
 
-					}
-					else if(player->getY() > entity->getY()){
-						entity->setY(entity->getY() + 1);
+						}
+						else if(player->getY() > entity->getY()){
+							entity->setY(entity->getY() + 1);
+						}
 					}
 
-					entity->setY(entity->getY() + (this->height[heightIndex]-5)/2);
+					entity->setY(entity->getY() + (this->height[heightIndex]-5)/4);
 				}
 				entity->gameUpdate(elapsedTime);
 			}
@@ -626,6 +644,11 @@ void GameWindow::gameDraw(Graphics &graphics) {
 			SDL_Color color = {255,255,255};
 			soundSettingsText = new GraphicsText(graphics.getRenderer(), 40, "res/AGENCYB.TTF", (this->muteSound ? "Unmute Sound" : "Mute Sound"), color);
 		}
+		if(this->difficultySettingsText == nullptr) {
+			SDL_Color color = {255,255,255};
+			difficultySettingsText = new GraphicsText(graphics.getRenderer(), 40, "res/AGENCYB.TTF", (this->difficulty ? "Difficulty: Easy" : "Difficulty: Hard"), color);
+		}
+
 
 		if(this->startScreenSettingsText == nullptr) {
 			SDL_Color color = {255,255,255};
@@ -647,9 +670,10 @@ void GameWindow::gameDraw(Graphics &graphics) {
 		SDL_SetRenderDrawColor(graphics.getRenderer(), 0, 0, 0, 0);
 
 
-		musicSettingsText->draw(320, 180);
-		soundSettingsText->draw(320, 250);
-		startScreenSettingsText->draw(320, 320);
+		musicSettingsText->draw(320, 130);
+		soundSettingsText->draw(320, 200);
+		difficultySettingsText->draw(320, 270);
+		startScreenSettingsText->draw(320, 340);
 		break;
 	}
 	case CONTROLS:
