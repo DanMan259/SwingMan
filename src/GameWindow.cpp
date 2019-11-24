@@ -32,6 +32,9 @@ int menu_position_index = 0;
 int pause_menu_dot_position_y[] = {200, 270};
 int pause_position_index = 0;
 
+int settings_menu_dot_position_y[] = {200, 270, 340};
+int settings_position_index = 0;
+
 int main(int argv, char **args) {
 	GameWindow game;
 	return 0;
@@ -58,16 +61,15 @@ GameWindow::GameWindow() {
 void GameWindow::gameLoop() {
 	srand(time(NULL));
 	Graphics graphics;
-	this->soundMixer = SoundMixer();
+	this->soundMixer = new SoundMixer();
 	SDL_Event event;
 	SpriteLoader spriteLoader(graphics);
 
 
 	obstacleManager = nullptr;
-	start_flag = false;
 	finished = false;
-	menu_flag = false;
-
+	muteMusic = false;
+	muteSound = false;
 
 	restarting = false;
 
@@ -76,6 +78,9 @@ void GameWindow::gameLoop() {
 	controlsPauseText = nullptr;
 	startGameText = nullptr;
 	pauseContinueText = nullptr;
+	musicSettingsText = nullptr;
+	startScreenSettingsText = nullptr;
+	soundSettingsText = nullptr;
 	startSettingsText = nullptr;
 	pauseNewGameText = nullptr;
 	endGameText = nullptr;
@@ -137,6 +142,9 @@ void GameWindow::gameLoop() {
 					if(state == GameState::PAUSE) {
 						pause_position_index = (pause_position_index + 1) % 2;
 					}
+					if(state == GameState::SETTINGS) {
+						settings_position_index = (settings_position_index + 1) % 3;
+					}
 				}
 
 				if(event.key.keysym.sym == SDLK_RETURN) {
@@ -145,30 +153,67 @@ void GameWindow::gameLoop() {
 						case 0:
 							//start
 							restart(graphics);
+							soundMixer->playSound(this, "button");
 							break;
 						case 1:
 							//controls
-							cout << "here" << endl;
 							state = GameState::CONTROLS;
+							menu_position_index = 0;
+							soundMixer->playSound(this, "button");
 							break;
 						case 2:
 							//settings
+							state = GameState::SETTINGS;
+							menu_position_index = 0;
+							soundMixer->playSound(this, "button");
 							break;
 						}
+
+						continue;
 					}
 						if(state == GameState::PAUSE) {
 							switch(pause_position_index % 2) {
 							case 0:
 								//start
 								state = GameState::IN_GAME;
+								soundMixer->playSound(this, "button");
 								break;
 							case 1:
 								//controls
 								state = GameState::START;
+								soundMixer->playSound(this, "button");
 								menu_position_index = 0;
 								break;
 							}
+							continue;
 					}
+
+						if(state == GameState::SETTINGS) {
+							switch(settings_position_index % 3) {
+							case 0:
+								//start
+								soundMixer->muteMusic(muteMusic ? false : true);
+								muteMusic = !muteMusic;
+								musicSettingsText = nullptr;
+								soundMixer->playSound(this, "button");
+								break;
+							case 1:
+								soundMixer->playSound(this, "button");
+								muteSound = !muteSound;
+								soundSettingsText = nullptr;
+
+								//controls
+								break;
+							case 2:
+								state = GameState::START;
+								settings_position_index = 0;
+								soundMixer->playSound(this, "button");
+
+								break;
+							}
+
+							continue;
+						}
 				}
 
 				if(event.key.keysym.sym == SDLK_UP) {
@@ -187,10 +232,19 @@ void GameWindow::gameLoop() {
 							pause_position_index = (pause_position_index - 1) % 2;
 						}
 					}
+
+					if(state == GameState::SETTINGS) {
+						if(settings_position_index == 0) {
+							settings_position_index = 2;
+						} else {
+							settings_position_index = (settings_position_index - 1) % 3;
+						}
+					}
 				}
 				if(event.key.keysym.sym == SDLK_s) {
 					if(state == GameState::CONTROLS) {
 						state = GameState::START;
+						soundMixer->playSound(this, "button");
 					}
 				}
 
@@ -199,6 +253,7 @@ void GameWindow::gameLoop() {
 					if(state == GameState::IN_GAME) {
 						pause_position_index = 0;
 						state = GameState::PAUSE;
+						soundMixer->playSound(this, "button");
 					}
 				}
 
@@ -207,6 +262,7 @@ void GameWindow::gameLoop() {
 				if(event.key.keysym.sym == SDLK_a) {
 					if(state == GameState::END) {
 						restart(graphics);
+						soundMixer->playSound(this, "button");
 					}
 				}
 
@@ -230,9 +286,13 @@ void GameWindow::gameLoop() {
 					delete(obstacleManager);
 					delete(player);
 					delete(pauseContinueText);
+					delete(musicSettingsText);
+					delete(startScreenSettingsText);
+					delete(soundSettingsText);
 					delete(this->startSettingsText);
 					delete(pauseNewGameText);
 					delete(startGameText);
+					delete(soundMixer);
 					delete(endGameText);
 					delete(endNewGameText);
 					delete(endScoreGameText);
@@ -282,6 +342,10 @@ int GameWindow::getScore() const {
 	return gamescore;
 }
 
+bool GameWindow::isSoundMuted() const {
+	return this->muteSound;
+}
+
 void GameWindow::restart(Graphics& graphics) {
 
 
@@ -300,6 +364,9 @@ void GameWindow::restart(Graphics& graphics) {
 	pauseNewGameText = nullptr;
 	endGameText = nullptr;
 	endNewGameText = nullptr;
+	musicSettingsText = nullptr;
+	startScreenSettingsText = nullptr;
+	soundSettingsText = nullptr;
 	endScoreGameText = nullptr;
 	startSettingsText = nullptr;
 	controlsGameText = nullptr;
@@ -337,7 +404,7 @@ void GameWindow::addObstacle(Obstacle* obstacle) {
 }
 
 SoundMixer& GameWindow::getSoundMixer() {
-	return soundMixer;
+	return *soundMixer;
 }
 
 void GameWindow::gameUpdate(const float &elapsedTime) {
@@ -349,6 +416,10 @@ void GameWindow::gameUpdate(const float &elapsedTime) {
 
 	switch(state) {
 	case GameState::PAUSE:
+	{
+		break;
+	}
+	case GameState::SETTINGS:
 	{
 		break;
 	}
@@ -406,7 +477,7 @@ void GameWindow::gameUpdate(const float &elapsedTime) {
 					}
 					topBlocks.erase(topBlocks.begin() + i);
 
-					if(state == GameState::IN_GAME) {
+					if(state == GameState::IN_GAME && player->hasSwung()) {
 						gamescore++;
 					}
 					Entity *block = new Entity(
@@ -492,13 +563,13 @@ void GameWindow::gameDraw(Graphics &graphics) {
 
 		for (Obstacle *obs : obstacles) {
 			if(!obs->isDestroyed()) {
-				if(state != GameState::START && state != GameState::CONTROLS) {
+				if(state != GameState::START && state != GameState::CONTROLS && state != GameState::SETTINGS) {
 			obs->gameDraw(graphics);
 				}
 			}
 		}
 
-		if(state != GameState::START && state != GameState::CONTROLS) {
+		if(state != GameState::START && state != GameState::CONTROLS && state != GameState::SETTINGS) {
 			player->gameDraw(graphics);
 		}
 
@@ -542,6 +613,43 @@ void GameWindow::gameDraw(Graphics &graphics) {
 		startGameText->draw(320, 220);
 		controlsGameText->draw(335, 280);
 		startSettingsText->draw(335, 340);
+		break;
+	}
+	case SETTINGS:
+	{
+		if(this->musicSettingsText == nullptr) {
+			SDL_Color color = {255,255,255};
+			musicSettingsText = new GraphicsText(graphics.getRenderer(), 40, "res/AGENCYB.TTF", (this->muteMusic ? "Unmute Music" : "Mute Music"), color);
+		}
+
+		if(this->soundSettingsText == nullptr) {
+			SDL_Color color = {255,255,255};
+			soundSettingsText = new GraphicsText(graphics.getRenderer(), 40, "res/AGENCYB.TTF", (this->muteSound ? "Unmute Sound" : "Mute Sound"), color);
+		}
+
+		if(this->startScreenSettingsText == nullptr) {
+			SDL_Color color = {255,255,255};
+			startScreenSettingsText = new GraphicsText(graphics.getRenderer(), 40, "res/AGENCYB.TTF", "Start Screen", color);
+		}
+
+		SDL_Rect dot;
+
+
+		dot.w = 15;
+		dot.h = 15;
+		dot.x = 285;
+		dot.y = settings_menu_dot_position_y[settings_position_index];
+
+		SDL_SetRenderDrawColor(graphics.getRenderer(), 255, 255, 255, 255);
+
+		graphics.drawFilledRect(dot);
+
+		SDL_SetRenderDrawColor(graphics.getRenderer(), 0, 0, 0, 0);
+
+
+		musicSettingsText->draw(320, 180);
+		soundSettingsText->draw(320, 250);
+		startScreenSettingsText->draw(320, 320);
 		break;
 	}
 	case CONTROLS:

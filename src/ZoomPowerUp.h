@@ -8,7 +8,7 @@
  * This is a specific game powerup that extends
  * the Obstacle abstract class
  *
- * This obstacle is a powerup, that gives the player invincibility for some time
+ * This obstacle is a powerup, that gives the player invincibility and speeds them up for some time
  */
 class ZoomPowerUp : public Obstacle {
 public:
@@ -19,12 +19,12 @@ public:
 	ZoomPowerUp(GameWindow* window);
 
 	/*
-	 * This method is responsible for creating coin
+	 * This method is responsible for creating zoom obstacle
 	 */
 	virtual void generateObstacle();
 
 	/*
-	 * Draws the coin. Also handles all of the different stages.
+	 * Draws the zoom obstacle. Also handles all of the different stages.
 	 */
 	virtual void draw(Graphics& graphics);
 

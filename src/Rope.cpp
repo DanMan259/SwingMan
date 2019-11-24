@@ -16,7 +16,7 @@ const double PI = 3.14159265;
 Rope::Rope(Player *attached, Entity* swingingBlock) {
 	this->attached = attached;
 	this->swingingBlock = swingingBlock;
-	this->attached->getGameWin()->getSoundMixer().playSound("rope");
+	this->attached->getGameWin()->getSoundMixer().playSound(attached->getGameWin(), "rope");
 	this->vectorX = swingingBlock->getX()-attached->getX();
 	this->vectorY = -swingingBlock->getY()+attached->getY();
 	this->time = 0;
