@@ -14,6 +14,8 @@ SoundMixer::SoundMixer() {
 	addSound("rope", "res/rope_effect.wav");
 	addSound("zoom", "res/FireBall.mp3");
 	addSound("invincibility", "res/invincibility.wav");
+	addSound("button", "res/button_effect.wav");
+
 
 	//all music
 	addMusic("music", "res/8bitmusic.mp3");

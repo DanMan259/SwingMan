@@ -153,15 +153,19 @@ void GameWindow::gameLoop() {
 						case 0:
 							//start
 							restart(graphics);
+							soundMixer->playSound(this, "button");
 							break;
 						case 1:
 							//controls
 							state = GameState::CONTROLS;
+							menu_position_index = 0;
+							soundMixer->playSound(this, "button");
 							break;
 						case 2:
 							//settings
 							state = GameState::SETTINGS;
 							menu_position_index = 0;
+							soundMixer->playSound(this, "button");
 							break;
 						}
 
@@ -172,10 +176,12 @@ void GameWindow::gameLoop() {
 							case 0:
 								//start
 								state = GameState::IN_GAME;
+								soundMixer->playSound(this, "button");
 								break;
 							case 1:
 								//controls
 								state = GameState::START;
+								soundMixer->playSound(this, "button");
 								menu_position_index = 0;
 								break;
 							}
@@ -189,15 +195,20 @@ void GameWindow::gameLoop() {
 								soundMixer->muteMusic(muteMusic ? false : true);
 								muteMusic = !muteMusic;
 								musicSettingsText = nullptr;
+								soundMixer->playSound(this, "button");
 								break;
 							case 1:
+								soundMixer->playSound(this, "button");
 								muteSound = !muteSound;
 								soundSettingsText = nullptr;
+
 								//controls
 								break;
 							case 2:
 								state = GameState::START;
 								settings_position_index = 0;
+								soundMixer->playSound(this, "button");
+
 								break;
 							}
 
@@ -233,6 +244,7 @@ void GameWindow::gameLoop() {
 				if(event.key.keysym.sym == SDLK_s) {
 					if(state == GameState::CONTROLS) {
 						state = GameState::START;
+						soundMixer->playSound(this, "button");
 					}
 				}
 
@@ -241,6 +253,7 @@ void GameWindow::gameLoop() {
 					if(state == GameState::IN_GAME) {
 						pause_position_index = 0;
 						state = GameState::PAUSE;
+						soundMixer->playSound(this, "button");
 					}
 				}
 
@@ -249,6 +262,7 @@ void GameWindow::gameLoop() {
 				if(event.key.keysym.sym == SDLK_a) {
 					if(state == GameState::END) {
 						restart(graphics);
+						soundMixer->playSound(this, "button");
 					}
 				}
 
@@ -463,7 +477,7 @@ void GameWindow::gameUpdate(const float &elapsedTime) {
 					}
 					topBlocks.erase(topBlocks.begin() + i);
 
-					if(state == GameState::IN_GAME) {
+					if(state == GameState::IN_GAME && player->hasSwung()) {
 						gamescore++;
 					}
 					Entity *block = new Entity(

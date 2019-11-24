@@ -24,6 +24,7 @@ Player::Player() {
 	this->velocityY = 0;
 	this->deathStage = 0;
 	this->deathTicks = 0;
+	this->swung = true;
 	this->finishedDeath = false;
 
 
@@ -37,6 +38,7 @@ Player::Player(GameWindow* game, int x, int y, SDL_Surface* sprite) : Entity(x, 
 	this->swingingBlock = nullptr;
 	this->deathStage = 0;
 	this->deathTicks = 0;
+	this->swung = false;
 	this->velocityX = 0;
 	this->velocityY = 0;
 	this->rope = NULL;
@@ -203,6 +205,11 @@ void Player::startSwinging() {
 
 	this->rope = new Rope(this, temp);
 	swinging = true;
+	swung = true;
+}
+
+bool Player::hasSwung() const {
+	return swung;
 }
 
 bool Player::isFalling() const{

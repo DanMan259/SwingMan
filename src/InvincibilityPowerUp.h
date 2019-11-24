@@ -19,12 +19,12 @@ public:
 	InvincibilityPowerUp(GameWindow* window);
 
 	/*
-	 * This method is responsible for creating coin
+	 * This method is responsible for creating the invicibility obstacle
 	 */
 	virtual void generateObstacle();
 
 	/*
-	 * Draws the coin. Also handles all of the different stages.
+	 * Draws the invicibility obstacle. Also handles all of the different stages.
 	 */
 	virtual void draw(Graphics& graphics);
 

@@ -128,6 +128,12 @@ public:
 	 */
 	void setZoom(const bool& value);
 
+
+	/*
+	 * @return has swung
+	 */
+	bool hasSwung() const;
+
 private:
 
 	/*
@@ -199,6 +205,12 @@ private:
 	 * If the player is swinging on a rope
 	 */
 	bool swinging;
+
+
+	/*
+	 * If player has swung before
+	 */
+	bool swung;
 
 	/*
 	 * The top block the player is swinging from

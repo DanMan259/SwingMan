@@ -2,12 +2,6 @@
 
 #include "Player.h"
 
-struct RopeNode {
-	int velocityX, velocityY;
-	int positionX, positionY;
-	int oldPositionX, oldPositionY;
-	int mass;
-};
 
 class Player;
 class Rope {
@@ -43,5 +37,4 @@ private:
 
 	Entity* swingingBlock;
 
-	vector<RopeNode> segments;
 };
