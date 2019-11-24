@@ -24,7 +24,7 @@ GeyserObstacle::~GeyserObstacle() {
 void GeyserObstacle::generateObstacle() {
 	int x = (GameWindow::GAME_WIDTH);
 
-	window->getSoundMixer().playSound("geyser");
+	window->getSoundMixer().playSound(window, "geyser");
 
 	int y = 380;
 
@@ -37,7 +37,7 @@ void GeyserObstacle::generateObstacle() {
 
 void GeyserObstacle::handleCollision(Player* player) {
 	if(player->isMortal()){
-		window->getSoundMixer().playSound("explosion");
+		window->getSoundMixer().playSound(window, "explosion");
 		player->setDead(true);
 		window->endGame();
 	}

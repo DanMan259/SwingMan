@@ -120,7 +120,7 @@ void Player::gameUpdate(const float& elapstedTime) {
 		entityRect.h = lavaBlock->getHeight();
 		SDL_bool intersects = SDL_IntersectRect(&playerRect, &entityRect, &result);
 		if(intersects == SDL_TRUE) {
-			game->getSoundMixer().playSound("explosion");
+			game->getSoundMixer().playSound(this->getGameWin(), "explosion");
 
 			dead = true;
 			game->endGame();
@@ -158,7 +158,7 @@ void Player::gameUpdate(const float& elapstedTime) {
 			SDL_bool intersects = SDL_IntersectRect(&playerRect, &entityRect, &result);
 			if(intersects == SDL_TRUE && !falling) {
 
-				game->getSoundMixer().playSound("top");
+				game->getSoundMixer().playSound(this->getGameWin(), "top");
 				resetSwinging();
 				velocityY = 0;
 

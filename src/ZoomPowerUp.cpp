@@ -33,7 +33,7 @@ void ZoomPowerUp::generateObstacle() {
 
 void ZoomPowerUp::handleCollision(Player* player) {
 	//increment player's score
-	window->getSoundMixer().playSound("zoom");
+	window->getSoundMixer().playSound(window, "zoom");
 	window->setScore(window->getScore() + 100);
 	player->setZoom(true);
 	player->setXVelocity(30);

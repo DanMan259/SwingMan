@@ -4,6 +4,9 @@
 #include <SDL_Mixer.h>
 #include <map>
 #include <string>
+#include "GameWindow.h"
+
+class GameWindow;
 
 using namespace std;
 
@@ -15,11 +18,12 @@ public:
 	~SoundMixer();
 
 
-	void playSound(const string& path);
+	void playSound(GameWindow* window, const string& path);
 
 	void playMusic(const string& path);
 
-	void muteMusic();
+	void muteMusic(const bool& mute);
+
 
 
 

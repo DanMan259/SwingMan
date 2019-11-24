@@ -2,6 +2,9 @@
 #include <iostream>
 
 SoundMixer::SoundMixer() {
+
+	this->initiliaze();
+
 	//all sounds
 	addSound("coin", "res/coin_effect.wav");
 	addSound("top", "res/top_effect.wav");
@@ -15,7 +18,9 @@ SoundMixer::SoundMixer() {
 	//all music
 	addMusic("music", "res/8bitmusic.mp3");
 
-	this->initiliaze();
+	//starts music
+	playMusic("music");
+
 }
 
 
@@ -34,6 +39,7 @@ SoundMixer::~SoundMixer() {
 //		Mix_FreeMusic(it2->second);
 //	}
 
+	cout << "am" << endl;
 	Mix_CloseAudio();
 }
 
@@ -43,13 +49,15 @@ void SoundMixer::initiliaze() {
 	{
 		cout << "SDL_mixer could not initialize! SDL_mixer Error: " << Mix_GetError() << endl;
 	}
-
-	playMusic("music");
 }
 
 
 
-void SoundMixer::playSound(const string& path) {
+void SoundMixer::playSound(GameWindow* window, const string& path) {
+	if(window->isSoundMuted()) {
+		return;
+	}
+
 	Mix_Chunk* sound = sounds[path];
 
 	if(sound == NULL) {
@@ -71,6 +79,15 @@ void SoundMixer::playMusic(const string& path) {
 	Mix_VolumeMusic(MIX_MAX_VOLUME/3);
 	Mix_PlayMusic(m, -1);
 }
+
+void SoundMixer::muteMusic(const bool& mute) {
+	Mix_VolumeMusic(mute ? 0 : (MIX_MAX_VOLUME)/3);
+}
+
+
+
+
+
 
 bool SoundMixer::addMusic(const string& name, const string& music) {
 	Mix_Music* m = Mix_LoadMUS(music.c_str());
