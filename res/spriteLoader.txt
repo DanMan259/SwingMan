@@ -1,5 +1,5 @@
 background	res/320_background.png
-block	res/red-block.png
+block	res/lava.png
 brown_block	res/brown_block.png
 player	res/player.png
 grey_block	res/grey_block.png
