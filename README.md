@@ -15,22 +15,11 @@ The game can be described as an endless side scroller with the objective of avoi
 
 ### Installing
 
-* PUT THE INSTALL INS
+* You will need to install sdl2 and all of its dependencies, just place the DLL files into the same directory as the .exe
 
 ### Executing program
 
-* How to run the program
-* Step-by-step bullets
-```
-code blocks for commands
-```
-
-## Help
-
-Any advise for common problems or issues.
-```
-command to run if program contains helper info
-```
+* Just simply run the .exe file
 
 ## Authors
 
@@ -39,10 +28,21 @@ Contributors names and contact info
 Daniyal Maniar  
 [@DanMan259](https://github.com/DanMan259)
 
-## Version History
+Husnain Haider
+[@mhh16](https://github.com/mhh16)
 
-* 0.1
-    * Initial Release
+Walter Karabin
+[@WalterKarabin](https://github.com/walterkarabin)
+
+Nick Jones
+[@nickjones18](https://github.com/nickjones18)
+
+Daniel Tavernese
+[@DanielTavernese](https://github.com/DanielTavernese)
+
+Howie Zuo
+[@howieeeeeeeeeeeeee](https://github.com/HanyuZuo)
+
 
 ## License
 
@@ -50,5 +50,4 @@ This project is licensed under the [MIT](https://en.wikipedia.org/wiki/MIT_Licen
 
 ## Acknowledgments
 
-Inspiration, code snippets, etc.
-* [PLACEHOLDER](https://placeHolder.ca)
+Inspiration taken from the PS2 spider man game, and Fire Rides

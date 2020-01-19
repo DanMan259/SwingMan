@@ -134,6 +134,17 @@ public:
 	 */
 	bool hasSwung() const;
 
+	/*
+	 * @return topBlockHitFlag
+	 */
+	bool hasTopBlockHit() const;
+
+
+	/*
+	 * @param topBlockHit to topBlockHit
+	 */
+	void setTopBlockHit(const bool& topBlockHit);
+
 private:
 
 	/*
@@ -211,6 +222,11 @@ private:
 	 * If player has swung before
 	 */
 	bool swung;
+
+	/*
+	 * Top block hit
+	 */
+	bool topBlockHit;
 
 	/*
 	 * The top block the player is swinging from

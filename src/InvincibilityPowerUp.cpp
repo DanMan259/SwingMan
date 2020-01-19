@@ -35,7 +35,7 @@ void InvincibilityPowerUp::handleCollision(Player* player) {
 	//increment player's score
 	window->setScore(window->getScore() + 100);
 	player->setMortality(false);
-	player->setInvTicks(0);
+	player->setInvTicks(50);
 	window->getSoundMixer().playSound(window, "invincibility");
 	destroy();
 }

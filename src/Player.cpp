@@ -26,7 +26,7 @@ Player::Player() {
 	this->deathTicks = 0;
 	this->swung = true;
 	this->finishedDeath = false;
-
+	this->topBlockHit = false;
 
 }
 
@@ -43,6 +43,7 @@ Player::Player(GameWindow* game, int x, int y, SDL_Surface* sprite) : Entity(x, 
 	this->velocityY = 0;
 	this->rope = NULL;
 	this->finishedDeath = false;
+	this->topBlockHit = false;
 
 
 };
@@ -81,6 +82,14 @@ void Player::setYVelocity(int value) {
 }
 GameWindow* Player::getGameWin(){
 	return this->game;
+}
+
+bool Player::hasTopBlockHit() const {
+	return this->topBlockHit;
+}
+
+void Player::setTopBlockHit(const bool& topBlockHit) {
+	this->topBlockHit = topBlockHit;
 }
 
 void Player::gameUpdate(const float& elapstedTime) {
@@ -142,6 +151,8 @@ void Player::gameUpdate(const float& elapstedTime) {
 		entityRect.y = obstacle->getY();
 		entityRect.w = obstacle->getWidth();
 		entityRect.h = obstacle->getHeight();
+		topBlockHit = true;
+
 		SDL_bool intersects = SDL_IntersectRect(&playerRect, &entityRect, &result);
 		if(intersects == SDL_TRUE) {
 			obstacle->handleCollision(this);
@@ -159,11 +170,10 @@ void Player::gameUpdate(const float& elapstedTime) {
 			entityRect.h = topBlock->getHeight();
 			SDL_bool intersects = SDL_IntersectRect(&playerRect, &entityRect, &result);
 			if(intersects == SDL_TRUE && !falling) {
-
 				game->getSoundMixer().playSound(this->getGameWin(), "top");
 				resetSwinging();
 				velocityY = 0;
-
+				topBlockHit = true;
 				game->endGame();
 				falling = true;
 

@@ -7,7 +7,7 @@
 
 #include <cmath>
 
-
+//Create the coin object
 CoinObstacle::CoinObstacle(GameWindow* window) : Obstacle(window, 0, 0, NULL, true, 10) {
 	this->stage = 0;
 	this->launching = false;
@@ -19,9 +19,11 @@ CoinObstacle::~CoinObstacle() {
 
 }
 
+//Generate the coin location
 void CoinObstacle::generateObstacle() {
+  	//Start coin at edge of screen
 	int x = (GameWindow::GAME_WIDTH);
-
+	//Random y location
 	int y = 380 - (rand() % (GameWindow::GAME_HEIGHT / 2));
 
 	this->launching = true;
@@ -34,20 +36,23 @@ int CoinObstacle::ObstacleID(){
 	return 2;
 }
 
+//Deal with collision between coin and player
 void CoinObstacle::handleCollision(Player* player) {
 	//increment player's score
 	window->setScore(window->getScore() + 100);
+  	//Play coin sound
 	window->getSoundMixer().playSound(window, "coin");
 	destroy();
 }
 
-
+//Display the coin
 void CoinObstacle::draw(Graphics& graphics) {
 
 	if(!launching) {
 		return;
 	}
-
+	
+  	//Animate spinning coin with multiple sprite images
 	if(ticks >= 2) {
 		switch(stage) {
 		case 0:

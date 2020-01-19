@@ -21,6 +21,10 @@ void GraphicsText::draw(int x, int y) {
 	SDL_RenderCopy(renderer, textTexture, nullptr, &textRect);
 }
 
+int GraphicsText::getW(){
+	return this->textRect.w;
+}
+
 SDL_Texture* GraphicsText::loadFont(SDL_Renderer* renderer, int fontSize, const string& f, const string& message, const SDL_Color &color) {
 
 	TTF_Font* font = TTF_OpenFont(f.c_str(), fontSize);

@@ -16,6 +16,8 @@ public:
 
 	void draw(int x, int y);
 
+	int getW();
+
 private:
 	SDL_Texture* loadFont(SDL_Renderer* renderer, int fontSize, const string& font, const string& message, const SDL_Color &color);
 

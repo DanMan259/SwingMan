@@ -4,6 +4,7 @@
 
 #include <iostream>
 
+
 #include "GameWindow.h"
 #include "SpriteLoader.h"
 #include "Graphics.h"
@@ -16,6 +17,7 @@
 #include "BatObstacle.h"
 #include <cmath>
 #include <vector>
+#include <algorithm>
 
 //h
 using namespace std;
@@ -35,6 +37,8 @@ int pause_position_index = 0;
 int settings_menu_dot_position_y[] = {150, 220, 290, 360};
 int settings_position_index = 0;
 
+int space_counter = 0;
+
 int main(int argv, char **args) {
 	GameWindow game;
 	return 0;
@@ -46,15 +50,16 @@ GameWindow::GameWindow() {
 	if(TTF_Init()==-1) {
 			printf("TTF_Init: %s\n", TTF_GetError());
 			exit(-1);
-		}
+	}
 
-		font = TTF_OpenFont("./res/AGENCYB.TTF",64);
-		if(font == NULL)
-		{
-		   fprintf(stderr,"font open failure %s\n",SDL_GetError());
-		   exit(-1);
-		}
+	font = TTF_OpenFont("./res/AGENCYB.TTF",64);
+	if(font == NULL)
+	{
+	   fprintf(stderr,"font open failure %s\n",SDL_GetError());
+	   exit(-1);
+	}
 
+	highscore = new HighScore();
 	gameLoop();
 }
 
@@ -89,6 +94,7 @@ void GameWindow::gameLoop() {
 	titleGameText = nullptr;
 	endNewGameText = nullptr;
 	endScoreGameText = nullptr;
+	endHighScoreGameText = nullptr;
 	controlsGameText = nullptr;
 	score = nullptr;
 
@@ -140,12 +146,15 @@ void GameWindow::gameLoop() {
 				if(event.key.keysym.sym == SDLK_DOWN) {
 					if(state == GameState::START) {
 						menu_position_index = (menu_position_index + 1) % 3;
+						soundMixer->playSound(this, "button");
 					}
 					if(state == GameState::PAUSE) {
 						pause_position_index = (pause_position_index + 1) % 2;
+						soundMixer->playSound(this, "button");
 					}
 					if(state == GameState::SETTINGS) {
 						settings_position_index = (settings_position_index + 1) % 4;
+						soundMixer->playSound(this, "button");
 					}
 				}
 
@@ -234,6 +243,7 @@ void GameWindow::gameLoop() {
 						} else {
 							menu_position_index = (menu_position_index - 1) % 3;
 						}
+						soundMixer->playSound(this, "button");
 					}
 
 					if(state == GameState::PAUSE) {
@@ -242,6 +252,7 @@ void GameWindow::gameLoop() {
 						} else {
 							pause_position_index = (pause_position_index - 1) % 2;
 						}
+						soundMixer->playSound(this, "button");
 					}
 
 					if(state == GameState::SETTINGS) {
@@ -250,32 +261,30 @@ void GameWindow::gameLoop() {
 						} else {
 							settings_position_index = (settings_position_index - 1) % 4;
 						}
-					}
-				}
-				if(event.key.keysym.sym == SDLK_s) {
-					if(state == GameState::CONTROLS) {
-						state = GameState::START;
 						soundMixer->playSound(this, "button");
 					}
 				}
 
-
-				if (event.key.keysym.sym == SDLK_m) {
+				if (event.key.keysym.sym == SDLK_ESCAPE) {
+					if(state == GameState::CONTROLS) {
+						state = GameState::START;
+						soundMixer->playSound(this, "button");
+					}
 					if(state == GameState::IN_GAME) {
 						pause_position_index = 0;
 						state = GameState::PAUSE;
 						soundMixer->playSound(this, "button");
 					}
-				}
-
-
-
-				if(event.key.keysym.sym == SDLK_a) {
-					if(state == GameState::END) {
-						restart(graphics);
+					else if(state == GameState::PAUSE) {
+						state = GameState::IN_GAME;
+						soundMixer->playSound(this, "button");
+					}
+					if(state == GameState::SETTINGS){
+						state = GameState::START;
 						soundMixer->playSound(this, "button");
 					}
 				}
+
 
 
 
@@ -287,9 +296,34 @@ void GameWindow::gameLoop() {
 					}
 				}
 
+
+				if(event.key.keysym.sym == SDLK_SPACE) {
+					cout << "here" << endl;
+					if(state == GameState::END) {
+						if(!player->hasTopBlockHit()) {
+							restart(graphics);
+							soundMixer->playSound(this, "button");
+							space_counter = 0;
+							player->setTopBlockHit(false);
+						} else {
+							if(space_counter == 0) {
+								space_counter = 1;
+							} else {
+
+								restart(graphics);
+								soundMixer->playSound(this, "button");
+								space_counter = 0;
+								player->setTopBlockHit(false);
+						}
+
+					}
+					}
+				}
+
 			} else if (event.type == SDL_QUIT) {
 				cout << "AB" << endl;
 
+					highscore->writeHighScore();
 					TTF_Quit();
 					delete(controlsBackText);
 					delete(controlsSwingText);
@@ -308,9 +342,11 @@ void GameWindow::gameLoop() {
 					delete(endGameText);
 					delete(endNewGameText);
 					delete(endScoreGameText);
+					delete(endHighScoreGameText);
 					delete(controlsGameText);
 					delete(titleGameText);
 					delete(score);
+					delete(highscore);
 					player = nullptr;
 					obstacleManager = nullptr;
 					//cout << "A" << endl;
@@ -384,6 +420,7 @@ void GameWindow::restart(Graphics& graphics) {
 	soundSettingsText = nullptr;
 	difficultySettingsText = nullptr;
 	endScoreGameText = nullptr;
+	endHighScoreGameText = nullptr;
 	startSettingsText = nullptr;
 	controlsGameText = nullptr;
 	titleGameText = nullptr;
@@ -399,6 +436,9 @@ void GameWindow::restart(Graphics& graphics) {
 }
 
 void GameWindow::endGame() {
+	if(gamescore > highscore->getHighScore()){
+		highscore->setHighScore(gamescore);
+	}
 	state = GameState::END;
 }
 
@@ -581,8 +621,8 @@ void GameWindow::gameDraw(Graphics &graphics) {
 
 		for (Obstacle *obs : obstacles) {
 			if(!obs->isDestroyed()) {
-				if(state != GameState::START && state != GameState::CONTROLS && state != GameState::SETTINGS) {
-			obs->gameDraw(graphics);
+				if(state != GameState::START && state != GameState::CONTROLS) {
+					obs->gameDraw(graphics);
 				}
 			}
 		}
@@ -683,11 +723,11 @@ void GameWindow::gameDraw(Graphics &graphics) {
 
 		}
 		if(this->controlsPauseText == nullptr) {
-			controlsPauseText = new GraphicsText(graphics.getRenderer(), 30, "res/AGENCYB.TTF", "To Open Up Pause Menu Press (M)", {255, 255, 255, 255});
+			controlsPauseText = new GraphicsText(graphics.getRenderer(), 30, "res/AGENCYB.TTF", "To Open Up Pause Menu Press ESC", {255, 255, 255, 255});
 		}
 
 		if(this->controlsBackText == nullptr) {
-			controlsBackText = new GraphicsText(graphics.getRenderer(), 30, "res/AGENCYB.TTF", "Press (S) To Go Back To Start Screen", {255, 0, 0});
+			controlsBackText = new GraphicsText(graphics.getRenderer(), 30, "res/AGENCYB.TTF", "Press ESC To Go Back To Start Screen", {255, 0, 0});
 		}
 
 		controlsSwingText->draw(120, 200);
@@ -717,15 +757,28 @@ void GameWindow::gameDraw(Graphics &graphics) {
 			endScoreGameText = new GraphicsText(graphics.getRenderer(), 60, "res/AGENCYB.TTF", output_str, color);
 
 		}
+		if(endHighScoreGameText == nullptr) {
+			SDL_Color color = {255,215,0};
+
+			char output_str[40];
+			char score_str[25];
+
+			itoa(highscore->getHighScore(), score_str, 10);
+			strcpy(output_str, "High Score: ");
+			strcat(output_str, score_str);
+
+			endHighScoreGameText = new GraphicsText(graphics.getRenderer(), 60, "res/AGENCYB.TTF", output_str, color);
+		}
 
 		if(endNewGameText == nullptr) {
 			SDL_Color color = {255,0,0};
-			endNewGameText = new GraphicsText(graphics.getRenderer(), 40, "res/AGENCYB.TTF", "Press A to Play Again!", color);
+			endNewGameText = new GraphicsText(graphics.getRenderer(), 40, "res/AGENCYB.TTF", "Press Space to Play Again!", color);
 		}
 
-		endScoreGameText->draw(283, 240);
-		endNewGameText->draw(240, 330);
-		endGameText->draw(260, 120);
+		endScoreGameText->draw((GAME_WIDTH/2)-(endScoreGameText->getW()/2), 220);
+		endHighScoreGameText->draw((GAME_WIDTH/2)-(endHighScoreGameText->getW()/2), 300);
+		endNewGameText->draw((GAME_WIDTH/2)-(endNewGameText->getW()/2), 380);
+		endGameText->draw((GAME_WIDTH/2)-(endGameText->getW()/2), 120);
 
 		break;
 	}
