@@ -11,7 +11,10 @@ The game can be described as an endless side scroller with the objective of avoi
 #### Game play
 ![Game play #1](https://github.com/DanMan259/SwingMan/blob/master/gamePlayExamples/gamePlay1.gif)
 ![Game play #2](https://github.com/DanMan259/SwingMan/blob/master/gamePlayExamples/gamePlay2.gif)
-## Getting Started
+
+## Presentation
+
+<div style="position:relative;width:100%;height:0;padding-bottom:calc(56.25% + 40px);"><iframe allowfullscreen style="position:absolute; width: 100%; height: 100%;border: solid 1px #333;" src="https://www.beautiful.ai/player/-Lz-Dw0HMCbjlQniSRCX/320-Presentation-1?utm_source=beautiful_player&utm_medium=embed&utm_campaign=-Lz-DkExpzwnWU76NERh"></iframe></div>
 
 ### Dependencies
 
