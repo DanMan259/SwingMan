@@ -6,6 +6,8 @@ Team Seven Samurai is planning to build a endless side scroller pc game named Sw
 
 The game can be described as an endless side scroller with the objective of avoiding the floor which is lava. The user can avoid the floor by swinging from the ceilings using a throwing grapple. The user will tackle obstacles and be assigned points given their performance
 
+![Start Screen](https://raw.githubusercontent.com/DanMan259/SwingMan/master/gamePlayExamples/startScreenAnimation.gif)
+
 ## Getting Started
 
 ### Dependencies
